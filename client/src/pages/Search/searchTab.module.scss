@@ -1,0 +1,15 @@
+.search_container{
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+}
+.search_list{
+    display: flex;
+    row-gap: 10px;
+    flex-wrap: wrap;
+}
+.search_list_item{
+    display: flex;
+    column-gap: 20px;
+    width: 33.33%;
+}

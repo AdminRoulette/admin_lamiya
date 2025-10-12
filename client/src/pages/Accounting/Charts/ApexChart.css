@@ -1,0 +1,11 @@
+.apexcharts-tooltip {
+    background: none !important;
+    border: none !important;
+    border-radius: 10px !important;
+}
+.apexcharts-yaxis-label,.apexcharts-xaxis-label{
+    font-size: 12px;
+}
+.charts_container{
+    grid-column: 1/3;
+}

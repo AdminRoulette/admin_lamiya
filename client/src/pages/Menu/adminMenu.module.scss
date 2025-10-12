@@ -1,0 +1,134 @@
+@mixin mb($mb) {
+  @if $mb == mobile {
+    @media only screen and (max-width: 950px) {
+      @content;
+    }
+  }
+}
+
+@mixin hover {
+  @media (hover: hover) and (pointer: fine) {
+    @content;
+  }
+}
+.menu_header {
+  display: grid;
+  grid-template-columns: 30px auto;
+  height: 50px;
+  width: 100%;
+  border-bottom: 1px solid var(--color-border);
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 15px;
+  svg{
+    color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &:hover{
+      @include hover(){
+        cursor: pointer;
+      }
+    }
+  }
+
+}
+
+.menu_header_text {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 50px;
+  font-size: 20px;
+}
+.menu_active_page{
+  background-color: rgba(168, 168, 168, 0.1);
+}
+.menu_body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  @include mb(mobile){
+    overflow-y: scroll;
+  }
+}
+.menu_arrow{
+  transform: rotate(90deg);
+}
+.menu_dropDown {
+  display: none;
+}
+.open_menu_dropDown {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.menu_dropDown_option {
+  height: 40px;
+  margin-left: 25px;
+  padding-left: 10px;
+  display: flex;
+  align-items: center;
+  border-left: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  &:hover {
+    background-color: rgba(168, 168, 168, 0.1);
+  }
+}
+
+.menu_block {
+  display: grid;
+  grid-template-columns: 30px auto 20px;
+  width: 100%;
+  padding: 15px;
+  align-items: center;
+  min-height: 40px;
+  grid-column-gap: 5px;
+  border-bottom: 1px solid var(--color-border);
+  div{
+    display: flex;
+  }
+  &:hover {
+    @include hover{
+      cursor: pointer;
+      background-color: rgba(168, 168, 168, 0.1);
+    }
+  }
+}
+
+.navigate_modal_container {
+  width: 400px;
+  left: calc((100vw - 400px) / 2);
+}
+.navigate_modal_body {
+  display: flex;
+  row-gap: 15px;
+  flex-direction: column;
+  padding: 15px;
+  button{
+    height: 35px;
+  }
+}
+.menu_container {
+  display: flex;
+  overflow: hidden;
+  flex-direction: column;
+  min-width: 50px;
+  transition: width 0.4s ease;
+  border-right: 1px solid var(--color-border);
+  a {
+    color: #000;
+  }
+  @include mb(mobile){
+    display: none;
+    position: absolute;
+    width: 100% !important;
+    left: 0;
+    top:0;
+    z-index: 100;
+    background-color: #FFFFFF;
+    height: 100vh;
+  }
+}

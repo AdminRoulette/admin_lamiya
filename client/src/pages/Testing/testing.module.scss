@@ -1,0 +1,28 @@
+@mixin mb($mb) {
+  @if $mb == mobile {
+    @media only screen and (max-width: 950px) {
+      @content;
+    }
+  }
+}
+
+@mixin hover {
+  @media (hover: hover) and (pointer: fine) {
+    @content;
+  }
+}
+.testing_container{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  width: fit-content;
+
+  &>div{
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+  }
+}

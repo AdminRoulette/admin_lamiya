@@ -1,0 +1,47 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon --max-old-space-size=8192 --inspect index.js",
+    "start": "node --max-old-space-size=8192 index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.1379.0",
+    "axios": "^1.3.5",
+    "bcrypt": "^5.0.1",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
+    "exceljs": "^4.4.0",
+    "express": "^4.18.1",
+    "express-fileupload": "^1.4.0",
+    "express-static-gzip": "^2.1.7",
+    "googleapis": "^140.0.1",
+    "heroku-ssl-redirect": "^0.1.1",
+    "jsonwebtoken": "^8.5.1",
+    "multer": "^1.4.5-lts.1",
+    "mysql": "^2.18.1",
+    "node-cron": "^3.0.2",
+    "nodemailer": "^6.9.3",
+    "pg": "^8.7.3",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.21.3",
+    "sharp": "^0.32.6",
+    "sheetjs-style": "^0.15.8",
+    "tinify": "^1.7.1",
+    "ukrstemmer": "^0.1.0",
+    "uuid": "^8.3.2",
+    "ws": "^8.18.2",
+    "xlsx": "^0.18.5",
+    "xml2js": "^0.6.2",
+    "xmlbuilder2": "^3.1.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19"
+  }
+}

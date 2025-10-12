@@ -1,0 +1,1440 @@
+
+.admin_menuBtn {
+    display: none;
+}
+.apiMsg{
+    padding-top: 35px;
+}
+
+
+
+
+
+
+.deviceifo_ZeroCount {
+    background-color: #fdb6b6;
+}
+
+.yellow_btns {
+    display: block;
+    font-size: 13px;
+    line-height: 16px;
+    white-space: nowrap;
+    color: #303030;
+    background: #d5d5d5;
+    border: 1px solid #000000;
+    border-radius: 9px;
+    transition: all .3s ease;
+    padding: 7px 15px;
+}
+
+.yellow_btns:hover {
+    color: #e600ff;
+    box-shadow: 1px 1px 7px 3px #28282a;
+    background: #797676;
+}
+
+.deviceInfo_buyBtn {
+position: relative;
+width: 80px;
+height: 32px;
+
+}
+
+
+.createOrderBtnSubmit {
+top: 13%;
+right: 23%;
+}
+
+.deviceInfo_buyBtn button {
+width: 90px;
+height: 32px;
+font-size: 12px;
+}
+
+/* Dropdown */
+.adminSubmittingBtn {
+    top: 15%;
+    left: 36%;
+}
+
+.dropdown_itemdevice {
+    display: inline-block;
+    position: relative;
+    margin: 0;
+}
+
+.dd-button-itemdevice {
+    display: block;
+    font-size: 13px;
+    line-height: 16px;
+    white-space: nowrap;
+    color: #303030;
+    width: 80px;
+    height: 32px;
+    background: #d5d5d5;
+    border: 1px solid #000000;
+    border-radius: 9px;
+    transition: all .3s ease;
+    padding: 7px 10px;
+    text-align: center;
+    z-index: 1;
+    overflow: hidden;
+    text-transform: capitalize;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.dd-button-itemdevice:hover {
+    color: #e600ff;
+    box-shadow: 1px 1px 7px 3px #28282a;
+    background: #797676;
+}
+
+
+.dd-input-itemdevice {
+    display: none;
+}
+
+.dd-menu-itemdevice {
+    position: absolute;
+    top: 100%;
+    border: 1px solid #000000;
+    border-radius: 2px;
+    padding: 0;
+    margin: 2px 0 0 0;
+    background-color: #e1e1e1;
+    list-style-type: none;
+    z-index: 1;
+}
+
+.dd-input-itemdevice + .dd-menu-itemdevice {
+    display: none;
+}
+
+.dd-input-itemdevice:checked + .dd-menu-itemdevice {
+    display: block;
+}
+
+.dd-menu-itemdevice li {
+    padding: 10px 20px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.dd-menu-itemdevice li:hover {
+    background-color: #ffffff;
+    border: 1px solid #000;
+}
+
+
+.dd-menu-itemdevice li a {
+    display: block;
+    margin: -10px -20px;
+    padding: 10px 20px;
+}
+
+.dd-menu-itemdevice li.divider_itemdevice {
+    padding: 0;
+    border-bottom: 1px solid #cccccc;
+}
+
+/*----------------------------------------------------------*/
+.text__bold {
+    font-weight: 600 !important;
+}
+
+.opened {
+    display: grid;
+}
+
+.closed {
+    display: none;
+}
+
+tr.closed {
+    display: none;
+}
+
+.admin_btn {
+    margin-top: 15px;
+    margin-bottom: 10px;
+    display: flex;
+}
+
+.admin_btnCanvas {
+    margin-top: 30px;
+    margin-bottom: 10px;
+    justify-content: left;
+}
+.apiMsg{
+    padding-top: 95px;
+}
+
+.ItemInfo_container {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin: 10px 10px 10px 10px;
+}
+
+.devicetab_Searchblock {
+    display: grid;
+    grid-template-columns: 9fr 1fr 1fr 1fr;
+    align-items: center;
+    justify-items: center;
+    margin-bottom: 10px;
+}
+
+.Moderation_HeaderBtnBlock {
+    display: flex;
+    justify-content: space-evenly;
+    column-gap: 15px;
+    margin-bottom: 25px;
+}
+
+.Moderation_HeaderBtnBlock button {
+    height: 45px;
+    width: 20%;
+}
+
+.devicetab_Searchblock svg {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.admin_btn button {
+    min-width: 110px;
+    margin-right: 3px;
+    margin-bottom: 15px;
+    justify-content: end;
+    font-size: 16px;
+    width: 100%;
+    line-height: 16px;
+    white-space: nowrap;
+    color: #303030;
+    background: #d5d5d5;
+    border: 1px solid #000000;
+    transition: all .3s ease;
+    padding: 7px 10px;
+}
+
+.admin_btn button:hover {
+    color: #e600ff;
+    box-shadow: 1px 1px 7px 3px #28282a;
+    background: #b4b0b0;
+}
+
+.active_admin_pg {
+    color: #e600ff;
+    box-shadow: 1px 1px 7px 3px #28282a;
+    background: #b4b0b0;
+}
+
+.orderTable_block {
+    border: 1px solid black;
+    box-shadow: 2px 1px 5px black;
+    margin-bottom: 3px;
+    display: grid;
+    min-height: 40px;
+    align-content: center;
+    grid-template-columns: 25% 50% 25%;
+}
+
+.orderTable_moneyBackFalse {
+    display: flex;
+    justify-content: center;
+}
+
+.orderTable_moneyBack {
+    display: flex;
+    justify-content: center;
+}
+
+.orderTable_check {
+    border: 2px solid #f53232 !important;
+    box-shadow: 2px 1px 6px #f53232;
+}
+
+.orderInfoShort_status {
+    text-align: left;
+
+}
+
+.orderInfo_container {
+    grid-template-columns: 5% 65% 10% 20%;
+    min-height: 40px;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    max-height: 600px;
+    border: 1px solid black;
+    border-radius: 10px;
+    align-content: center;
+}
+
+.orderInfo_containerTrue {
+    border: 1px solid red !important;
+    box-shadow: 1px 1px 3px red;
+}
+
+.orderInfo_NeedCreateTTN {
+    border: 1px solid #cb00ff !important;
+    box-shadow: 1px 1px 3px #cb00ff;
+}
+
+.orderInfoShort_moneyback {
+    text-align: left;
+}
+
+.orderInfoShort_moneybackTrue {
+    color: #d93d3d;
+    border-radius: 5px;
+}
+
+.orderInfoShort_moneybackFalse {
+    color: #41ab41;
+    border-radius: 5px;
+}
+
+.OrderInfoLong_Main {
+    grid-gap: 8px;
+    border: 1px solid gray;
+    box-shadow: 2px 2px 5px gray;
+    border-radius: 15px;
+    padding: 5px;
+    margin: 0 15px 5px 15px;
+    grid-template-rows: 1fr auto;
+    grid-template-columns: 1fr 4fr 4fr 4fr 8fr 8fr 8fr;
+}
+
+.refresh_icon img {
+    width: 25px;
+    display: grid;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.refresh_icon {
+    display: grid;
+    justify-content: center;
+    cursor: pointer;
+}
+
+
+.OrderInfoLong_Number {
+    grid-row-start: 1;
+}
+
+.OrderInfoLong_Date {
+    grid-row-start: 1;
+}
+.orderInfo_confirm-order-btn{
+    padding: 5px 10px;
+}
+.OrderInfoLong_Status {
+    display: grid;
+    justify-content: left;
+    grid-row-start: 1;
+    grid-column: 3/7;
+    text-align: left;
+}
+
+.OrderInfoLong_Button {
+    grid-template-columns: 40% 30% 30%;
+    display: grid;
+    grid-row-start: 1;
+    grid-column: 7/8;
+    justify-content: left;
+}
+
+.OrderInfoLong_Items {
+    display: grid;
+    grid-row-start: 2;
+    align-content: start;
+    cursor: pointer;
+    grid-column: 1/5;
+}
+
+.OrderInfoLong_Items div {
+    display: grid;
+    justify-content: left;
+
+}
+
+.OrderInfoLong_TTN {
+    display: grid;
+    grid-row-start: 2;
+    justify-content: left;
+    align-content: start;
+    cursor: pointer;
+    grid-column: 5/6;
+}
+
+.OrderInfoLong_TTN div {
+    display: grid;
+    justify-content: left;
+    text-align: left;
+}
+
+.OrderInfoLong_Price {
+    display: grid;
+    grid-row-start: 2;
+    align-content: start;
+    justify-content: left;
+    grid-column: 6/7;
+}
+
+.OrderInfoLong_Price div {
+    display: grid;
+    justify-content: left;
+}
+
+.OrderInfoLong_Sum div {
+    display: grid;
+    justify-content: left;
+    text-align: start;
+}
+
+.OrderInfoLong_Sum {
+    grid-row-start: 2;
+    grid-column: 7/8;
+}
+
+
+.ordertab_container {
+    display: grid;
+    grid-gap: 5px;
+    margin-bottom: 20px;
+}
+
+.ordertab_searchblock {
+    display: grid;
+    grid-template-columns: 80fr 10fr 10fr;
+    grid-column-gap: 6px;
+    grid-row-gap: 10px;
+    margin-bottom: 10px;
+    margin-top: 5px;
+    align-items: center;
+}
+
+
+.ordertab_searchttn input {
+    width: 100%;
+    font-size: 16px;
+    height: 40px;
+}
+
+
+.devicetab_search input {
+    width: 100%;
+    height: 40px;
+    text-align: center;
+    font-size: 16px;
+}
+
+.devicetab_search {
+    width: 100%;
+    margin-left: 3px;
+}
+
+.devicetab_buttonblock button {
+    width: 100%;
+}
+
+.devicetab_buttonblock {
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.devicetab_buttonblock div{
+    position: relative;
+}
+
+.ordertab_searchphone {
+
+}
+
+.toggle_switch {
+
+}
+
+.Ant_icon {
+    display: grid;
+    align-content: center;
+    justify-content: center;
+}
+.Ant_icon:hover{
+    cursor: pointer;
+}
+
+.toggle-switch_main {
+    display: grid;
+    align-content: center;
+    justify-content: center;
+}
+
+.toggle_switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.toggle_switch input[type="checkbox"] {
+    display: none;
+}
+
+.toggle_switch_background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #ddd;
+    border-radius: 10px;
+    box-shadow: inset 0 0 0 2px #ccc;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.toggle_switch_handle {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 15px;
+    height: 15px;
+    background-color: #fff;
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease-in-out;
+}
+
+
+
+
+
+.toggle-switch::before {
+    content: "";
+    position: absolute;
+    top: -25px;
+    right: -35px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #aaa;
+    text-shadow: 1px 1px #fff;
+    transition: color 0.3s ease-in-out;
+}
+
+.toggle-switch input[type="checkbox"]:checked + .toggle-switch-handle {
+    transform: translateX(45px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2), 0 0 0 3px #05c46b;
+}
+
+.toggle-switch input[type="checkbox"]:checked + .toggle-switch-background {
+    background-color: #05c46b;
+    box-shadow: inset 0 0 0 2px #04b360;
+}
+
+.toggle-switch input[type="checkbox"]:checked + .toggle-switch:before {
+    content: "On";
+    color: #05c46b;
+    right: -15px;
+}
+
+.toggle-switch input[type="checkbox"]:checked + .toggle-switch-background .toggle-switch-handle {
+    transform: translateX(20px);
+}
+
+.deviceTab_h3Error {
+    margin-top: 20px;
+}
+
+.devicetab_container {
+    margin-bottom: 15px;
+}
+.admin_btnToBasket{
+    padding: 5px 10px;
+}
+.deviceinfo_container {
+    display: grid;
+    grid-template-columns: 12fr 4fr 6fr auto 2fr;
+    grid-gap: 5px;
+}
+
+.deviceinfo_DeviceId {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.device-info_notes {
+    display: grid;
+    align-content: center;
+    grid-template-rows: 1fr auto;
+    grid-template-columns: 9fr 30fr 40fr;
+}
+
+
+
+.device-info_n > div {
+    text-align: left;
+
+}
+
+.deviceifo_maincontainer {
+    border: 1px solid rgb(124, 118, 118);
+    border-radius: 10px;
+    margin-bottom: 5px;
+    min-height: 45px;
+    display: grid;
+    grid-template-rows: 2fr auto;
+}
+
+.deviceinfo_name {
+    align-items: center;
+    display: grid;
+    grid-template-columns: 10% 90%;
+    justify-content: center;
+    justify-items: center;
+    font-weight: 600;
+    gap: 10px;
+    padding-left: 10px;
+}
+
+.device-info__DescInfo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 3px;
+    justify-content: center;
+}
+
+.device-info__DescInfo span {
+    scale: 1.4;
+    display: grid;
+    align-content: center;
+    justify-content: end;
+    grid-row: 1/3;
+
+}
+
+.device-info__DescInfo div {
+    display: grid;
+    align-content: center;
+    grid-column: 2/3;
+}
+
+
+.device-info__DescInfoFalse {
+    color: red;
+}
+
+.device-info__multiinput input {
+    width: 40px;
+    height: 24px;
+    border: 1px solid grey;
+    border-radius: 6px;
+    padding-left: 2px;
+}
+
+.device-info__multiinput {
+    display: grid;
+    align-content: center;
+    justify-content: center;
+
+}
+
+.device-info__type {
+    display: grid;
+    align-content: center;
+    cursor: pointer;
+}
+
+.device-info__price {
+    display: grid;
+    align-content: center;
+}
+
+.device-info__btns {
+    display: flex;
+    padding-top: 2px;
+    grid-gap: 3px;
+    align-items: center;
+}
+
+.device-info__Onebtn {
+    display: grid;
+    align-content: center;
+    grid-template-columns: 1fr;
+    padding-top: 2px;
+}
+
+.device-info__edit {
+    display: grid;
+    align-content: center;
+    grid-template-columns:1fr 1fr;
+}
+
+.device-info__edit span {
+    scale: 1.4;
+}
+
+.ItemInfoTab_Searchblock {
+    display: grid;
+    grid-template-columns: 10fr 1fr 1fr;
+    margin-bottom: 7px;
+}
+
+.ItemInfoTab_Searchblock div span {
+    scale: 1.5;
+}
+
+.ItemInfoTab_Searchblock div input {
+    width: 100%;
+    text-align: center;
+}
+
+.ItemInfo_MainContainer {
+    display: grid;
+    grid-template-columns: 9fr 3fr 3fr 8fr 1fr;
+    border: 1px solid rgb(124, 118, 118);
+    min-height: 45px;
+    border-radius: 10px;
+
+    margin-bottom: 5px;
+}
+
+.ItemInfo_name {
+    display: grid;
+    align-content: center;
+}
+
+.ItemInfo__DescInfo {
+    display: grid;
+    align-content: center;
+}
+
+.ItemInfo__DescInfo span {
+    scale: 1.4;
+    display: grid;
+    align-content: center;
+    justify-content: end;
+}
+
+.ItemInfo__DescInfo div {
+    display: grid;
+    align-content: center;
+}
+
+.ItemInfo__DescInfoFalse {
+    color: red;
+}
+
+.ItemInfo__multiinput input {
+    width: 40px;
+    border: 1px solid grey;
+    border-radius: 6px;
+    padding-left: 2px;
+    justify-items: center;
+}
+
+.ItemInfo__multiinput button {
+    max-width: 40px;
+}
+
+.ItemInfo__DeleteBtn {
+    display: grid;
+    justify-items: center;
+    align-content: center;
+}
+
+.ItemInfo__multiinput {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    align-content: center;
+    justify-content: center;
+}
+
+.ItemInfo__type {
+    display: grid;
+    align-content: center;
+}
+
+.ItemInfo__60daysData {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    align-items: center;
+    justify-content: center;
+}
+
+.orderInfoShort_id {
+    display: flex;
+    justify-content: center;
+}
+
+.orderTable_date {
+    display: grid;
+    align-content: center;
+    justify-content: center;
+}
+
+
+
+
+/*------------------------------------------------------------------------------------------------------------------*/
+
+@media only screen and (max-width: 768px) {
+    .ordertab_container {
+        display: grid;
+    }
+
+    .createOrderBtnSubmit {
+        top: 13%;
+        right: 20%;
+    }
+
+    .adminSubmittingBtn {
+        top: 15%;
+        left: 36%;
+    }
+
+    .ordertab_searchblock {
+        margin-top: 7px;
+        display: grid;
+        height: 45px;
+        grid-template-columns: 50fr 10fr;
+        margin-bottom: 10px;
+    }
+
+
+    .ordertab_searchttn {
+        width: 100%;
+    }
+
+    .devicetab_Searchblock {
+        grid-template-columns: 50% 1fr 1fr 1fr;
+    }
+
+
+    .toggle_switch {
+        grid-auto-columns: minmax(auto, 10%);
+    }
+
+    .text__bold {
+        font-weight: 700 !important;
+    }
+
+    .opened {
+        display: grid;
+    }
+
+    .closed {
+        display: none;
+    }
+
+    tr.closed {
+        display: none;
+    }
+
+    .orderTable_block {
+        border: 1px solid black;
+        box-shadow: 2px 1px 5px black;
+        borderRadius: 4px;
+        display: grid;
+        min-height: 35px;
+        align-content: center;
+        grid-template-columns: 30% 70%;
+        grid-template-rows: auto auto;
+        grid-row-gap: 5px;
+    }
+
+    .orderTable_date {
+        display: grid;
+        align-content: center;
+        justify-content: center;
+    }
+
+    .orderTable_orderCount {
+        display: flex;
+        column-gap: 5px;
+        align-content: center;
+        justify-content: center;
+        grid-column: 1/3;
+    }
+
+    .orderTable_moneyBackFalse {
+        display: block;
+        text-align: center;
+    }
+
+    .orderTable_moneyBack {
+        display: block;
+        text-align: center;
+    }
+
+    .orderTable_check {
+
+        border: 1px solid red !important;
+        box-shadow: 2px 1px 5px red;
+    }
+
+    .orderInfo_container {
+        grid-template-columns: 1fr 4fr 5fr;
+        grid-template-rows: 1fr 30px;
+        border: 1px solid black;
+        border-radius: 15px;
+        min-height: 30px;
+        max-height: 600px;
+        margin-top: 3px;
+        margin-bottom: 3px;
+        align-content: center;
+    }
+
+    .orderInfo_containerTrue {
+        border: 1px solid red !important;
+        box-shadow: 1px 1px 3px red;
+    }
+
+    .orderInfoShort_id {
+        justify-content: center;
+    }
+
+    .orderInfoShort_sum {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .orderInfoShort_sum b {
+        text-align: left;
+    }
+
+
+    .orderInfoShort_status {
+        text-align: left;
+        grid-column: 2/4;
+
+    }
+
+    .orderInfoShort_moneyback {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        grid-column: 1/3;
+    }
+
+    .orderInfoShort_moneyback b {
+        text-align: left;
+    }
+
+
+    .orderInfoShort_moneybackTrue {
+        color: #d93d3d;
+        border-radius: 5px;
+    }
+
+    .orderInfoShort_moneybackFalse {
+        color: #41ab41;
+        border-radius: 5px;
+    }
+
+    .OrderInfoLong_Main {
+        grid-gap: 10px;
+        border: 1px solid gray;
+        box-shadow: 2px 2px 5px gray;
+        border-radius: 15px;
+        padding: 5px;
+        margin: 0 0 5px 0;
+        grid-template-rows: 40px auto auto auto auto auto;
+        grid-template-columns: 15fr 30fr 55fr;
+    }
+
+
+    .OrderInfoLong_Number {
+        grid-row-start: 1;
+        display: grid;
+        align-content: center;
+    }
+
+    .OrderInfoLong_Date {
+        grid-row-start: 1;
+        display: grid;
+        align-content: center;
+    }
+
+    .OrderInfoLong_Status {
+        display: grid;
+        justify-content: left;
+        grid-row-start: 2;
+        grid-column: 1/8;
+        text-align: left;
+    }
+
+    .OrderInfoLong_Button {
+        grid-template-columns: 40% 30% 30%;
+        display: grid;
+        grid-row-start: 1;
+        justify-content: left;
+        grid-column: 3/8;
+    }
+
+    .OrderInfoLong_Items {
+        display: grid;
+        align-content: start;
+        cursor: pointer;
+        grid-row-start: 3;
+        text-align: left;
+        grid-column: 1/8;
+    }
+
+    .OrderInfoLong_Items div {
+        display: grid;
+        justify-content: left;
+
+    }
+
+    .OrderInfoLong_TTN {
+        display: grid;
+        justify-content: left;
+        align-content: start;
+        cursor: pointer;
+        grid-row-start: 4;
+        grid-column: 1/8;
+    }
+
+    .OrderInfoLong_TTN div {
+        display: grid;
+        justify-content: left;
+    }
+
+    .admin_btn {
+        display: none;
+    }
+
+    .admin_menuBtn {
+        display: block;
+        height: 35px;
+        width: 100%;
+    }
+
+    .admin_btnCanvas {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .admin_btnCanvas button {
+        height: 35px;
+    }
+
+    .OrderInfoLong_Price {
+        display: grid;
+        align-content: start;
+        justify-content: left;
+        grid-row-start: 5;
+        grid-column: 1/8;
+    }
+
+    .OrderInfoLong_Price div {
+        display: grid;
+        justify-content: left;
+    }
+
+    .OrderInfoLong_Sum div {
+        display: grid;
+        justify-content: left;
+        text-align: start;
+    }
+
+    .OrderInfoLong_Sum {
+        grid-row-start: 6;
+        grid-column: 1/8;
+    }
+
+
+    .Ant_icon {
+        display: grid;
+        align-content: center;
+        justify-content: center;
+    }
+    .Ant_icon svg{
+        width: 18px;
+        height: 18px;
+    }
+
+    .toggle-switch_main {
+        display: grid;
+        align-content: center;
+        justify-content: center;
+    }
+
+    .toggle_switch {
+        position: relative;
+        display: inline-block;
+        width: 40px;
+        height: 20px;
+        cursor: pointer;
+    }
+
+    .toggle-switch input[type="checkbox"] {
+        display: none;
+    }
+
+    .toggle-switch-background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #ddd;
+        border-radius: 10px;
+        box-shadow: inset 0 0 0 2px #ccc;
+        transition: background-color 0.3s ease-in-out;
+    }
+
+    .toggle-switch-handle {
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 15px;
+        height: 15px;
+        background-color: #fff;
+        border-radius: 50%;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .toggle-switch::before {
+        content: "";
+        position: absolute;
+        top: -25px;
+        right: -35px;
+        font-size: 12px;
+        font-weight: bold;
+        color: #aaa;
+        text-shadow: 1px 1px #fff;
+        transition: color 0.3s ease-in-out;
+    }
+
+    .toggle-switch input[type="checkbox"]:checked + .toggle-switch-handle {
+        transform: translateX(45px);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2), 0 0 0 3px #05c46b;
+    }
+
+    .toggle-switch input[type="checkbox"]:checked + .toggle-switch-background {
+        background-color: #05c46b;
+        box-shadow: inset 0 0 0 2px #04b360;
+    }
+
+    .toggle-switch input[type="checkbox"]:checked + .toggle-switch:before {
+        content: "On";
+        color: #05c46b;
+        right: -15px;
+    }
+
+    .toggle-switch input[type="checkbox"]:checked + .toggle-switch-background .toggle-switch-handle {
+        transform: translateX(20px);
+    }
+
+
+    .deviceinfo_container {
+        display: grid;
+        padding: 5px;
+        grid-template-rows: auto auto auto auto;
+        grid-template-columns: 50% 30% 20%;
+        min-height: 45px;
+        grid-row-gap: 5px;
+    }
+
+    .deviceinfo_name {
+        grid-column: 1/4;
+        display: flex;
+        width: 98%;
+        margin-left: 0;
+        padding: 0;
+        font-weight: 600;
+        font-size: 13px;
+        justify-content: center;
+    }
+
+    .device-info__DescInfo {
+        justify-content: center;
+        grid-template-columns: 15% 85%;
+        grid-column: 1/3;
+        grid-gap: 4px;
+    }
+
+    .device-info__DescInfo span {
+        scale: 1.4;
+        display: grid;
+        grid-row: auto;
+        align-content: center;
+        justify-content: center;
+        grid-column-start: 1;
+    }
+
+    .device-info__DescInfo div {
+        justify-content: center;
+        grid-column-start: 2;
+
+    }
+
+    .device-info__DescInfo div div {
+
+        grid-column: 1/2;
+
+    }
+
+    .device-info__DescInfoDiv1 {
+        grid-row-start: 2;
+    }
+
+
+    .device-info__DescInfoFalse {
+        color: red;
+    }
+
+    .device-info__multiinput input {
+        width: 40px;
+        border: 1px solid grey;
+        border-radius: 6px;
+        padding-left: 2px;
+
+    }
+
+    .device-info__multiinput {
+        display: grid;
+        align-content: center;
+        justify-content: left;
+    }
+
+    .device-info__type {
+        justify-content: center;
+        display: grid;
+        align-content: center;
+        grid-column: 1/2;
+    }
+
+    .device-info__price {
+        justify-content: center;
+        display: grid;
+        align-content: center;
+        grid-column: 2/4;
+
+    }
+
+
+
+    .device-info__btns {
+        grid-column: 1/3;
+        padding-left: 15px;
+        grid-gap: 3px;
+        justify-content: space-around;
+    }
+
+    .dd-button-itemdevice {
+        width: 100px;
+    }
+
+    .deviceInfo_buyBtn button {
+        width: 100px;
+    }
+
+    .adminSubmittingBtn {
+        left: 40%;
+    }
+
+
+
+    .device-info__Onebtn {
+        grid-column: 1/3;
+    }
+
+    .device-info__edit {
+        display: grid;
+        align-content: center;
+    }
+
+    .device-info__edit span {
+        scale: 1.4;
+    }
+
+    .device-info_notes {
+        display: grid;
+        align-content: center;
+        grid-template-rows: 1fr auto auto auto;
+        grid-gap: 4px;
+        grid-template-columns: 1fr;
+    }
+
+    .device-info_s {
+        grid-column-start: 1;
+        grid-row-start: 2;
+        text-align: left;
+        padding-left: 3px;
+        padding-right: 3px;
+    }
+
+    .device-info_t {
+        grid-column-start: 1;
+        text-align: left;
+        grid-row-start: 1;
+        margin-bottom: 3px;
+        padding-left: 3px;
+        padding-right: 3px;
+    }
+
+    .device-info_n {
+        grid-column-start: 1;
+        display: grid;
+        grid-row-start: 3;
+        justify-content: left;
+        padding-left: 3px;
+        padding-right: 3px;
+
+    }
+
+    .device-info_n div {
+    }
+
+    .device-info_d {
+        grid-column-start: 1;
+        grid-row-start: 4;
+        padding-left: 3px;
+        padding-bottom: 5px;
+        text-align: left;
+        padding-right: 3px;
+    }
+
+    .device-info_n > div {
+        text-align: left;
+    }
+
+    .ItemInfoTab_Searchblock {
+        display: grid;
+        grid-template-columns: 6fr 2fr 2fr;
+        margin-bottom: 7px;
+        align-content: end;
+    }
+
+
+    .ItemInfoTab_Searchblock div span {
+        scale: 1.5;
+    }
+
+    .ItemInfoTab_Searchblock div input {
+        width: 100%;
+        text-align: center;
+    }
+
+    .ItemInfo_MainContainer {
+        display: grid;
+        padding: 5px;
+        grid-template-rows: auto auto auto auto;
+        grid-template-columns: 50% 20% 30%;
+        min-height: 45px;
+        grid-row-gap: 5px;
+    }
+
+    .ItemInfo_name {
+        display: grid;
+        align-content: center;
+        grid-column: 1/4;
+    }
+
+    .ItemInfo__DescInfo {
+        grid-template-columns: 15% 85%;
+        grid-column: 1/3;
+        grid-gap: 4px;
+    }
+
+    .ItemInfo__DescInfo span {
+        scale: 1.4;
+        display: grid;
+        grid-row: auto;
+        align-content: center;
+        justify-content: end;
+        grid-column-start: 1;
+    }
+
+    .ItemInfo__DescInfo div {
+        display: grid;
+        align-content: center;
+        grid-column-start: 2;
+    }
+
+    .ItemInfo__DescInfo div div {
+        grid-column: 1/2;
+    }
+
+    .ItemInfo__DescInfoDiv1 {
+        grid-row-start: 2;
+    }
+
+    .ItemInfo__DescInfoFalse {
+        color: red;
+    }
+
+    .ItemInfo__multiinput input {
+        width: 40px;
+        border: 1px solid grey;
+        border-radius: 6px;
+        padding-left: 2px;
+        justify-items: center;
+    }
+
+    .ItemInfo__multiinput button {
+        max-width: 40px;
+    }
+
+    .ItemInfo__DeleteBtn {
+        display: grid;
+        justify-items: center;
+        align-content: center;
+    }
+
+    .ItemInfo__multiinput {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+
+        align-content: center;
+        justify-content: center;
+
+    }
+
+    .ItemInfo__type {
+        display: grid;
+        align-content: center;
+    }
+
+    .ItemInfo__60daysData {
+        display: inline-flex;
+        flex-wrap: wrap;
+        gap: 4px;
+        align-items: center;
+        justify-content: center;
+        grid-row-start: 4;
+        grid-column: 1/4;
+    }
+
+    .deviceinfo_DeviceId {
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+
+}
+
+
+

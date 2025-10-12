@@ -1,0 +1,528 @@
+@mixin mb($mb) {
+  @if $mb == mobile {
+    @media only screen and (max-width: 950px) {
+      @content;
+    }
+  }
+}
+
+@mixin hover {
+  @media (hover: hover) and (pointer: fine) {
+    @content;
+  }
+}
+
+.blog_container {
+  position: relative;
+  display: flex;
+  max-width: 1200px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 15px;
+  flex-direction: column;
+  @include mb(mobile) {
+    width: 100%;
+  }
+}
+
+.block_container {
+  display: flex;
+  flex-direction: column;
+  row-gap: 25px;
+  margin: 40px 0;
+  .article_title {
+    font-size: 24px;
+    font-weight: 600;
+    text-align: center;
+  }
+}
+
+.faq_item_answer {
+  text-align: left;
+  height: 0;
+  overflow: hidden;
+  transition: all .4s linear;
+
+  b {
+    font-weight: 600;
+  }
+
+  li {
+    margin-bottom: 10px;
+  }
+
+  ul {
+    margin-left: 20px;
+  }
+
+  p {
+    margin: 5px 0;
+  }
+}
+
+.popular_items_list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.popular_item {
+  display: flex;
+  width: 33%;
+  padding: 10px;
+  column-gap: 10px;
+}
+
+.popular_info {
+  display: flex;
+  column-gap: 10px;
+
+  div {
+    display: flex;
+    column-gap: 3px;
+    align-items: center;
+  }
+}
+
+.popular_header {
+  color: #000;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.popular_tags {
+  font-size: 12px;
+  max-height: 15px;
+  line-height: 15px;
+  overflow: hidden;
+  color: #3737d3;
+}
+
+.popular_text_container {
+  display: flex;
+  flex-direction: column;
+  row-gap: 7px;
+}
+
+.popular_image {
+  width: 30%;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+
+
+.popular_title {
+  position: relative;
+  text-align: center;
+
+  span {
+    font-size: 28px;
+    font-weight: 600;
+    text-align: center;
+    background-color: #FFFFFF;
+    padding: 0 30px;
+  }
+
+  &:before {
+    position: absolute;
+    content: "";
+    background-color: #1C1F20;
+    width: 100%;
+    height: 3px;
+    top: 50%;
+    left: 0;
+    z-index: -1;
+  }
+}
+
+.article_share_icons {
+  display: flex;
+  column-gap: 30px;
+  justify-content: center;
+}
+
+.main_poster {
+  width: 100%;
+}
+
+.h1_header {
+  text-align: left;
+  padding: 2rem 0 2.1rem;
+  font-size: 4.2rem;
+  line-height: 5.2rem;
+  @include mb(mobile) {
+    font-size: 20px;
+    line-height: 32px;
+  }
+}
+
+.blog_date {
+  color: gray;
+
+  span {
+    color: #000;
+  }
+}
+
+.blog_content_list {
+  .blog_content_header {
+    font-size: 20px;
+    margin-bottom: 15px;
+    line-height: 25px;
+    @include mb(mobile) {
+      margin-bottom: 7px;
+    }
+  }
+  &>ul{
+    display: flex;
+    row-gap: 3px;
+    flex-direction: column;
+
+    ol {
+      list-style: none;
+
+      li {
+        a {
+          color: #000;
+          line-height: 25px;
+        }
+
+        &:not(:last-child) {
+          margin-bottom: 10px;
+        }
+
+        &:hover {
+          @include hover() {
+            cursor: pointer;
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+  }
+}
+
+.blog_author {
+  color: gray;
+  text-align: right;
+
+  span {
+    color: #000;
+  }
+}
+
+
+
+.minor_info_container {
+  display: flex;
+  justify-content: space-between;
+  margin: 35px 0 45px;
+  @include mb(mobile) {
+    flex-direction: column-reverse;
+    margin: 20px 0 20px;
+    row-gap: 15px;
+  }
+}
+
+.minor_info_block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  row-gap: 10px;
+  @include mb(mobile) {
+    align-items: flex-start;
+  }
+}
+
+
+
+.article_body {
+  p, em, u, ul {
+    font-size: 16px;
+    font-weight: 400;
+    margin: 18px 0;
+  }
+
+  h2 {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 3.2rem;
+    margin: 3rem 0 1rem 0;
+    @include mb(mobile) {
+      font-size: 19px;
+      line-height: 25px;
+      text-align: center;
+    }
+  }
+  h3{
+    font-size: 18px;
+  }
+
+  &>ul, ol {
+    padding-left: 20px;
+
+    li {
+      margin-bottom: 5px;
+      font-size: 16px;
+    }
+  }
+}
+
+
+
+
+.blog_breadcrumbs::-webkit-scrollbar {
+  display: none;
+}
+
+.blog_breadcrumbs {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+
+  a {
+    &:after {
+      content: "/";
+      display: inline;
+      vertical-align: baseline;
+      color: #a6a2a2;
+      font-size: 14px;
+      line-height: 24px;
+      margin: 0 8px;
+    }
+
+    span {
+      color: #000;
+
+      &:hover {
+        @include hover() {
+          cursor: pointer;
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+
+  span {
+    color: #727171;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+.comment_container {
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 30px 20px;
+  @include mb(mobile) {
+    padding: 20px 10px;
+  }
+}
+
+.comment_label {
+  font-size: 13px;
+}
+
+.comment_text_block {
+  margin-top: 4px;
+  margin-bottom: 35px;
+  @include mb(mobile) {
+    margin-bottom: 30px;
+  }
+}
+
+.inputs_block {
+  margin-bottom: 20px;
+}
+
+.comment_input {
+  width: 100%;
+  height: 30px;
+}
+
+.mail_request_text {
+  margin-left: 10px;
+}
+
+.rating_btn {
+  height: 45px;
+  padding: 5px 15px;
+  width: 50%;
+  @include mb(mobile) {
+    width: 100%;
+  }
+}
+
+.accept_btn {
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.custom_checkbox {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+
+  &:hover {
+    @include hover {
+      &::before {
+        border: 1px solid #000;
+      }
+    }
+  }
+
+  & + label {
+    display: inline-flex;
+    align-items: center;
+    user-select: none;
+
+    &::before {
+      content: '';
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      flex-grow: 0;
+      border: 1px solid #adb5bd;
+      border-radius: 0.25em;
+      margin-right: 0.5em;
+      background-repeat: no-repeat;
+      background-size: 100%;
+    }
+  }
+
+  &:checked + label::before {
+    border-color: #000000;
+    background-color: #000000;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 14 14' fill='none'%3e%3cg clip-path='url(%23clip0_755_7410)'%3e%3cpath d='M0.710938 6.8659C2.59224 8.90145 4.41632 10.734 6.16974 13.0516C8.07608 9.26004 10.0273 5.45525 13.2467 1.33485L12.3792 0.9375C9.66075 3.82049 7.54874 6.54949 5.71358 9.79266C4.43741 8.64305 2.37497 7.01619 1.11567 6.18035L0.710938 6.8659Z' fill='white' stroke='white'/%3e%3c/g%3e%3cdefs%3e%3cclipPath id='clip0_755_7410'%3e%3crect width='13.5' height='13.5' fill='white' transform='translate(0.25 0.25)'/%3e%3c/clipPath%3e%3c/defs%3e%3c/svg%3e");
+  }
+
+  &:hover {
+    @include hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.mail_request {
+  display: flex;
+  margin: 30px 0 30px 0;
+
+  label {
+    &:hover {
+      @include hover {
+        cursor: pointer;
+      }
+    }
+  }
+
+  &:hover {
+    @include hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.reply_error {
+  display: none;
+  font-size: 12px;
+  margin: 0 0 10px 0;
+  color: #ff0000;
+}
+
+.label_error {
+  display: none;
+  font-size: 12px;
+  margin: 0 0 10px 0;
+  color: #ff0000;
+}
+
+.comment_textarea {
+  height: 170px;
+  border: solid 1px var(--color-border);
+  border-radius: 8px;
+  width: 100%;
+  @include mb(mobile) {
+    height: 150px;
+  }
+
+  &:hover {
+    @include hover {
+      border: solid 1px #000000;
+    }
+  }
+
+  &:focus {
+    border: solid 1px #000000;
+    box-shadow: 0 0 0 0;
+  }
+}
+.faq_block {
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+  width: 100%;
+  margin-bottom: 39px;
+  flex-wrap: wrap;
+
+  & > div {
+    display: flex;
+    flex-direction: column;
+    border-radius: 15px;
+    padding: 12px 16px;
+    box-shadow: 2px 4px 8px 0 #888682;
+    background-color: #f4f0d8;
+    height: fit-content;
+    width: calc(50% - 12px);
+    @include mb(mobile) {
+      width: 100%;
+    }
+    label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      font-size: 15px;
+      svg {
+        transition: transform .4s linear;
+      }
+
+      &:hover {
+        @include hover() {
+          cursor: pointer;
+        }
+      }
+    }
+
+    @include mb(pc) {
+      width: calc(40% - 8px);
+      height: fit-content;
+    }
+  }
+
+  @include mb(pc) {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  &:hover {
+    @include hover() {
+      cursor: pointer;
+    }
+  }
+}
