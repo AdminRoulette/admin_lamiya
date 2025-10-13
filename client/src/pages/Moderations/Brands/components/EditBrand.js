@@ -2,15 +2,17 @@ import React, { useState } from "react";
 import {toast} from "react-toastify";
 import classes from "../../../Categories/moderation.module.scss";
 import {createBrand, editBrand} from "@/http/Product/brandAPI";
+import Transliterations from "../../../../../../server/functions/SearchComponents/Transliterations";
 
 const EditBrand = ({editData,setBrandList, onHide }) => {
   const [name, setName] = useState(editData?.name || "");
     const [name_ru, setName_ru] = useState(editData?.name_ru || "");
+    const [code, setCode] = useState(editData?.code || "");
     const [popular, setPopular] = useState(editData?.popular || false);
 
   const addBrand = async () => {
       if(editData){
-          await editBrand({name: name,id:editData.id,name_ru:name_ru,popular:popular}).then(data => {
+          await editBrand({name: name,code:code,id:editData.id,name_ru:name_ru,popular:popular}).then(data => {
               setBrandList(prev =>
                   prev.map((brand) => {
                       if(brand.id === editData.id){
@@ -25,7 +27,7 @@ const EditBrand = ({editData,setBrandList, onHide }) => {
               toast.error(error.response.data.message)
           })
       }else{
-          await createBrand({name: name,name_ru:name_ru,popular:popular}).then(data => {
+          await createBrand({name: name,code:code,name_ru:name_ru,popular:popular}).then(data => {
               setBrandList(prev => ([data,...prev]))
               closeModal();
           }).catch((error)=>{
@@ -47,6 +49,11 @@ const EditBrand = ({editData,setBrandList, onHide }) => {
         document.body.style.overflow = '';
     }
 
+    const handleName = async (value) => {
+        setName(value)
+        setCode(await Transliterations(value))
+    }
+
     return (
         <div className="modal_main">
             <div onClick={() => closeModal()} className="modal_bg"/>
@@ -62,9 +69,9 @@ const EditBrand = ({editData,setBrandList, onHide }) => {
                     </svg>
                 </div>
                 <div className={'modal_body'+' '+ classes.brand_modal_body}>
-                    <input type="text" value={name} onChange={(event) => setName(event.target.value)} placeholder="Назва бренду"/>
+                    <input type="text" value={name} onChange={(event) => handleName(event.target.value)} placeholder="Назва бренду"/>
                     <input type="text" value={name_ru} onChange={(event) => setName_ru(event.target.value)} placeholder="Назва бренду Російською"/>
-                    <input type="text" disabled defaultValue={editData?.code || ""} placeholder="Код"/>
+                    <input type="text" onChange={(event) => setCode(event.target.value)} value={code} placeholder="Код"/>
                     <input type="checkbox" checked={popular} onChange={(event) => setPopular(event.target.checked)} placeholder="Популярний"/>
                     <div className={classes.brand_modal_footer}>
                         <button onClick={closeModal} className="second_btn">Закрити</button>

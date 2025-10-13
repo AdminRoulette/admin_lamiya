@@ -12,7 +12,7 @@ const ProductInfo = ({deviceInfo, OnChangeDevice, setParfumePart, parfumePart, c
     return (<>
         <div className={classes.product_edit_row}>
             <ProductBrand deviceInfo={deviceInfo} OnChangeDevice={OnChangeDevice}/>
-            <ProductCountry deviceInfo={deviceInfo} OnChangeDevice={OnChangeDevice}/>
+            {/*<ProductCountry deviceInfo={deviceInfo} OnChangeDevice={OnChangeDevice}/>*/}
             <ProductStatus deviceInfo={deviceInfo} OnChangeDevice={OnChangeDevice}/>
         </div>
         <ProductNames deviceInfo={deviceInfo} OnChangeDevice={OnChangeDevice}/>

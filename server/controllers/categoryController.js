@@ -15,7 +15,7 @@ class CategoryController {
         try {
             const {name, nameRu, parentId, code, vision} = req.body;
             let level = 3;
-            const regex = /^[a-z0-9]+$/;
+            const regex = /^[a-z0-9-]+$/;
             if (!regex.test(code)) {
                 return next(apiError.badRequest("Не коректний код категорії"));
             }
@@ -49,7 +49,7 @@ class CategoryController {
         try {
             const {id, name, nameRu, parentId, code, vision} = req.body;
             let level = null;
-            const regex = /^[a-z0-9]+$/;
+            const regex = /^[a-z0-9-]+$/;
             if (!regex.test(code)) {
                 return next(apiError.badRequest("Не коректний код категорії"));
             }
