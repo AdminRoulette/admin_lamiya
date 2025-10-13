@@ -93,29 +93,29 @@ wss.on('connection', (ws) => {
 
 app.use(compression());
 
-cron.schedule('55 */2 * * *', async () => {
-    try {
-        if (process.env.NODE_ENV === "production") {
-            await Marketplace()
-        }
-    } catch (e) {
-        TelegramMsg("TECH", `ReNew Marketplace ${e.message}`)
-    }
-}, {
-    timezone: 'Europe/Kyiv'
-});
-
-cron.schedule('01 17 * * *', async () => {
-    try {
-        if (process.env.NODE_ENV === "production") {
-            await UpdateParfumeStorage()
-        }
-    } catch (e) {
-        TelegramMsg("TECH", `ReNew UpdateParfumeStorage ${e.message}`)
-    }
-}, {
-    timezone: 'Europe/Kyiv'
-});
+// cron.schedule('55 */2 * * *', async () => {
+//     try {
+//         if (process.env.NODE_ENV === "production") {
+//             await Marketplace()
+//         }
+//     } catch (e) {
+//         TelegramMsg("TECH", `ReNew Marketplace ${e.message}`)
+//     }
+// }, {
+//     timezone: 'Europe/Kyiv'
+// });
+//
+// cron.schedule('01 17 * * *', async () => {
+//     try {
+//         if (process.env.NODE_ENV === "production") {
+//             await UpdateParfumeStorage()
+//         }
+//     } catch (e) {
+//         TelegramMsg("TECH", `ReNew UpdateParfumeStorage ${e.message}`)
+//     }
+// }, {
+//     timezone: 'Europe/Kyiv'
+// });
 
 //update empty brand
 cron.schedule('50 23 * * 3', async () => {
@@ -149,91 +149,91 @@ cron.schedule('50 23 * * 3', async () => {
 });
 
 // Accounting
-cron.schedule('1 0 1 * *', async () => {
-    try {
-        const now = new Date();
-        const startOfLastMonth = new Date(now.getFullYear(), now.getMonth() - 2, 1);
-        startOfLastMonth.setHours(3, 0, 0, 0);
-        const endOfLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 0);
-        endOfLastMonth.setHours(26, 59, 0, 0);
-        let total_supply = 0;
-        let total_expenses = 0;
-        let stock = {'Аналогові парфуми': 0};
-        let parfume_tab_stock = 0;
-        let total_money_card = 0;
-        let order_invalid_status = [];
-
-        await Orders.findAll({
-            include: [{
-                model: DeliveryOrder
-            }], where: {
-                createdAt: {
-                    [Op.and]: {
-                        [Op.gt]: new Date(startOfLastMonth),
-                        [Op.lt]: new Date(endOfLastMonth)
-                    }
-                }
-            }
-        }).then((orders) => {
-            for (const orderElem of orders) {
-                total_money_card += orderElem.moneyCard;
-                if (!(orderElem.status_id === 2 || orderElem.status_id === 9 || orderElem.status_id === 11
-                    || orderElem.status_id === 41000 || orderElem.status_id === 48000 || orderElem.status_id === 10111 || orderElem.status_id === 10999)) {
-                    order_invalid_status.push(orderElem.id);
-                }
-            }
-        });
-        await Supply.findAll({
-            where: {
-                createdAt: {
-                    [Op.and]: {
-                        [Op.gt]: new Date(startOfLastMonth),
-                        [Op.lt]: new Date(endOfLastMonth)
-                    }
-                }
-            }
-        }).then((supplyList) => {
-            supplyList.map((supply) => {
-                if (supply.WhoPayed === 0) {
-                    total_supply += supply.price;
-                }
-            })
-        })
-        await Expenses.findAll({
-            where: {
-                createdAt: {
-                    [Op.and]: {
-                        [Op.gt]: new Date(startOfLastMonth),
-                        [Op.lt]: new Date(endOfLastMonth)
-                    }
-                }
-            }
-        }).then((expensesList) => {
-            for (const expense of expensesList) {
-                total_expenses += expense.money;
-            }
-        })
-
-        await Accounting.findOne({
-            limit: 1, order: [['id', 'DESC']]
-        }).then(async (accounting) => {
-            await Accounting.create({
-                money_left: accounting.money_left + total_money_card - total_expenses - total_supply,
-                stock: JSON.stringify(stock),
-                parfume_tab_stock
-            })
-        })
-
-
-        if ('order_invalid_status'.length > 0) {
-            TelegramMsg("TECH", `Замовлення з дивними статусами: ${order_invalid_status}`)
-        }
-    } catch (e) {
-        TelegramMsg("TECH", `create Accounting ${e.message}`)
-    }
-}, {
-    timezone: 'Europe/Kyiv'
-});
+// cron.schedule('1 0 1 * *', async () => {
+//     try {
+//         const now = new Date();
+//         const startOfLastMonth = new Date(now.getFullYear(), now.getMonth() - 2, 1);
+//         startOfLastMonth.setHours(3, 0, 0, 0);
+//         const endOfLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 0);
+//         endOfLastMonth.setHours(26, 59, 0, 0);
+//         let total_supply = 0;
+//         let total_expenses = 0;
+//         let stock = {'Аналогові парфуми': 0};
+//         let parfume_tab_stock = 0;
+//         let total_money_card = 0;
+//         let order_invalid_status = [];
+//
+//         await Orders.findAll({
+//             include: [{
+//                 model: DeliveryOrder
+//             }], where: {
+//                 createdAt: {
+//                     [Op.and]: {
+//                         [Op.gt]: new Date(startOfLastMonth),
+//                         [Op.lt]: new Date(endOfLastMonth)
+//                     }
+//                 }
+//             }
+//         }).then((orders) => {
+//             for (const orderElem of orders) {
+//                 total_money_card += orderElem.moneyCard;
+//                 if (!(orderElem.status_id === 2 || orderElem.status_id === 9 || orderElem.status_id === 11
+//                     || orderElem.status_id === 41000 || orderElem.status_id === 48000 || orderElem.status_id === 10111 || orderElem.status_id === 10999)) {
+//                     order_invalid_status.push(orderElem.id);
+//                 }
+//             }
+//         });
+//         await Supply.findAll({
+//             where: {
+//                 createdAt: {
+//                     [Op.and]: {
+//                         [Op.gt]: new Date(startOfLastMonth),
+//                         [Op.lt]: new Date(endOfLastMonth)
+//                     }
+//                 }
+//             }
+//         }).then((supplyList) => {
+//             supplyList.map((supply) => {
+//                 if (supply.WhoPayed === 0) {
+//                     total_supply += supply.price;
+//                 }
+//             })
+//         })
+//         await Expenses.findAll({
+//             where: {
+//                 createdAt: {
+//                     [Op.and]: {
+//                         [Op.gt]: new Date(startOfLastMonth),
+//                         [Op.lt]: new Date(endOfLastMonth)
+//                     }
+//                 }
+//             }
+//         }).then((expensesList) => {
+//             for (const expense of expensesList) {
+//                 total_expenses += expense.money;
+//             }
+//         })
+//
+//         await Accounting.findOne({
+//             limit: 1, order: [['id', 'DESC']]
+//         }).then(async (accounting) => {
+//             await Accounting.create({
+//                 money_left: accounting.money_left + total_money_card - total_expenses - total_supply,
+//                 stock: JSON.stringify(stock),
+//                 parfume_tab_stock
+//             })
+//         })
+//
+//
+//         if ('order_invalid_status'.length > 0) {
+//             TelegramMsg("TECH", `Замовлення з дивними статусами: ${order_invalid_status}`)
+//         }
+//     } catch (e) {
+//         TelegramMsg("TECH", `create Accounting ${e.message}`)
+//     }
+// }, {
+//     timezone: 'Europe/Kyiv'
+// });
 
 //renew nova_city_list
 cron.schedule('20 02 * * *', async () => {
@@ -926,38 +926,38 @@ cron.schedule('0 02 * * 2', async () => {
 });
 
 //checkBox open shift
-cron.schedule('02 09 * * *', async () => {
-    try {
-        await Cashiers.findOne({
-            where: {id: 2}, include: [{model: FopsList}]
-        }).then(async cashier => {
-            if (cashier?.shift) {
-                throw new Error("Зміну вже відкрито");
-            }
-            await CheckBox.statusShifts(cashier.fops_list.key, cashier.bearer).then(async (statusShift) => {
-                if (statusShift.results.length === 0 || statusShift?.results[0]?.status === "CLOSED") {
-                    await CheckBox.shift(cashier.fops_list.key, cashier.bearer).then(async (openShifts) => {
-                        setTimeout(async () => {
-                            if (openShifts.status === "CREATED" || openShifts.status === "OPENED") {
-                                await Cashiers.update({shift: true}, {where: {bearer: cashier.bearer}}).then(() => {
-                                    TelegramMsg("ORDER", `Автоматично відкрито зміну ${cashier.fops_list.name}`)
-                                })
-                            } else {
-                                throw new Error(`Зміна не відкрилася бо статус - ${openShifts.status}`);
-                            }
-                        }, 3000);
-                    })
-                }
-            })
-        }).catch((error) => {
-            throw new Error(`Помилка в запиті до касира ${error.message}`);
-        });
-    } catch (error) {
-        TelegramMsg("TECH", `CheckBox auto open shift. ${error.message}`)
-    }
-}, {
-    timezone: 'Europe/Kyiv'
-});
+// cron.schedule('02 09 * * *', async () => {
+//     try {
+//         await Cashiers.findOne({
+//             where: {id: 2}, include: [{model: FopsList}]
+//         }).then(async cashier => {
+//             if (cashier?.shift) {
+//                 throw new Error("Зміну вже відкрито");
+//             }
+//             await CheckBox.statusShifts(cashier.fops_list.key, cashier.bearer).then(async (statusShift) => {
+//                 if (statusShift.results.length === 0 || statusShift?.results[0]?.status === "CLOSED") {
+//                     await CheckBox.shift(cashier.fops_list.key, cashier.bearer).then(async (openShifts) => {
+//                         setTimeout(async () => {
+//                             if (openShifts.status === "CREATED" || openShifts.status === "OPENED") {
+//                                 await Cashiers.update({shift: true}, {where: {bearer: cashier.bearer}}).then(() => {
+//                                     TelegramMsg("ORDER", `Автоматично відкрито зміну ${cashier.fops_list.name}`)
+//                                 })
+//                             } else {
+//                                 throw new Error(`Зміна не відкрилася бо статус - ${openShifts.status}`);
+//                             }
+//                         }, 3000);
+//                     })
+//                 }
+//             })
+//         }).catch((error) => {
+//             throw new Error(`Помилка в запиті до касира ${error.message}`);
+//         });
+//     } catch (error) {
+//         TelegramMsg("TECH", `CheckBox auto open shift. ${error.message}`)
+//     }
+// }, {
+//     timezone: 'Europe/Kyiv'
+// });
 
 //calculate score
 
@@ -1013,7 +1013,7 @@ if (process.env.NODE_ENV === "production") {
     cron.schedule('0,10,20,30,58,59 23 * * *', async () => {
         try {
             await Cashiers.findOne({
-                where: {id: 2, shift: true}, include: [{model: FopsList}]
+                where: {id: 1, shift: true}, include: [{model: FopsList}]
             }).then(async cashier => {
                 if (cashier) {
                     await CheckBox.cashRegisterInfo(cashier.fops_list.key).then(async (dataShifts) => {
@@ -1271,7 +1271,6 @@ app.post('/webhook/mono', express.raw({type: 'application/json'}), async (req, r
     }
 });
 
-
 app.use(express.json());
 
 // app.use(fileUpload({}));
@@ -1281,7 +1280,6 @@ if (process.env.NODE_ENV === "production") {
     app.use((req, res, next) => {
         next();
     });
-
     app.use(express.static(path.resolve(__dirname, 'public')));
     app.get("*", (req, res) => {
         res.sendFile(path.resolve(__dirname, "public", "index.html"));

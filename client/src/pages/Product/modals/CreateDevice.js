@@ -199,13 +199,13 @@ const CreateDevice = ({editingState, onHide, setSearch}) => {
                         onClick={addProperty}>
                         + Додати пусту опцію
                     </button>
-                    <button className={classes.product_upload_btn + " " + "second_btn"}
-                            onClick={() => {
-                                setShowOptionModal(true);
-                                document.body.style.overflow = 'hidden'
-                            }}>
-                        Додати опцію парфумів
-                    </button>
+                    {/*<button className={classes.product_upload_btn + " " + "second_btn"}*/}
+                    {/*        onClick={() => {*/}
+                    {/*            setShowOptionModal(true);*/}
+                    {/*            document.body.style.overflow = 'hidden'*/}
+                    {/*        }}>*/}
+                    {/*    Додати опцію парфумів*/}
+                    {/*</button>*/}
                 </div>
                 <div className={classes.product_edit_row}>
                     <OptionsModule
@@ -225,10 +225,10 @@ const CreateDevice = ({editingState, onHide, setSearch}) => {
                 <div><b>RU Опис:</b></div>
                 <CustomTextArea onChange={(event) => OnChangeDevice(event.target.value, "disc_ru", 1999)}
                                 maxLength={1999} placeholder={"RU Опис"} value={deviceInfo.disc_ru}/>
-                {categories.some(item => (item.id === 89 || item.id === 95)) &&
-                    <PartCountField setParfumePart={setParfumePart} parfumePart={parfumePart} setOptions={setOptions}/>}
-                {categories.some(item => (item.id === 57 || item.id === 58 || item.id === 59 || item.id === 69)) &&
-                    <CosmeticsCareFields bodyCare={bodyCare} OnChangeBodyCare={OnChangeBodyCare}/>}
+                {/*{categories.some(item => (item.id === 89 || item.id === 95)) &&*/}
+                {/*    <PartCountField setParfumePart={setParfumePart} parfumePart={parfumePart} setOptions={setOptions}/>}*/}
+                {/*{categories.some(item => (item.id === 57 || item.id === 58 || item.id === 59 || item.id === 69)) &&*/}
+                {/*    <CosmeticsCareFields bodyCare={bodyCare} OnChangeBodyCare={OnChangeBodyCare}/>}*/}
             </div> : <></>}
             <ModalFooter
                 setSearch={setSearch}

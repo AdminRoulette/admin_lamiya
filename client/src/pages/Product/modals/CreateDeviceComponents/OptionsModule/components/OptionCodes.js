@@ -55,13 +55,9 @@ const OptionCodes = ({ optionElem,changeInfo}) => {
                     </div>
                     <form onSubmit={handleAddCode} className={classes.code_form}>
                         <select value={prefix} onChange={(e) => setPrefix(e.target.value)} style={{ padding: '5px' }}>
-                            <option value="s0">s0</option>
-                            <option value="s1">s1</option>
-                            <option value="s2">s2</option>
-                            <option value="sel">sel</option>
-                            <option value="lux">lux</option>
-                            <option value="dom">dom</option>
-                            <option value="tick">tick</option>
+                            <option value="s0">it</option>
+                            <option value="s1">luc</option>
+                            <option value="s2">kosm</option>
                         </select>
                         <input
                             type="text"

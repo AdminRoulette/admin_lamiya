@@ -2,7 +2,7 @@ import axios from "axios";
 
 let url;
 if (process.env.NODE_ENV === "production") {
-    url = process.env.URL_ADMIN;
+    url = 'https://admin.lamiya.com.ua/';
 } else {
     url = 'http://localhost:5000/';
 }

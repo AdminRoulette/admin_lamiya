@@ -11,7 +11,8 @@ import {NP_WAREHOUSE, PAY_MONO_PART, PAY_PRIVAT_PART} from "@/utils/constants";
 const TTNOrderBlock = ({OrderElem, setOrders, onHide, WSConnection}) => {
     const sourceArray = [{name: "Розетка", value: 'rozetka'}, {
         name: "Пром", value: 'prom'
-    }, {name: "Каста", value: 'kasta'}, {
+    }, {name: "Каста", value: 'kasta'},
+        {name: "F.ua", value: 'f.ua'}, {
         name: "Інстаграм", value: 'inst'
     }, {name: "ТікТок", value: 'tiktok'}, {
         name: "Вайбер", value: 'viber'

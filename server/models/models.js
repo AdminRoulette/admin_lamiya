@@ -134,15 +134,6 @@ const StockHistory = sequelize.define('stock_history', {
     action: {type: DataTypes.STRING(50), defaultValue: ""},
 });
 
-
-const Country = sequelize.define('country', {
-    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    name: {type: DataTypes.STRING(255), defaultValue: ""},
-    name_ru: {type: DataTypes.STRING(255), defaultValue: ""},
-    name_alter: {type: DataTypes.STRING(255), defaultValue: ""},
-    name_alter_ru: {type: DataTypes.STRING(255), defaultValue: ""},
-    code: {type: DataTypes.STRING(255), defaultValue: ""}
-})
 const BodyCarePart = sequelize.define('bodycarepart', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     deviceId: {type: DataTypes.INTEGER, defaultValue: 0},
@@ -550,11 +541,6 @@ BlogCategories.hasMany(Blog, {foreignKey: 'category_id'});
 Orders.hasMany(ChecksOrder);
 ChecksOrder.belongsTo(Orders, {onDelete: 'CASCADE'});
 
-Country.hasMany(Device, {
-    foreignKey: {name: 'countryId'},
-});
-Device.belongsTo(Country);
-
 User.hasOne(Cashiers);
 Cashiers.belongsTo(User);
 
@@ -711,7 +697,6 @@ module.exports = {
     Product_Category,
     Expenses,
     Collection,
-    Country,
     Orders,
     OrderDevice,
     Supply,
