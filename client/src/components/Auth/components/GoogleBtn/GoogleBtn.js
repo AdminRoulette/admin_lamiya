@@ -8,7 +8,7 @@ const GoogleBtn = ({onGoogleSignIn}) => {
 
         useScript('https://accounts.google.com/gsi/client', () => {
                 window.google.accounts.id.initialize({
-                    client_id: "927204151842-ggbbjoku0nr3kq052n92hnjfforv440n.apps.googleusercontent.com",
+                    client_id: "624389059690-u7gfdjmi9t9vbm1jtnfi7b2auc0f2bhi.apps.googleusercontent.com",
                     callback: onGoogleSignIn,
                 });
                 window.google.accounts.id.renderButton(google_btn.current, {
