@@ -494,7 +494,6 @@ class RozetkaController {
             const array = [];
             for( const offer of offers) {
                 let fix_offer = offer['#']? offer['#'] : Object.entries(offer).map(([key, value]) => ({ [key]: value }))
-
                 let finalOffer = {};
                 finalOffer['code'] = offer['@']? offer['@'].id : offer['@id']
                 for(const item of fix_offer){
