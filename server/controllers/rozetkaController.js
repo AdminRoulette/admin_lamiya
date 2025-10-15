@@ -580,6 +580,26 @@ class RozetkaController {
                 }
                 const option = await DeviceOptions.create({deviceId:device.id, price:item.price, code:`luc-${item.code}`})
                 if(item.picture){
+                    async function fetchWithRetry(url, retries = 3, delay = 2000) {
+                        for (let i = 0; i < retries; i++) {
+                            try {
+                                const response = await axios.get(url, { responseType: 'arraybuffer' });
+                                return response;
+                            } catch (error) {
+                                console.warn(`Ошибка при загрузке ${url}: ${error.message}`);
+
+                                // Если это последняя попытка — выбрасываем ошибку
+                                if (i === retries - 1) throw error;
+
+                                // Пауза перед следующей попыткой
+                                console.log(`Пауза ${delay} мс перед повтором...`);
+                                await sleep(delay);
+
+                                // Можно увеличить задержку после каждой неудачи
+                                delay *= 2;
+                            }
+                        }
+                    }
                     const accessKeyId = process.env.S3_ACCESS_KEY
                     const secretAccessKey = process.env.S3_SECRET_ACCESS_KEY
                     const s3 = new S3({
@@ -589,7 +609,7 @@ class RozetkaController {
                     if(Array.isArray(item.picture)){
                         for(let i = 0; i < item.picture.length; i++){
                             const fileName = `${option.id}-hq-` + await GenerateRandomCode(4) + ".webp"
-                            const response = await axios.get(item.picture[i], { responseType: 'arraybuffer' });
+                            const response = await fetchWithRetry(item.picture[i])
                             await sleep(1500);
                             const webpResize = await sharp(response.data)
                                 .resize({
@@ -646,7 +666,7 @@ class RozetkaController {
                         }
                     }else{
                         const fileName = `${option.id}-hq-` + await GenerateRandomCode(4) + ".webp"
-                        const response = await axios.get(item.picture, { responseType: 'arraybuffer' });
+                        const response = await fetchWithRetry(item.picture)
                         await sleep(1500);
                         const webpResize = await sharp(response.data)
                             .resize({
