@@ -19,6 +19,9 @@ class CategoryController {
             if (!regex.test(code)) {
                 return next(apiError.badRequest("Не коректний код категорії"));
             }
+            if(!(parentId && name && nameRu)){
+                return next(apiError.badRequest("Частина данних порожня"));
+            }
             if (parentId) {
                 const category = await Category.findOne({where: {id: parentId}});
                 level = category.level - 1;
@@ -53,7 +56,9 @@ class CategoryController {
             if (!regex.test(code)) {
                 return next(apiError.badRequest("Не коректний код категорії"));
             }
-
+            if(!(parentId && name && nameRu && id)){
+                return next(apiError.badRequest("Частина данних порожня"));
+            }
             const oldCategory = await Category.findOne({where: {id}});
 
             if (parentId) {
@@ -77,7 +82,7 @@ class CategoryController {
 
             return res.json({id, name: name, name_ru: nameRu, code, vision, level, parentId})
         } catch (e) {
-            TelegramMsg("TECH", `createCategory ${e.message}`)
+            TelegramMsg("TECH", `editCategory ${e.message}`)
             next(apiError.badRequest(e.message));
         }
     }
@@ -116,17 +121,28 @@ class CategoryController {
         try {
             const {id} = req.query;
             const groupedMap = new Map();
-
-            const filter_values = await FilterValues.findAll({
-                include: [{
-                    model: Filters
-                }, {
-                    model: FilterCategoryValue,
-                    required: true,
-                    where: {category_id: id}
-                }],
-                raw: true
-            })
+            let filter_values;
+            if(id === 'undefined') {
+                filter_values = await FilterValues.findAll({
+                    include: [{
+                        model: Filters
+                    }, {
+                        model: FilterCategoryValue,
+                    }],
+                    raw: true
+                })
+            }else{
+                filter_values = await FilterValues.findAll({
+                    include: [{
+                        model: Filters
+                    }, {
+                        model: FilterCategoryValue,
+                        required: true,
+                        where: {category_id: id}
+                    }],
+                    raw: true
+                })
+            }
             for (const val of filter_values) {
                 const filterCode = val['filter.code'];
                 if (!groupedMap.has(filterCode)) {

@@ -34,9 +34,6 @@ class CreateProduct {
                 where: {id},
                 order: [[DeviceOptions, "index", "ASC"], [DeviceOptions, DeviceImage, "index", "ASC"], [Product_Category, 'category', "level", "ASC"], [Product_Category, "id", "ASC"]],
                 include: [{model: Brand, attributes: ["id", 'name', 'name_ru']}, {
-                    model: Country,
-                    attributes: ["id", 'name']
-                }, {
                     model: Product_Category, attributes: ["id", 'categoryId'], include: [{
                         model: Category, attributes: ["id", 'level', 'name', 'code'], as: 'category', include: [{
                             model: Category, attributes: ["id", 'level', 'name', 'code'], as: 'parent', include: [{
@@ -61,10 +58,6 @@ class CreateProduct {
                         as: 'similarDevices',
                         through: { attributes: [] },
                     },
-                    {
-                    model: ParfumePart
-                },
-                    {model: BodyCarePart},
                     {
                         model: DeviceOptions,
                         include: [{model: DeviceImage, attributes: ["image", 'id', 'index', 'option_id']}]

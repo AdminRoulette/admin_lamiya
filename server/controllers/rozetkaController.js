@@ -20,6 +20,13 @@ const TelegramMsg = require("../functions/TelegramMsg");
 const crypto = require("crypto");
 const S3 = require("aws-sdk/clients/s3");
 const MonoPartPayments = require("../functions/PartPayments/MonoPartPayments");
+const {create} = require("xmlbuilder2");
+const iconv = require('iconv-lite');
+const fs = require('fs');
+const Transliterations = require("../functions/SearchComponents/Transliterations");
+const GenerateRandomCode = require("../functions/Product/GenerateRandomCode");
+const UploadImages = require("../functions/Product/UploadImagesToAWS");
+const sharp = require("sharp");
 
 class RozetkaController {
     async Marketplace(req, res, next) {
@@ -467,8 +474,223 @@ class RozetkaController {
 
     async Test1(req, res, next) {
         try {
+            const filePath = './storage-files/lucom.xml';
+            const buffer = fs.readFileSync(filePath);
 
-            return res.json("test");
+            const xml = iconv.decode(Buffer.from(buffer), 'utf-8');
+
+            const doc = create(xml);
+            const obj = doc.end({ format: 'object' });
+
+            const shop = obj.yml_catalog.shop
+            let categories = {}
+
+            for( const category of shop.categories.category) {
+                categories[category['@id']] = category['#'];
+            }
+
+            const offers = shop.offers.offer
+
+            const array = [];
+            for( const offer of offers) {
+                let finalOffer = {};
+                finalOffer['code'] = offer['@'].id
+                for(const item of offer['#']){
+                    const [key, value] = Object.entries(item)[0];
+                    if (finalOffer[key]) {
+                        if (Array.isArray(finalOffer[key])) {
+                            finalOffer[key].push(...value);
+                        } else {
+                            finalOffer[key] = [...finalOffer[key], ...value];
+                        }
+                    } else {
+                        finalOffer[key] = value;
+                    }
+                }
+                array.push(finalOffer);
+            }
+
+
+            for( const item of array) {
+                let final_obj = {}
+                if(item.vendor){
+                    const brand = await Brand.findOne({where:{name:item.vendor}})
+                    if(brand){
+                        final_obj.brandId = brand.id
+                    }else{
+                        const brand = await Brand.create(
+                            {name:item.vendor,name_ru:item.vendor, code:await Transliterations(item.vendor) }
+                        )
+                        final_obj.brandId = brand.id
+                    }
+
+                }
+                if(item.description_ua){
+                    final_obj.disc = `<p>${item.description_ua}</p>`;
+                }
+                if(item.description){
+                    final_obj.disc_ru = `<p>${item.description}</p>`;
+                }
+                if(item.keywords){
+                    final_obj.tags_ru = item.keywords;
+                }
+                if(item.keywords_ua){
+                    final_obj.tags = item.keywords_ua;
+                }
+                if(item.name){
+                    final_obj.name_ru = `${item.name}`;
+                }
+                if(item.name_ua){
+                    final_obj.name = `${item.name_ua}  (категорія: ${categories[item.categoryId]})}`;
+                }
+                const device = await Device.create({...final_obj, active:false, status: "hidden", link:await Transliterations(final_obj.name)})
+
+                if(item.param){
+                    for( const param of item.param ){
+                        if(param['@name'] === 'Код товару') continue;
+                        if(param['@name'] === 'Виробник') continue;
+                        const value = await FilterValues.findOne({where:{name:param['#']}})
+                        if(value){
+                            await FilterProductValue.create({product_id:device.id,filter_value_id:value.id})
+                        }else{
+                            const filter = await Filters.findOne({where:{name:param['@name']}})
+                            if(filter){
+                                const value = await FilterValues.create({name:param['#'], code:await Transliterations(param['#']), filter_id:filter.id })
+                                await FilterProductValue.create({product_id:device.id,filter_value_id:value.id})
+                            }else{
+                                const filter = await Filters.create({name:param['@name'], code:await Transliterations(param['@name'])})
+                                const value = await FilterValues.create({name:param['#'], code:await Transliterations(param['#']), filter_id:filter.id })
+                                await FilterProductValue.create({product_id:device.id,filter_value_id:value.id})
+                            }
+                        }
+                    }
+                }
+                const option = await DeviceOptions.create({deviceId:device.id, price:item.price, code:`luc-${item.code}`})
+                if(item.picture){
+                    const accessKeyId = process.env.S3_ACCESS_KEY
+                    const secretAccessKey = process.env.S3_SECRET_ACCESS_KEY
+                    const s3 = new S3({
+                        region: 'eu-central-1', accessKeyId, secretAccessKey
+                    })
+                    const fixedBasket = process.env.NODE_ENV === "production" ? `lamiya/images/${device.id}` : `lamiya/test/${device.id}`
+                    if(Array.isArray(item.picture)){
+                        for(let i = 0; i < item.picture.length; i++){
+                            const fileName = `${option.id}-hq-` + await GenerateRandomCode(4) + ".webp"
+                            const response = await axios.get(item.picture[i], { responseType: 'arraybuffer' });
+                            const webpResize = await sharp(response.data)
+                                .resize({
+                                    width: 600,
+                                    height: 600,
+                                    fit: 'contain',
+                                    background: '#ffffff'
+                                })
+                                .flatten({background: '#ffffff'})
+                                .toFormat('webp')
+                                .toBuffer();
+                            const uploadParamsWebpResize = {
+                                Bucket: fixedBasket,
+                                Body: webpResize,
+                                Key: fileName.replace("-hq-", "-lq-"),
+                                ACL: 'public-read',
+                                ContentType: 'image/webp',
+                                CacheControl: 'max-age=31536000'
+                            };
+                            s3.upload(uploadParamsWebpResize).promise();
+                            const webp = await sharp(response.data)
+                                .flatten({background: '#ffffff'})
+                                .toFormat('webp')
+                                .toBuffer();
+                            const uploadParamsWebp = {
+                                Bucket: fixedBasket,
+                                Body: webp,
+                                Key: fileName,
+                                ACL: 'public-read',
+                                ContentType: 'image/webp',
+                                CacheControl: 'max-age=31536000'
+                            };
+                            s3.upload(uploadParamsWebp).promise();
+
+
+                            const jpg = await sharp(response.data)
+                                .flatten({background: '#ffffff'})
+                                .jpeg()
+                                .toBuffer();
+                            const uploadParamsJpg = {
+                                Bucket: fixedBasket,
+                                Body: jpg,
+                                Key: fileName.replace(".webp", ".jpg"),
+                                ACL: 'public-read',
+                                ContentType: 'image/jpeg',
+                                CacheControl: 'max-age=31536000'
+                            };
+                            s3.upload(uploadParamsJpg).promise();
+                            await DeviceImage.create({
+                                image: `https://lamiya.s3.amazonaws.com/images/${device.id}/${fileName}`,
+                                option_id: option.id,
+                                index: i
+                            })
+                        }
+                    }else{
+                        const fileName = `${option.id}-hq-` + await GenerateRandomCode(4) + ".webp"
+                        const response = await axios.get(item.picture, { responseType: 'arraybuffer' });
+                        const webpResize = await sharp(response.data)
+                            .resize({
+                                width: 600,
+                                height: 600,
+                                fit: 'contain',
+                                background: '#ffffff'
+                            })
+                            .flatten({background: '#ffffff'})
+                            .toFormat('webp')
+                            .toBuffer();
+                        const uploadParamsWebpResize = {
+                            Bucket: fixedBasket,
+                            Body: webpResize,
+                            Key: fileName.replace("-hq-", "-lq-"),
+                            ACL: 'public-read',
+                            ContentType: 'image/webp',
+                            CacheControl: 'max-age=31536000'
+                        };
+                        s3.upload(uploadParamsWebpResize).promise();
+                        const webp = await sharp(response.data)
+                            .flatten({background: '#ffffff'})
+                            .toFormat('webp')
+                            .toBuffer();
+                        const uploadParamsWebp = {
+                            Bucket: fixedBasket,
+                            Body: webp,
+                            Key: fileName,
+                            ACL: 'public-read',
+                            ContentType: 'image/webp',
+                            CacheControl: 'max-age=31536000'
+                        };
+                        s3.upload(uploadParamsWebp).promise();
+
+
+                        const jpg = await sharp(response.data)
+                            .flatten({background: '#ffffff'})
+                            .jpeg()
+                            .toBuffer();
+                        const uploadParamsJpg = {
+                            Bucket: fixedBasket,
+                            Body: jpg,
+                            Key: fileName.replace(".webp", ".jpg"),
+                            ACL: 'public-read',
+                            ContentType: 'image/jpeg',
+                            CacheControl: 'max-age=31536000'
+                        };
+                        s3.upload(uploadParamsJpg).promise();
+                        await DeviceImage.create({
+                            image: `https://lamiya.s3.amazonaws.com/images/${device.id}/${fileName}`,
+                            option_id: option.id,
+                            index: 0
+                        })
+                    }
+                }
+
+            }
+
+            return res.json("done");
         } catch (error) {
             console.error('Full error:', error.message);
             next(apiError.badRequest(`error: ${error.message}`));

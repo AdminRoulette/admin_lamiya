@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import classes from "../moderation.module.scss";
 import { toast } from "react-toastify";
 import {
   addCategory,
   deleteCategory,
-  editCategory,
+  editCategory, getAllCategory,
 } from "@/http/Product/categoryAPI";
 import Transliterations from "../../../../../server/functions/SearchComponents/Transliterations";
 import { CustomModal } from "@/components/CustomElements/CustomModal";
@@ -12,16 +12,24 @@ import { CustomInput } from "@/components/CustomElements/CustomInput";
 import { CustomDropdown } from "@/components/CustomElements/CustomDropdown";
 
 const CategoriesModal = ({
-  onHide,
-  categoryList,
-  setCategoryList,
+  onHide, setCategoryList,
   categoryToEdit,
 }) => {
   const [name, setName] = useState(categoryToEdit?.name || "");
+  const [categoriesArray, setCategoriesArray] = useState([]);
   const [nameRu, setNameRu] = useState(categoryToEdit?.name_ru || "");
   const [parentId, setParentId] = useState(categoryToEdit?.parentId || null);
   const [code, setCode] = useState(categoryToEdit?.code || "");
-  const [vision, setVision] = useState(categoryToEdit?.vision || true);
+  const [vision, setVision] = useState(categoryToEdit?.vision !== false);
+
+  useEffect(() => {
+    getAllCategory().then(data => {
+      setCategoriesArray(data)
+    }).catch(error => {
+      toast.error(error.response.data.message);
+    })
+  },[])
+
 
   function addNewCategory(oldCategoryList, newCategory) {
     if (!Array.isArray(oldCategoryList)) {
@@ -114,10 +122,7 @@ const CategoriesModal = ({
     }
     document.body.style.overflow = "";
   };
-  console.log(
-    categoryToEdit.parentId,
-    categoryList.find((item) => item.id === categoryToEdit.parentId),
-  );
+
   return (
     <CustomModal
       onClose={closeModal}
@@ -126,11 +131,11 @@ const CategoriesModal = ({
       buttonName={categoryToEdit ? "Редагувати" : "Створити"}
     >
       <CustomDropdown
-        array={categoryList}
+        array={categoriesArray}
         placeholder={"Батьківська категорія"}
         dropdownAction={setParentId}
         externalValue={
-          categoryList.find((item) => item.id === categoryToEdit.parentId)?.name
+          categoriesArray.find((item) => item.id === categoryToEdit?.parentId)?.name
         }
       />
       <CustomInput

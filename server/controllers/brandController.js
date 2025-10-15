@@ -66,7 +66,7 @@ class BranController {
 
     async getAll(req, res, next) {
         try {
-            const brand = await Brand.findAll({order: [["id", "DESC"]]});
+            const brand = await Brand.findAll({order: [["name", "ASC"]]});
             return res.json(brand);
         } catch (e) {
             TelegramMsg("TECH", `getAll brand ${e.message}`)

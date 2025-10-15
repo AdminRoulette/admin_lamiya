@@ -29,13 +29,13 @@ const CategoryList = ({categories, setCategories, setFilterList}) => {
         const categoryIds1 = categories.filter(item => item.level === 2).map(item => item.id);
         setCategoryArray1(categoryList.filter(item => ((+item.level === 1) && categoryIds1.includes(+item.parentId))))
 
-        if(categories.length > 0){
-            getFiltersCategory({id:categories.sort((a, b) => a.level - b.level || a.product_category_id - b.product_category_id)[0].id})
+        // if(categories.length > 0){
+            getFiltersCategory({id:categories.sort((a, b) => a.level - b.level || a.product_category_id - b.product_category_id)[0]?.id})
                 .then((filterList) => setFilterList(filterList))
                 .catch(error => {
                     toast(error.message)
                 })
-        }
+        // }
     }, [categories,categoryList]);
 
     const setInputValueOnChange = (value,level) => {

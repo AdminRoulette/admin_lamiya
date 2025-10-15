@@ -16,10 +16,10 @@ const ProductInfo = ({deviceInfo, OnChangeDevice, setParfumePart, parfumePart, c
             <ProductStatus deviceInfo={deviceInfo} OnChangeDevice={OnChangeDevice}/>
         </div>
         <ProductNames deviceInfo={deviceInfo} OnChangeDevice={OnChangeDevice}/>
-        <div className={classes.product_edit_row}>
-            <div className={classes.product_series}>
-                <SeriesField OnChangeDevice={OnChangeDevice} deviceInfo={deviceInfo}/></div>
-        </div>
+        {/*<div className={classes.product_edit_row}>*/}
+        {/*    <div className={classes.product_series}>*/}
+        {/*        <SeriesField OnChangeDevice={OnChangeDevice} deviceInfo={deviceInfo}/></div>*/}
+        {/*</div>*/}
         <ProductCheckBoxes deviceInfo={deviceInfo} OnChangeDevice={OnChangeDevice} categories={categories}
                            setParfumePart={setParfumePart} parfumePart={parfumePart}/>
     </>);

@@ -19,7 +19,7 @@ const Testing = () => {
 
     const [deleteId, setDeleteId] = useState(null)
     const [storageName, setStorageName] = useState("")
-    const storageArray = [{name:"lux"},{name:"dom"},{name:"tick"}]
+    const storageArray = [{name:"it"},{name:"luc"},{name:"kosm"}]
 
     const selectFile = async (event) => {
         const file = event.target.files[0];

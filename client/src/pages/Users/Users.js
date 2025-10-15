@@ -16,7 +16,7 @@ const Users = () => {
       ) : userParam === "stats" ? (
        <StatsPage /> 
       ) : (
-        <NotFoundPage />
+        <></>
       )}
     </>
   );

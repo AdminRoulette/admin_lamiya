@@ -83,7 +83,7 @@ async function CalculateProductCount({oldOptionElem, count, orderId,userId,actio
                 {partcount: 0},
                 {where: {deviceId: deviceId}}
             )
-        }if(!(oldOptionElem.sell_type === "storage" || oldOptionElem.sell_type === "preorder") && count === 0) {
+        }if(!((oldOptionElem.sell_type === "storage" || oldOptionElem.sell_type === "preorder") && count === 0)) {
             const newCount = oldOptionElem.count - count;
             await DeviceOptions.update(
                 {count: newCount},

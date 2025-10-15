@@ -52,7 +52,7 @@ const Categories = () => {
         <div className={classes.categories_container}>
           {user.role.includes("ADMIN") && (
             <div className={classes.type_btns}>
-              <button className="custom_btn" onClick={showCategoryModal}>
+              <button className="custom_btn" onClick={()=>showCategoryModal()}>
                 Додати нову категорію
               </button>
             </div>
@@ -80,7 +80,6 @@ const Categories = () => {
       </div>
       {categoryVisible ? (
         <CategoriesModal
-          categoryList={categoryList}
           setCategoryList={setCategoryList}
           onHide={() => setCategoryVisible(false)}
           categoryToEdit={categoryToEdit}

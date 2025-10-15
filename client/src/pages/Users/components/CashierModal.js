@@ -26,7 +26,7 @@ const CashierModal = ({ onClose, cashier, setCashiers, modalType }) => {
   const [pin, setPin] = React.useState("");
 
   useEffect(() => {
-    allUsers({ offset: 0, phone: "", role: "SELLER" }).then((response) => {
+    allUsers({ offset: 0, phone: "", role: "ALL" }).then((response) => {
       setCashiersList(response.rows);
     });
   }, []);

@@ -72,10 +72,6 @@ const ModalFooter = ({
         for (const option of options) {
             if(!option.deviceimages.length === 0) throw new Error(`Опція ${option.optionName} не має фото`)
             if(option.sell_type !== "sell_bottle"){
-                if(!categories.some(item => item.id === 54 || item.id === 55 || item.id === 105 || item.id === 106) || options.length > 1) {
-                    if (!option.optionName) throw new Error("Назва опції пуста")
-                    if (!option.optionName_ru) throw new Error("Назва ру опції пуста")
-                }
                 if (!option.weight) throw new Error("Вага опції пуста")
                 if (!Number(option.price)) throw new Error("Ціна не вірна")
             }
@@ -97,8 +93,8 @@ const ModalFooter = ({
             && deviceInfo.active) throw new Error("Товар активний, але статус для Неактивного товару")
         if (!deviceInfo.name) throw new Error("Не вказана назва товару")
         if (!deviceInfo.name_ru) throw new Error("Не вказана російська назва товару")
-        if (!deviceInfo.series) throw new Error("Не вказана серія")
-        if (!deviceInfo.series_ru) throw new Error("Не вказана російська серія")
+        // if (!deviceInfo.series) throw new Error("Не вказана серія")
+        // if (!deviceInfo.series_ru) throw new Error("Не вказана російська серія")
         if (!deviceInfo.brand.id) throw new Error("Не вибраний бренд")
         if (!deviceInfo.country.id) throw new Error("Не вибрана країна")
         if (options.length < 1) throw new Error("Додайте опцію")

@@ -1,10 +1,8 @@
 import * as userApi from "@/http/userApi";
 import React, { useEffect, useState } from "react";
 import classes from "../users.module.scss";
-import { User } from "lucide-react";
 import { CloseShift, OpenCashierShift } from "@/http/ExternalApi/checkBoxAPI";
 import Cashier from "./Cashier";
-import UserModal from "./UserModal";
 import CashierModal from "./CashierModal";
 const CachiersPage = ({}) => {
   const [cashiers, setCashiers] = useState([]);
