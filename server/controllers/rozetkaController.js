@@ -473,7 +473,12 @@ class RozetkaController {
     }
 
     async Test1(req, res, next) {
-        try {
+         try {
+
+             function sleep(ms) {
+                 return new Promise(resolve => setTimeout(resolve, ms));
+             }
+
             const filePath = './storage-files/lucom.xml';
             const buffer = fs.readFileSync(filePath);
 
@@ -517,6 +522,7 @@ class RozetkaController {
 
 
             for( const item of array) {
+                await sleep(500);
                 let final_obj = {}
                 if(item.vendor){
                     const brand = await Brand.findOne({where:{name:item.vendor}})
@@ -546,10 +552,12 @@ class RozetkaController {
                     final_obj.name_ru = `${item.name}`;
                 }
                 if(item.name_ua){
-                    final_obj.name = `${item.name_ua}  (категорія: ${categories[item.categoryId]})}`;
+                    final_obj.name = `${item.name_ua}  (категорія: ${categories[item.categoryId]})`;
                 }
+                if(await Device.findOne({where:{link:await Transliterations(final_obj.name)}})) continue;
+
                 const device = await Device.create({...final_obj, active:false, status: "hidden", link:await Transliterations(final_obj.name)})
-                console.log(item.name_ua)
+
                 if(item.param){
                     for( const param of item.param ){
                         if(param['@name'] === 'Код товару') continue;
@@ -693,7 +701,6 @@ class RozetkaController {
                         })
                     }
                 }
-
             }
 
             return res.json(array);

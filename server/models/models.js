@@ -72,8 +72,8 @@ const WishList = sequelize.define('wish_list', {
 const Device = sequelize.define('device', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     active: {type: DataTypes.BOOLEAN, defaultValue: true},
-    name: {type: DataTypes.STRING, allowNull: false},
-    name_ru: {type: DataTypes.STRING, defaultValue: ""},
+    name: {type: DataTypes.STRING(255), allowNull: false},
+    name_ru: {type: DataTypes.STRING(255), defaultValue: ""},
     status: {type: DataTypes.STRING(50), defaultValue: ""}, //new
     company: {type: DataTypes.STRING(50), defaultValue: ""}, //delete
     rating: {type: DataTypes.DOUBLE, defaultValue: 0},
