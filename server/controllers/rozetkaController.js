@@ -499,7 +499,8 @@ class RozetkaController {
             const offers = shop.offers.offer
 
             const array = [];
-            for (const offer of offers) {
+            for (let i = 315; i < offers.length; i++) {
+                const offer = offers[i]
                 let fix_offer = offer['#'] ? offer['#'] : Object.entries(offer).map(([key, value]) => ({[key]: value}))
                 let finalOffer = {};
                 finalOffer['code'] = offer['@'] ? offer['@'].id : offer['@id']
@@ -538,22 +539,22 @@ class RozetkaController {
 
                 }
                 if (item.description_ua) {
-                    final_obj.disc = `<p>${item.description_ua}</p>`;
+                    final_obj.disc = `<p>${item.description_ua.replaceAll("»","ы")}</p>`;
                 }
                 if (item.description) {
-                    final_obj.disc_ru = `<p>${item.description}</p>`;
+                    final_obj.disc_ru = `<p>${item.description.replaceAll("»","ы")}</p>`;
                 }
                 if (item.keywords) {
-                    final_obj.tags_ru = item.keywords;
+                    final_obj.tags_ru = item.keywords.replaceAll("»","ы");
                 }
                 if (item.keywords_ua) {
-                    final_obj.tags = item.keywords_ua;
+                    final_obj.tags = item.keywords_ua.replaceAll("»","ы");
                 }
                 if (item.name) {
-                    final_obj.name_ru = `${item.name}`;
+                    final_obj.name_ru = item.name.replaceAll("»","ы");
                 }
                 if (item.name_ua) {
-                    final_obj.name = `${item.name_ua}  (категорія: ${categories[item.categoryId]})`;
+                    final_obj.name = `${item.name_ua.replaceAll("»","ы")}  (категорія: ${categories[item.categoryId]})`;
                 }
                 if (await Device.findOne({where: {link: await Transliterations(final_obj.name)}})) continue;
 
@@ -566,32 +567,38 @@ class RozetkaController {
 
                 if (item.param) {
                     for (const param of item.param) {
-                        if (param['@name'] === 'Код товару') continue;
-                        if (param['@name'] === 'Виробник') continue;
                         if (!param['#']) continue;
-                        const value = await FilterValues.findOne({where: {name: param['#']}})
-                        if (value) {
-                            await FilterProductValue.create({product_id: device.id, filter_value_id: value.id})
-                        } else {
-                            const filter = await Filters.findOne({where: {name: param['@name']}})
-                            if (filter) {
-                                const value = await FilterValues.create({
-                                    name: param['#'],
-                                    code: await Transliterations(param['#']),
-                                    filter_id: filter.id
-                                })
+                        if (!param['@name']) continue;
+                        const paramName = param['@name'].replaceAll("»","ы")
+                        if (paramName === 'Код товару') continue;
+                        if (paramName === 'Виробник') continue;
+
+                        const paramCodes= param['#'].replaceAll("»","ы").split(',')
+                        for(const paramCode of paramCodes) {
+                            const value = await FilterValues.findOne({where: {name: paramCode}})
+                            if (value) {
                                 await FilterProductValue.create({product_id: device.id, filter_value_id: value.id})
                             } else {
-                                const filter = await Filters.create({
-                                    name: param['@name'],
-                                    code: await Transliterations(param['@name'])
-                                })
-                                const value = await FilterValues.create({
-                                    name: param['#'],
-                                    code: await Transliterations(param['#']),
-                                    filter_id: filter.id
-                                })
-                                await FilterProductValue.create({product_id: device.id, filter_value_id: value.id})
+                                const filter = await Filters.findOne({where: {name: paramName}})
+                                if (filter) {
+                                    const value = await FilterValues.create({
+                                        name: paramCode,
+                                        code: await Transliterations(paramCode),
+                                        filter_id: filter.id
+                                    })
+                                    await FilterProductValue.create({product_id: device.id, filter_value_id: value.id})
+                                } else {
+                                    const filter = await Filters.create({
+                                        name: paramName,
+                                        code: await Transliterations(paramName)
+                                    })
+                                    const value = await FilterValues.create({
+                                        name: paramCode,
+                                        code: await Transliterations(paramCode),
+                                        filter_id: filter.id
+                                    })
+                                    await FilterProductValue.create({product_id: device.id, filter_value_id: value.id})
+                                }
                             }
                         }
                     }
