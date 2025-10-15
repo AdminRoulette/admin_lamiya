@@ -522,7 +522,6 @@ class RozetkaController {
 
 
             for( const item of array) {
-                await sleep(500);
                 let final_obj = {}
                 if(item.vendor){
                     const brand = await Brand.findOne({where:{name:item.vendor}})
@@ -591,6 +590,7 @@ class RozetkaController {
                         for(let i = 0; i < item.picture.length; i++){
                             const fileName = `${option.id}-hq-` + await GenerateRandomCode(4) + ".webp"
                             const response = await axios.get(item.picture[i], { responseType: 'arraybuffer' });
+                            await sleep(500);
                             const webpResize = await sharp(response.data)
                                 .resize({
                                     width: 600,
@@ -647,6 +647,7 @@ class RozetkaController {
                     }else{
                         const fileName = `${option.id}-hq-` + await GenerateRandomCode(4) + ".webp"
                         const response = await axios.get(item.picture, { responseType: 'arraybuffer' });
+                        await sleep(500);
                         const webpResize = await sharp(response.data)
                             .resize({
                                 width: 600,
