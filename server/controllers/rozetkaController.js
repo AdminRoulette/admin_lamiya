@@ -473,7 +473,7 @@ class RozetkaController {
     }
 
     async Test1(req, res, next) {
-        // try {
+        try {
             const filePath = './storage-files/lucom.xml';
             const buffer = fs.readFileSync(filePath);
 
@@ -550,11 +550,12 @@ class RozetkaController {
                     final_obj.name = `${item.name_ua}  (категорія: ${categories[item.categoryId]})}`;
                 }
                 const device = await Device.create({...final_obj, active:false, status: "hidden", link:await Transliterations(final_obj.name)})
-
+                console.log(item.name_ua)
                 if(item.param){
                     for( const param of item.param ){
                         if(param['@name'] === 'Код товару') continue;
                         if(param['@name'] === 'Виробник') continue;
+                        if(!param['#']) continue;
                         const value = await FilterValues.findOne({where:{name:param['#']}})
                         if(value){
                             await FilterProductValue.create({product_id:device.id,filter_value_id:value.id})
@@ -697,10 +698,10 @@ class RozetkaController {
             }
 
             return res.json(array);
-        // } catch (error) {
-        //     console.error('Full error:', error.message);
-        //     next(apiError.badRequest(`error: ${error.message}`));
-        // }
+        } catch (error) {
+            console.error('Full error:', error.message);
+            next(apiError.badRequest(`error: ${error.message}`));
+        }
     }
 
     async Test2(req, res, next) {
