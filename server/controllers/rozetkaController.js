@@ -584,7 +584,16 @@ class RozetkaController {
                             const value = await FilterValues.findOne({where: {name: paramCode}})
                             if (value) {
                                 console.log({product_id: device.id, filter_value_id: value.id})
-                                await FilterProductValue.findOrCreate({product_id: device.id, filter_value_id: value.id})
+                                await FilterProductValue.findOrCreate({
+                                    where: {
+                                        product_id: device.id,
+                                        filter_value_id: value.id
+                                    },
+                                    defaults: {
+                                        product_id: device.id,
+                                        filter_value_id: value.id
+                                    }
+                                });
                             } else {
                                 const filter = await Filters.findOne({where: {name: paramName}})
                                 if (filter) {
@@ -593,7 +602,16 @@ class RozetkaController {
                                         code: await Transliterations(paramCode),
                                         filter_id: filter.id
                                     })
-                                    await FilterProductValue.findOrCreate({product_id: device.id, filter_value_id: value.id})
+                                    await FilterProductValue.findOrCreate({
+                                        where: {
+                                            product_id: device.id,
+                                            filter_value_id: value.id
+                                        },
+                                        defaults: {
+                                            product_id: device.id,
+                                            filter_value_id: value.id
+                                        }
+                                    });
                                 } else {
                                     const filter = await Filters.create({
                                         name: paramName,
@@ -604,7 +622,16 @@ class RozetkaController {
                                         code: await Transliterations(paramCode),
                                         filter_id: filter.id
                                     })
-                                    await FilterProductValue.findOrCreate({product_id: device.id, filter_value_id: value.id})
+                                    await FilterProductValue.findOrCreate({
+                                        where: {
+                                            product_id: device.id,
+                                            filter_value_id: value.id
+                                        },
+                                        defaults: {
+                                            product_id: device.id,
+                                            filter_value_id: value.id
+                                        }
+                                    });
                                 }
                             }
                         }
