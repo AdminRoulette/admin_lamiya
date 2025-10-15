@@ -493,9 +493,11 @@ class RozetkaController {
 
             const array = [];
             for( const offer of offers) {
+                let fix_offer = offer['#']? offer['#'] : Object.entries(offer).map(([key, value]) => ({ [key]: value }))
+
                 let finalOffer = {};
-                finalOffer['code'] = offer['@'].id
-                for(const item of offer['#']){
+                finalOffer['code'] = offer['@']? offer['@'].id : offer['@id']
+                for(const item of fix_offer){
                     const [key, value] = Object.entries(item)[0];
                     if (finalOffer[key]) {
                         if (Array.isArray(finalOffer[key])) {
@@ -694,7 +696,7 @@ class RozetkaController {
 
             }
 
-            return res.json("done");
+            return res.json(array);
         // } catch (error) {
         //     console.error('Full error:', error.message);
         //     next(apiError.badRequest(`error: ${error.message}`));
