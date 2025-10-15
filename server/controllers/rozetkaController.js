@@ -558,6 +558,12 @@ class RozetkaController {
                 }
                 if (await Device.findOne({where: {link: await Transliterations(final_obj.name)}})) continue;
 
+                console.log({
+                    ...final_obj,
+                    active: false,
+                    status: "hidden",
+                    link: await Transliterations(final_obj.name)
+                })
                 const device = await Device.create({
                     ...final_obj,
                     active: false,
