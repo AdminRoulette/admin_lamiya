@@ -473,7 +473,7 @@ class RozetkaController {
     }
 
     async Test1(req, res, next) {
-        try {
+        // try {
             const filePath = './storage-files/lucom.xml';
             const buffer = fs.readFileSync(filePath);
 
@@ -499,9 +499,13 @@ class RozetkaController {
                     const [key, value] = Object.entries(item)[0];
                     if (finalOffer[key]) {
                         if (Array.isArray(finalOffer[key])) {
-                            finalOffer[key].push(...value);
+                            if (Array.isArray(value)) {
+                                finalOffer[key].push(...value);
+                            } else {
+                                finalOffer[key].push(value);
+                            }
                         } else {
-                            finalOffer[key] = [...finalOffer[key], ...value];
+                            finalOffer[key] = Array.isArray(value) ? [finalOffer[key], ...value] : [finalOffer[key], value];
                         }
                     } else {
                         finalOffer[key] = value;
@@ -691,10 +695,10 @@ class RozetkaController {
             }
 
             return res.json("done");
-        } catch (error) {
-            console.error('Full error:', error.message);
-            next(apiError.badRequest(`error: ${error.message}`));
-        }
+        // } catch (error) {
+        //     console.error('Full error:', error.message);
+        //     next(apiError.badRequest(`error: ${error.message}`));
+        // }
     }
 
     async Test2(req, res, next) {
