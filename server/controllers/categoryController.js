@@ -9,12 +9,13 @@ const {
 
 const apiError = require("../error/apierror");
 const TelegramMsg = require("../functions/TelegramMsg");
+const {Op} = require("sequelize");
 
 class CategoryController {
     async createCategory(req, res, next) {
         try {
             const {name, nameRu, parentId, code, vision} = req.body;
-            let level = 3;
+            let level = 1;
             const regex = /^[a-z0-9-]+$/;
             if (!regex.test(code)) {
                 return next(apiError.badRequest("Не коректний код категорії"));
@@ -22,12 +23,21 @@ class CategoryController {
             if(!(name && nameRu)){
                 return next(apiError.badRequest("Частина данних порожня"));
             }
+
+            const categoryOld = await Category.findOne({where: {code: code}});
+
+            if(categoryOld){
+                return next(apiError.badRequest("Така категорія вже існує"));
+            }
             if (parentId) {
-                const category = await Category.findOne({where: {id: parentId}});
-                level = category.level - 1;
+                const categoryParent = await Category.findOne({where: {id: parentId}});
+                if(categoryParent.level === 5){
+                    return next(apiError.badRequest("Це максимальна вкладеність 5 рівня"));
+                }
+                level = categoryParent.level + 1;
             }
 
-            const Categories = await Category.create({name: name, name_ru: nameRu, code, vision, level, parentId});
+            const category = await Category.create({name: name, name_ru: nameRu, code, vision, level, parentId});
 
             await Seo.create({
                 url: `/c/${code}`,
@@ -41,7 +51,7 @@ class CategoryController {
                 title: `${nameRu} купить - интернет-магазин Lamiya`
             })
 
-            return res.json(Categories)
+            return res.json(category)
         } catch (e) {
             TelegramMsg("TECH", `createCategory ${e.message}`)
             next(apiError.badRequest(e.message));
@@ -61,9 +71,21 @@ class CategoryController {
             }
             const oldCategory = await Category.findOne({where: {id}});
 
+
+            const categoryCheck = await Category.findOne({
+                where: {code: code,
+                    id:{[Op.ne]:id}
+                }});
+
+            if(categoryCheck){
+                return next(apiError.badRequest("Така категорія вже існує"));
+            }
+
             if (parentId) {
                 const category = await Category.findOne({where: {id: parentId}});
-                level = category.level - 1;
+                level = category.level + 1;
+            }else{
+                level = oldCategory.level
             }
 
             await Category.update({name: name, name_ru: nameRu, code, vision, level, parentId}, {where: {id}});

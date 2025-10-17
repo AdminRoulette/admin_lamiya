@@ -48,7 +48,6 @@ const ModalFooter = ({
             }
         }
         formData.append("brand", JSON.stringify(deviceInfo.brand));
-        formData.append("countryId", (!deviceInfo.country.id) ? 1 : deviceInfo.country.id);
         formData.append("options", JSON.stringify(options));
         formData.append("disc", deviceInfo.disc);
         formData.append("disc_ru", deviceInfo.disc_ru);
@@ -96,7 +95,6 @@ const ModalFooter = ({
         // if (!deviceInfo.series) throw new Error("Не вказана серія")
         // if (!deviceInfo.series_ru) throw new Error("Не вказана російська серія")
         if (!deviceInfo.brand.id) throw new Error("Не вибраний бренд")
-        if (!deviceInfo.country.id) throw new Error("Не вибрана країна")
         if (options.length < 1) throw new Error("Додайте опцію")
 
         function checkUniqueNames(optionsList) {
@@ -139,7 +137,7 @@ const ModalFooter = ({
 
     const updateDevice = async () => {
         setSendData(true)
-        try {
+        // try {
             await checkProductData()
             const productFormData = productFormDataAppend();
             await updateDevices(editingState.id, productFormData).then(async (id) => {
@@ -150,10 +148,10 @@ const ModalFooter = ({
                 // setTimeout(() => setLoading(false), 1000);
                 setSendData(false)
             });
-        } catch (error) {
-            setSendData(false)
-            toast(error.message);
-        }
+        // } catch (error) {
+        //     setSendData(false)
+        //     toast(error.message);
+        // }
 
     };
 
