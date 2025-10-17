@@ -133,7 +133,7 @@ const CategoriesModal = ({
       <CustomDropdown
         array={categoriesArray}
         placeholder={"Батьківська категорія"}
-        dropdownAction={setParentId}
+        dropdownAction={(item)=>setParentId(item.id)}
         externalValue={
           categoriesArray.find((item) => item.id === categoryToEdit?.parentId)?.name
         }
