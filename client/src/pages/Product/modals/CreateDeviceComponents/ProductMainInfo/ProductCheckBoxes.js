@@ -21,7 +21,7 @@ const ProductCheckBoxes = ({deviceInfo,OnChangeDevice,setParfumePart,parfumePart
                 </div>
                 <div className={classes.product_check_block}>
                     <b>Активний?:</b>
-                    <input disabled={user.user.email !== "qqalopruvet@gmail.com"} type='checkbox' checked={deviceInfo.active ? deviceInfo.active : false}
+                    <input type='checkbox' checked={deviceInfo.active ? deviceInfo.active : false}
                            onChange={(event) => OnChangeDevice(event.target.checked, 'active')}/>
                 </div>
         </div>

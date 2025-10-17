@@ -98,12 +98,12 @@ const ProductTop = ({
                 {deviceElem.disc &&
                     <span onClick={(e) => AlertDisc(e)} title={"Копіювати опис"}
                           className={classes.icon_item + ' ' + "material-symbols-outlined"}>content_paste</span>}
-                {(user.user.role?.includes("ADMIN") || (user.user.role?.includes("AUTHOR")))  &&
-                    <span onClick={(e) => {
-                        e.stopPropagation();
-                        handleEdit(deviceElem.id, "copy")
-                    }} title={"Копіювати товар"}
-                          className={classes.icon_item + ' ' + "material-symbols-outlined"}>content_copy</span>}
+                {/*{(user.user.role?.includes("ADMIN") || (user.user.role?.includes("AUTHOR")))  &&*/}
+                {/*    <span onClick={(e) => {*/}
+                {/*        e.stopPropagation();*/}
+                {/*        handleEdit(deviceElem.id, "copy")*/}
+                {/*    }} title={"Копіювати товар"}*/}
+                {/*          className={classes.icon_item + ' ' + "material-symbols-outlined"}>content_copy</span>}*/}
 
                 {(user.user.role?.includes("ADMIN") || (user.user.role?.includes("AUTHOR"))) &&
                     <span onClick={(e) => {

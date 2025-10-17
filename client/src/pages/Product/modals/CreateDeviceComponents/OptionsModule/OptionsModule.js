@@ -62,7 +62,6 @@ const OptionsModule = ({options, setOptions}) => {
                             </label>
                             <label>
                                 <input
-                                    disabled={user.user.email !== "qqalopruvet@gmail.com" || optionElem.sell_type === 'on_tab' || optionElem.sell_type === 'sell_bottle'}
                                     value={optionElem.count}
                                     onChange={(e) => changeInfo("count", e.target.value, optionElem.id)}
                                     placeholder="" type="number" maxLength="10"/>

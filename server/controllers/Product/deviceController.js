@@ -81,7 +81,7 @@ class DeviceController {
         try {
             const {id} = req.params;
             await Device.findOne({
-                where: {id}, include: [{model: BodyCarePart}, {model: Country}]
+                where: {id}, include: [{model: Country}]
             }).then(async (deviceElement) => {
 
                 const groupedMap = new Map();
@@ -120,7 +120,6 @@ class DeviceController {
 
                 return res.json({
                     filters: [...groupedMap.values()],
-                    bodycarepart: deviceElement.bodycarepart ? deviceElement.bodycarepart : undefined,
                     disc: deviceElement.disc,
                     country: deviceElement.country.name
                 })

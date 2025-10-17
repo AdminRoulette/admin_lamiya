@@ -19,7 +19,7 @@ class CategoryController {
             if (!regex.test(code)) {
                 return next(apiError.badRequest("Не коректний код категорії"));
             }
-            if(!(parentId && name && nameRu)){
+            if(!(name && nameRu)){
                 return next(apiError.badRequest("Частина данних порожня"));
             }
             if (parentId) {
