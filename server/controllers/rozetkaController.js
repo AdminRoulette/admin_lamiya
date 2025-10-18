@@ -42,7 +42,8 @@ class RozetkaController {
         try {
             await axios.delete('http://localhost:9200/products', {
                 auth: {
-                    username: 'elasticuser', password: process.env.ELASTIC_PASS,
+                    username: 'elasticuser',
+                    password: process.env.ELASTIC_PASS,
                 }, headers: {
                     'Content-Type': 'application/json'
                 }
@@ -192,7 +193,7 @@ class RozetkaController {
             return res.json("done");
 
         } catch (error) {
-            console.error('Full error:', error);
+            console.error('Full error:', error.data.error);
             next(apiError.badRequest(`error: ${error.message}`));
         }
     }
