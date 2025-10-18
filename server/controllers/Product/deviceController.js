@@ -291,7 +291,7 @@ class DeviceController {
                     },
                     {
                         auth: {
-                            username: 'elastic',
+                            username: 'elasticuser',
                             password: process.env.ELASTIC_PASS,
                         }
                     });
@@ -558,7 +558,7 @@ class DeviceController {
                 },
                 {
                     auth: {
-                        username: 'elastic',
+                        username: 'elasticuser',
                         password: process.env.ELASTIC_PASS,
                     }
                 });

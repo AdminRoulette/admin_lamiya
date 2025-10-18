@@ -97,7 +97,7 @@ async function UpdateParfumeStorage() {
                 }
             }, {
                 auth: {
-                    username: 'elastic', password: process.env.ELASTIC_PASS,
+                    username: 'elasticuser', password: process.env.ELASTIC_PASS,
                 }
             });
             if (searchRes.data.hits.hits.length > 0) {

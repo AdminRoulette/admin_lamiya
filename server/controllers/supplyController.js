@@ -271,7 +271,7 @@ class SupplyController {
                         }
                     },{
                         auth: {
-                            username: 'elastic',
+                            username: 'elasticuser',
                             password: process.env.ELASTIC_PASS,
                         }
                     }).catch(()=>{});

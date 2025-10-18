@@ -42,7 +42,7 @@ class RozetkaController {
         try {
             await axios.delete('http://localhost:9200/products', {
                 auth: {
-                    username: 'elastic', password: process.env.ELASTIC_PASS,
+                    username: 'elasticuser', password: process.env.ELASTIC_PASS,
                 }, headers: {
                     'Content-Type': 'application/json'
                 }
@@ -102,7 +102,7 @@ class RozetkaController {
                 }
             }, {
                 auth: {
-                    username: 'elastic', password: process.env.ELASTIC_PASS,
+                    username: 'elasticuser', password: process.env.ELASTIC_PASS,
                 }, headers: {
                     'Content-Type': 'application/json'
                 }
@@ -110,7 +110,7 @@ class RozetkaController {
 
             await axios.delete('http://localhost:9200/options', {}, {
                 auth: {
-                    username: 'elastic',
+                    username: 'elasticuser',
                     password: process.env.ELASTIC_PASS,
                 },
                 headers: {
@@ -181,7 +181,7 @@ class RozetkaController {
                 }
             }, {
                 auth: {
-                    username: 'elastic',
+                    username: 'elasticuser',
                     password: process.env.ELASTIC_PASS,
                 },
                 headers: {
@@ -267,7 +267,7 @@ class RozetkaController {
                         codes: option.code.split(',').filter(Boolean)
                     }, {
                         auth: {
-                            username: 'elastic',
+                            username: 'elasticuser',
                             password: process.env.ELASTIC_PASS,
                         },
                         headers: {
