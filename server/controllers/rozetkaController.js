@@ -193,7 +193,7 @@ class RozetkaController {
             return res.json("done");
 
         } catch (error) {
-            console.error('Full error:', error.data.error);
+            console.error('Full error:', error.errors);
             next(apiError.badRequest(`error: ${error.message}`));
         }
     }
