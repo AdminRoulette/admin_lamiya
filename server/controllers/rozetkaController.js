@@ -41,9 +41,7 @@ class RozetkaController {
     async CreateElastic(req, res, next) {
         try {
 
-            const result = await axios.post('http://localhost:9200', {
-
-            }, {
+            const result = await axios.get('http://localhost:9200', {
                 auth: {
                     username: 'elastic', password: process.env.ELASTIC_PASS,
                 }, headers: {
@@ -204,8 +202,7 @@ class RozetkaController {
             return res.json("done");
 
         } catch (error) {
-            console.error('Full error:', error.response.data.error);
-            console.error('Full error1:', error.request.data.error);
+            console.error('Full error:', error?.response?.data?.error);
             next(apiError.badRequest(`error: ${error.message}`));
         }
     }
