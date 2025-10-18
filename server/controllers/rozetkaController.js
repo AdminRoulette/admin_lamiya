@@ -40,6 +40,17 @@ class RozetkaController {
 
     async CreateElastic(req, res, next) {
         try {
+
+            const result = await axios.post('http://localhost:9200', {
+
+            }, {
+                auth: {
+                    username: 'elastic', password: process.env.ELASTIC_PASS,
+                }, headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
             // await axios.delete('http://localhost:9200/products', {
             //     auth: {
             //         username: 'elastic',
@@ -49,65 +60,65 @@ class RozetkaController {
             //     }
             // })
 
-            const result = await axios.put('http://localhost:9200/products', {
-                "settings": {
-                    "analysis": {
-                        "analyzer": {}
-                    }, "number_of_shards": 1, "number_of_replicas": 1
-                }, "mappings": {
-                    "properties": {
-                        "original": {
-                            "type": "boolean"
-                        }, "active": {
-                            "type": "boolean"
-                        }, "stock": {
-                            "type": "boolean"
-                        }, "product_id": {
-                            "type": "integer"
-                        }, "name": {
-                            "type": "text", "analyzer": "ukrainian", "fields": {
-                                "exact": {
-                                    "type": "text", "analyzer": "simple"
-                                }, "keyword": {
-                                    "type": "keyword"
-                                }
-                            }
-                        }, "name_ru": {
-                            "type": "text", "analyzer": "russian", "fields": {
-                                "keyword": {
-                                    "type": "keyword"
-                                }
-                            }
-                        }, "tags": {
-                            "type": "text", "analyzer": "ukrainian", "fields": {
-                                "exact": {
-                                    "type": "keyword"
-                                }
-                            }
-                        }, "tags_ru": {
-                            "type": "text", "analyzer": "russian", "fields": {
-                                "exact": {
-                                    "type": "keyword"
-                                }
-                            }
-                        }, "codes": {
-                            "type": "keyword"
-                        }, "filters": {
-                            "type": "text", "analyzer": "ukrainian", "fields": {
-                                "exact": {
-                                    "type": "keyword"
-                                }
-                            }
-                        },
-                    }
-                }
-            }, {
-                auth: {
-                    username: 'elastic', password: process.env.ELASTIC_PASS,
-                }, headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
+            // const result = await axios.put('http://localhost:9200/products', {
+            //     "settings": {
+            //         "analysis": {
+            //             "analyzer": {}
+            //         }, "number_of_shards": 1, "number_of_replicas": 1
+            //     }, "mappings": {
+            //         "properties": {
+            //             "original": {
+            //                 "type": "boolean"
+            //             }, "active": {
+            //                 "type": "boolean"
+            //             }, "stock": {
+            //                 "type": "boolean"
+            //             }, "product_id": {
+            //                 "type": "integer"
+            //             }, "name": {
+            //                 "type": "text", "analyzer": "ukrainian", "fields": {
+            //                     "exact": {
+            //                         "type": "text", "analyzer": "simple"
+            //                     }, "keyword": {
+            //                         "type": "keyword"
+            //                     }
+            //                 }
+            //             }, "name_ru": {
+            //                 "type": "text", "analyzer": "russian", "fields": {
+            //                     "keyword": {
+            //                         "type": "keyword"
+            //                     }
+            //                 }
+            //             }, "tags": {
+            //                 "type": "text", "analyzer": "ukrainian", "fields": {
+            //                     "exact": {
+            //                         "type": "keyword"
+            //                     }
+            //                 }
+            //             }, "tags_ru": {
+            //                 "type": "text", "analyzer": "russian", "fields": {
+            //                     "exact": {
+            //                         "type": "keyword"
+            //                     }
+            //                 }
+            //             }, "codes": {
+            //                 "type": "keyword"
+            //             }, "filters": {
+            //                 "type": "text", "analyzer": "ukrainian", "fields": {
+            //                     "exact": {
+            //                         "type": "keyword"
+            //                     }
+            //                 }
+            //             },
+            //         }
+            //     }
+            // }, {
+            //     auth: {
+            //         username: 'elastic', password: process.env.ELASTIC_PASS,
+            //     }, headers: {
+            //         'Content-Type': 'application/json'
+            //     }
+            // });
 
             // await axios.delete('http://localhost:9200/options', {}, {
             //     auth: {
@@ -119,81 +130,82 @@ class RozetkaController {
             //     }
             // })
 
-            const result2 = await axios.put('http://localhost:9200/options', {
-                "settings": {
-                    "analysis": {
-                        "analyzer": {}
-                    },
-                    "number_of_shards": 1,
-                    "number_of_replicas": 1
-                },
-                "mappings": {
-                    "properties": {
-                        "option_id": {
-                            "type": "integer"
-                        },
-                        "product_id": {
-                            "type": "integer"
-                        },
-                        "product_name": {
-                            "type": "text",
-                            "analyzer": "ukrainian",
-                            "fields": {
-                                "exact": {
-                                    "type": "text",
-                                    "analyzer": "simple"
-                                },
-                                "keyword": {
-                                    "type": "keyword"
-                                }
-                            }
-                        },
-                        "product_name_ru": {
-                            "type": "text",
-                            "analyzer": "russian",
-                            "fields": {
-                                "keyword": {
-                                    "type": "keyword"
-                                }
-                            }
-                        },
-                        "product_tags": {
-                            "type": "text",
-                            "analyzer": "ukrainian",
-                            "fields": {
-                                "exact": {
-                                    "type": "keyword"
-                                }
-                            }
-                        },
-                        "product_tags_ru": {
-                            "type": "text",
-                            "analyzer": "russian",
-                            "fields": {
-                                "exact": {
-                                    "type": "keyword"
-                                }
-                            }
-                        },
-                        "codes": {
-                            "type": "keyword"
-                        }
-                    }
-                }
-            }, {
-                auth: {
-                    username: 'elastic',
-                    password: process.env.ELASTIC_PASS,
-                },
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
+            // const result2 = await axios.put('http://localhost:9200/options', {
+            //     "settings": {
+            //         "analysis": {
+            //             "analyzer": {}
+            //         },
+            //         "number_of_shards": 1,
+            //         "number_of_replicas": 1
+            //     },
+            //     "mappings": {
+            //         "properties": {
+            //             "option_id": {
+            //                 "type": "integer"
+            //             },
+            //             "product_id": {
+            //                 "type": "integer"
+            //             },
+            //             "product_name": {
+            //                 "type": "text",
+            //                 "analyzer": "ukrainian",
+            //                 "fields": {
+            //                     "exact": {
+            //                         "type": "text",
+            //                         "analyzer": "simple"
+            //                     },
+            //                     "keyword": {
+            //                         "type": "keyword"
+            //                     }
+            //                 }
+            //             },
+            //             "product_name_ru": {
+            //                 "type": "text",
+            //                 "analyzer": "russian",
+            //                 "fields": {
+            //                     "keyword": {
+            //                         "type": "keyword"
+            //                     }
+            //                 }
+            //             },
+            //             "product_tags": {
+            //                 "type": "text",
+            //                 "analyzer": "ukrainian",
+            //                 "fields": {
+            //                     "exact": {
+            //                         "type": "keyword"
+            //                     }
+            //                 }
+            //             },
+            //             "product_tags_ru": {
+            //                 "type": "text",
+            //                 "analyzer": "russian",
+            //                 "fields": {
+            //                     "exact": {
+            //                         "type": "keyword"
+            //                     }
+            //                 }
+            //             },
+            //             "codes": {
+            //                 "type": "keyword"
+            //             }
+            //         }
+            //     }
+            // }, {
+            //     auth: {
+            //         username: 'elastic',
+            //         password: process.env.ELASTIC_PASS,
+            //     },
+            //     headers: {
+            //         'Content-Type': 'application/json'
+            //     }
+            // });
 
             return res.json("done");
 
         } catch (error) {
-            console.error('Full error:', error.data.error);
+            console.error('Full error:', error.response.data.error);
+            console.error('Full error1:', error.request.data.error);
             next(apiError.badRequest(`error: ${error.message}`));
         }
     }
