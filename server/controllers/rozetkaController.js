@@ -40,14 +40,14 @@ class RozetkaController {
 
     async CreateElastic(req, res, next) {
         try {
-            await axios.delete('http://localhost:9200/products', {
-                auth: {
-                    username: 'elastic',
-                    password: process.env.ELASTIC_PASS,
-                }, headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
+            // await axios.delete('http://localhost:9200/products', {
+            //     auth: {
+            //         username: 'elastic',
+            //         password: process.env.ELASTIC_PASS,
+            //     }, headers: {
+            //         'Content-Type': 'application/json'
+            //     }
+            // })
 
             const result = await axios.put('http://localhost:9200/products', {
                 "settings": {
@@ -109,15 +109,15 @@ class RozetkaController {
                 }
             });
 
-            await axios.delete('http://localhost:9200/options', {}, {
-                auth: {
-                    username: 'elastic',
-                    password: process.env.ELASTIC_PASS,
-                },
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
+            // await axios.delete('http://localhost:9200/options', {}, {
+            //     auth: {
+            //         username: 'elastic',
+            //         password: process.env.ELASTIC_PASS,
+            //     },
+            //     headers: {
+            //         'Content-Type': 'application/json'
+            //     }
+            // })
 
             const result2 = await axios.put('http://localhost:9200/options', {
                 "settings": {
