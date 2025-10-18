@@ -283,7 +283,7 @@ class CreateProduct {
                             codes: item.code.split(',').filter(Boolean)
                         }, {
                             auth: {
-                                username: 'elasticuser',
+                                username: 'elastic',
                                 password: process.env.ELASTIC_PASS,
                             },
                             headers: {
@@ -323,7 +323,7 @@ class CreateProduct {
                 stock: stock
             }, {
                 auth: {
-                    username: 'elasticuser',
+                    username: 'elastic',
                     password: process.env.ELASTIC_PASS,
                 }
             }).catch(() => {
@@ -519,7 +519,7 @@ class CreateProduct {
                                         codes: item.code.split(',').filter(Boolean)
                                     }, {
                                         auth: {
-                                            username: 'elasticuser',
+                                            username: 'elastic',
                                             password: process.env.ELASTIC_PASS,
                                         },
                                         headers: {
@@ -568,7 +568,7 @@ class CreateProduct {
                                             codes: item.code.split(',').filter(Boolean)
                                         }, {
                                             auth: {
-                                                username: 'elasticuser',
+                                                username: 'elastic',
                                                 password: process.env.ELASTIC_PASS,
                                             },
                                             headers: {
@@ -659,7 +659,7 @@ class CreateProduct {
                             stock: stock
                         }, {
                             auth: {
-                                username: 'elasticuser',
+                                username: 'elastic',
                                 password: process.env.ELASTIC_PASS,
                             }
                         }).catch(() => {

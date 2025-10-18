@@ -36,7 +36,7 @@ function UpdateStock(IdsArray) {
                         }
                     },{
                         auth: {
-                            username: 'elasticuser',
+                            username: 'elastic',
                             password: process.env.ELASTIC_PASS,
                         }
                     }).catch(()=>{});
