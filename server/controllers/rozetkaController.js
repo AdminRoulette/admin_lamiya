@@ -31,7 +31,7 @@ const sharp = require("sharp");
 class RozetkaController {
     async Marketplace(req, res, next) {
         try {
-            return res.json(await Marketplace());
+            // return res.json(await Marketplace());
         } catch (error) {
             console.error('Full error:', error.message);
             next(apiError.badRequest(`error: ${error.message}`));
@@ -201,23 +201,23 @@ class RozetkaController {
 
     async StorageExcel(req, res, next) {
         try {
-            const data = await UpdateParfumeStorage();
-            const workbook = new ExcelJS.Workbook();
-            const worksheet = workbook.addWorksheet('Замовлення');
-            worksheet.columns = [{key: 'list', width: 10}, {key: 'code', width: 10}, {key: 'name', width: 140}];
-
-            for (const item of data.new) {
-                if (item.list !== 's2') {
-                    worksheet.addRow({
-                        list: item.list, code: item.code.split("-")[1], name: item.full_name
-                    });
-                }
-            }
-
-            const buffer = await workbook.xlsx.writeBuffer();
-            res.setHeader('Content-Disposition', 'attachment; filename="generated.xlsx"');
-            res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-            return res.send(buffer);
+            // const data = await UpdateParfumeStorage();
+            // const workbook = new ExcelJS.Workbook();
+            // const worksheet = workbook.addWorksheet('Замовлення');
+            // worksheet.columns = [{key: 'list', width: 10}, {key: 'code', width: 10}, {key: 'name', width: 140}];
+            //
+            // for (const item of data.new) {
+            //     if (item.list !== 's2') {
+            //         worksheet.addRow({
+            //             list: item.list, code: item.code.split("-")[1], name: item.full_name
+            //         });
+            //     }
+            // }
+            //
+            // const buffer = await workbook.xlsx.writeBuffer();
+            // res.setHeader('Content-Disposition', 'attachment; filename="generated.xlsx"');
+            // res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            // return res.send(buffer);
         } catch (err) {
             next(apiError.badRequest(`error: ${err.message}`));
         }
