@@ -355,11 +355,6 @@ class DeviceController {
                             }
                             OptionElems.sell_type === "on_tab" || OptionElems.sell_type === "sell_bottle" ? options_on_tab.push(option_obj) : options.push(option_obj);
                         }
-                        if (status === 'ready' && !(deviceElement.deviceoptions.length > 0 &&
-                            deviceElement.deviceoptions.every(option => option.deviceimages.length > 0))) continue;
-
-                        if (status === 'moderation' && (deviceElement.deviceoptions.length > 0 &&
-                            deviceElement.deviceoptions.every(option => option.deviceimages.length > 0))) continue;
 
                         devArr.push({
                             part_count: deviceElement.parfumepart?.partcount,
