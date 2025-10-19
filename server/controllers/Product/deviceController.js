@@ -311,12 +311,12 @@ class DeviceController {
             if (value && ids.length === 0) return next(apiError.badRequest("Товари не знайдено"));
 
             if (status) {
-                if (status === 'on-tab') {
-                    where = {...where, '$product_categories.categoryId$': 89, active: true};
-                } else if (status === 'fluid') {
-                    where = {...where, '$product_categories.categoryId$': 95, active: false};
-                    order = [['name', 'ASC'], [DeviceOptions, 'index', 'ASC'], [Product_Category, 'category', "level", "ASC"], [Product_Category, "id", "ASC"], [DeviceOptions, DeviceImage, 'index', 'ASC']]
-                } else if (status === 'ready') {
+                if (status === 'active') {
+                    where = {
+                        ...where,
+                        status: 'active'
+                    };
+                }else if (status === 'ready') {
                     where = {
                         ...where,
                         status: 'ready'
@@ -327,7 +327,7 @@ class DeviceController {
                     where = {...where, active: false};
                 }
             }
-
+            console.log(where)
             await Device.findAll({
                 where,
                 order: status === 'ready' || status === 'moderation'
@@ -336,10 +336,7 @@ class DeviceController {
                 include: [{model: Brand}, {
                     model: Product_Category,
                     include: [{model: Category, as: 'category'}]
-                }, {
-                    model: ParfumePart
-                }, {model: BodyCarePart},
-                    {model: DeviceOptions, include: [{model: DeviceImage}]}]
+                }, {model: DeviceOptions, include: [{model: DeviceImage}]}]
             }).then(async (deviceArray) => {
                 for (const deviceElement of deviceArray) {
                     if (deviceElement) {

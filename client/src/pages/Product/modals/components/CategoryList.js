@@ -38,7 +38,9 @@ const CategoryList = ({categories, setCategories, setFilterList}) => {
         setCategoryArray5(categoryList.filter(item => ((+item.level === 5) && categoryIds5.includes(+item.parentId))))
 
         // if(categories.length > 0){
-            getFiltersCategory({id:categories.sort((a, b) => a.level - b.level || a.product_category_id - b.product_category_id)[0]?.id})
+            getFiltersCategory({id:undefined}
+                // {id:categories.sort((a, b) => a.level - b.level || a.product_category_id - b.product_category_id)[0]?.id}
+            )
                 .then((filterList) => setFilterList(filterList))
                 .catch(error => {
                     toast(error.message)
@@ -218,7 +220,7 @@ const CategoryList = ({categories, setCategories, setFilterList}) => {
                             )
                         })}
                     </div>
-                    <input value={value3} placeholder='Категорії 4 рівня' type="text" maxLength={254}
+                    <input value={value4} placeholder='Категорії 4 рівня' type="text" maxLength={254}
                            onClick={uploadCategory}
                            onChange={(e) => setInputValueOnChange(e.target.value)}/>
                     {categoryArray4.length > 0
@@ -245,7 +247,7 @@ const CategoryList = ({categories, setCategories, setFilterList}) => {
                             )
                         })}
                     </div>
-                    <input value={value3} placeholder='Категорії 5 рівня' type="text" maxLength={254}
+                    <input value={value5} placeholder='Категорії 5 рівня' type="text" maxLength={254}
                            onClick={uploadCategory}
                            onChange={(e) => setInputValueOnChange(e.target.value)}/>
                     {categoryArray5.length > 0

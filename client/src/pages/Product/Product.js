@@ -148,12 +148,8 @@ const Product = () => {
             </div>
             <div className={classes.company_btn_block}>
                 <button
-                    className={status === 'on-tab' ? classes.product_company_btn_active : classes.product_company_btn}
-                    onClick={() => ChangeStatus('on-tab')}>Розпив
-                </button>
-                <button
-                    className={status === 'fluid' ? classes.product_company_btn_active : classes.product_company_btn}
-                    onClick={() => ChangeStatus('fluid')}>Аналоги
+                    className={status === 'active' ? classes.product_company_btn_active : classes.product_company_btn}
+                    onClick={() => ChangeStatus('active')}>Активні
                 </button>
                 <button
                     className={status === 'moderation' ? classes.product_company_btn_active : classes.product_company_btn}
