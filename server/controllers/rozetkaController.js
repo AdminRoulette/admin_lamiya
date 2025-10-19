@@ -381,7 +381,7 @@ class RozetkaController {
                 await StockHistory.destroy({where: {option_id: id}})
                 await OrderDevice.destroy({where: {option_id: id}})
                 await WishList.destroy({where: {deviceoptionId: id}})
-                await DeviceOptions.destroy({where: {id}})
+                await DeviceOptions.destroy({where: {deviceId:id}})
                 await BasketDevice.destroy({where: {deviceoptionId: id}})
             }
             for (const rating of device.ratings) {
@@ -450,14 +450,14 @@ class RozetkaController {
                 })
             }
 
-            await DeviceOptions.destroy({where: {id}})
+
             await SupplyProducts.destroy({where: {option_id: id}})
             await PriceTags.destroy({where: {option_id: id}})
             await StockHistory.destroy({where: {option_id: id}})
             await OrderDevice.destroy({where: {option_id: id}})
             await WishList.destroy({where: {deviceoptionId: id}})
             await BasketDevice.destroy({where: {deviceoptionId: id}})
-
+            await DeviceOptions.destroy({where: {id}})
 
             return res.json("deleted");
         } catch (error) {
@@ -501,7 +501,7 @@ class RozetkaController {
             const offers = shop.offers.offer
 
             const array = [];
-            for (let i = 315; i < offers.length; i++) {
+            for (let i = 0; i < offers.length; i++) {
                 const offer = offers[i]
                 let fix_offer = offer['#'] ? offer['#'] : Object.entries(offer).map(([key, value]) => ({[key]: value}))
                 let finalOffer = {};
@@ -538,7 +538,6 @@ class RozetkaController {
                         )
                         final_obj.brandId = brand.id
                     }
-
                 }
                 if (item.description_ua) {
                     final_obj.disc = `<p>${item.description_ua.replaceAll("»","ы")}</p>`;
@@ -560,12 +559,6 @@ class RozetkaController {
                 }
                 if (await Device.findOne({where: {link: await Transliterations(final_obj.name)}})) continue;
 
-                console.log({
-                    ...final_obj,
-                    active: false,
-                    status: "hidden",
-                    link: await Transliterations(final_obj.name)
-                })
                 const device = await Device.create({
                     ...final_obj,
                     active: false,
@@ -585,7 +578,6 @@ class RozetkaController {
                         for(const paramCode of paramCodes) {
                             const value = await FilterValues.findOne({where: {name: paramCode}})
                             if (value) {
-                                console.log({product_id: device.id, filter_value_id: value.id})
                                 await FilterProductValue.findOrCreate({
                                     where: {
                                         product_id: device.id,
