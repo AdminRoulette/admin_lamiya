@@ -138,7 +138,7 @@ async function Marketplace() {
                 limit: 300,
                 offset,
                 order: [['id', 'ASC'],[DeviceOptions, 'index', 'ASC'],[DeviceOptions, DeviceImage, 'index', 'ASC'], [Product_Category,'category', "level", "ASC"], [Product_Category, "id", "ASC"], [FilterValues, 'id', 'ASC']],
-                attributes: ['name', 'name_ru', 'disc', 'disc_ru', 'series', 'series_ru', 'link', 'id', 'company', 'brandId'],
+                attributes: ['name','tags', 'tags_ru','name_ru', 'disc', 'disc_ru', 'series', 'series_ru', 'link', 'id', 'company', 'brandId'],
                 include: [{
                     model: FilterValues, through:{attributes: []}, attributes: ["name","name_ru", 'id'],
                     include: [{
