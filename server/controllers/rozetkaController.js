@@ -31,7 +31,7 @@ const sharp = require("sharp");
 class RozetkaController {
     async Marketplace(req, res, next) {
         try {
-            // return res.json(await Marketplace());
+            return res.json(await Marketplace());
         } catch (error) {
             console.error('Full error:', error.message);
             next(apiError.badRequest(`error: ${error.message}`));

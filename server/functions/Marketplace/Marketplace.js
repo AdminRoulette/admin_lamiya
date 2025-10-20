@@ -23,6 +23,7 @@ const path = require("path");
 const fs = require("fs");
 const KastaXML = require("./Kasta/KastaXML");
 const kastaHeaderXML = require("./Kasta/kastaHeaderXML");
+const XMLForEdit = require("./XMLForEdit");
 
 async function Marketplace() {
     try {
@@ -39,36 +40,40 @@ async function Marketplace() {
         const formatter = new Intl.DateTimeFormat('en-US', options);
         const formattedDate = formatter.format(now).replace(',', '');
 
+        const TEMP_FILE_EDIT_PATH = path.join(__dirname, 'productsForEdit.xml');
         const TEMP_FILE_GOOGLE_PATH = path.join(__dirname, 'temp_google_feed.xml');
         const TEMP_FILE_ROZETKA_PATH = path.join(__dirname, 'temp_rozetka_feed.xml');
         const TEMP_FILE_EPICENTER_PATH = path.join(__dirname, 'temp_epicenter_feed.xml');
         const TEMP_FILE_PROM_PATH = path.join(__dirname, 'temp_prom_feed.xml');
         const TEMP_FILE_KASTA_PATH = path.join(__dirname, 'temp_kasta_feed.xml');
 
+        const fileStreamEdit = fs.createWriteStream(TEMP_FILE_EDIT_PATH);
         const fileStreamGoogle = fs.createWriteStream(TEMP_FILE_GOOGLE_PATH);
         const fileStreamRozetka = fs.createWriteStream(TEMP_FILE_ROZETKA_PATH);
         const fileStreamEpicenter = fs.createWriteStream(TEMP_FILE_EPICENTER_PATH);
         const fileStreamProm = fs.createWriteStream(TEMP_FILE_PROM_PATH);
         const fileStreamKasta = fs.createWriteStream(TEMP_FILE_KASTA_PATH);
 
-        fileStreamGoogle.write('<rss xmlns:g="http://base.google.com/ns/1.0" version="2.0">\n<channel>\n<title>Lamiya.com.ua</title>\n<link>https://lamiya.com.ua</link>\n');
-        fileStreamRozetka.write('<yml_catalog date="' + formattedDate + '"><shop>\n');
-        fileStreamProm.write('<yml_catalog date="' + formattedDate + '"><shop>\n');
-        fileStreamKasta.write('<yml_catalog date="' + formattedDate + '"><shop>\n');
-        fileStreamEpicenter.write('<yml_catalog date="' + formattedDate + '"><offers>\n');
-
-        fileStreamRozetka.write(create().ele(await RozetkaHeaderXML()).end({headless: true, prettyPrint: true}));
-        fileStreamProm.write(create().ele(await PromCategories()).end({headless: true, prettyPrint: true}));
-        fileStreamKasta.write(create().ele(await kastaHeaderXML()).end({headless: true, prettyPrint: true}));
-
-        fileStreamRozetka.write('\n<currencies>\n<currency id="UAH" rate="1"/>\n</currencies>\n<name>Iveris</name>\n<url>https://lamiya.com.ua</url>\n<offers>\n');
-        fileStreamProm.write('\n<offers>\n');
-        fileStreamKasta.write('\n<currencies>\n<companyName>Lamiya</companyName>\n<currency id="UAH" rate="1"/>\n</currencies>\n<name>lamiya.com.ua</name>\n<url>https://lamiya.com.ua</url><offers>\n');
+        fileStreamEdit.write('<yml_catalog date="' + formattedDate + '">\n');
+        // fileStreamGoogle.write('<rss xmlns:g="http://base.google.com/ns/1.0" version="2.0">\n<channel>\n<title>Lamiya.com.ua</title>\n<link>https://lamiya.com.ua</link>\n');
+        // fileStreamRozetka.write('<yml_catalog date="' + formattedDate + '"><shop>\n');
+        // fileStreamProm.write('<yml_catalog date="' + formattedDate + '"><shop>\n');
+        // fileStreamKasta.write('<yml_catalog date="' + formattedDate + '"><shop>\n');
+        // fileStreamEpicenter.write('<yml_catalog date="' + formattedDate + '"><offers>\n');
+        //
+        // fileStreamRozetka.write(create().ele(await RozetkaHeaderXML()).end({headless: true, prettyPrint: true}));
+        // fileStreamProm.write(create().ele(await PromCategories()).end({headless: true, prettyPrint: true}));
+        // fileStreamKasta.write(create().ele(await kastaHeaderXML()).end({headless: true, prettyPrint: true}));
+        //
+        // fileStreamRozetka.write('\n<currencies>\n<currency id="UAH" rate="1"/>\n</currencies>\n<name>Iveris</name>\n<url>https://lamiya.com.ua</url>\n<offers>\n');
+        // fileStreamProm.write('\n<offers>\n');
+        // fileStreamKasta.write('\n<currencies>\n<companyName>Lamiya</companyName>\n<currency id="UAH" rate="1"/>\n</currencies>\n<name>lamiya.com.ua</name>\n<url>https://lamiya.com.ua</url><offers>\n');
 
         let offset = 0
         const limit = 300;
         while (true) {
             const products = await getProductsList(offset);
+            console.log(products.length);
             for (let productItem of products) {
                 const groupedObject = {};
                 for (const value of productItem.filter_values) {
@@ -90,33 +95,37 @@ async function Marketplace() {
                     ...productItem.dataValues,
                     filters:groupedObject
                 };
-                fileStreamGoogle.write(create().ele({item: await GoogleMerchant(product.deviceoptions, product)}).end({
+                // fileStreamGoogle.write(create().ele({item: await GoogleMerchant(product.deviceoptions, product)}).end({
+                //     headless: true,
+                //     prettyPrint: true
+                // }));
+                fileStreamEdit.write(create().ele({item: await XMLForEdit(product)}).end({
                     headless: true,
                     prettyPrint: true
                 }));
-                for (const option of product.deviceoptions) {
-                        fileStreamProm.write(create().ele(await PromXML(option, product)).end({
-                            headless: true,
-                            prettyPrint: true
-                        }));
-
-                    if (!(product.company === 'hillary' || option.sell_type === "on_tab")) {
-                        fileStreamKasta.write(create().ele(await KastaXML(option, product)).end({
-                            headless: true,
-                            prettyPrint: true
-                        }));
-                    }
-                    if (option.sell_type !== "on_tab") {
-                            fileStreamRozetka.write(create().ele(await RozetkaXML(option, product)).end({
-                                headless: true,
-                                prettyPrint: true
-                            }));
-                        fileStreamEpicenter.write(create().ele(await EpicenterXML(option, product)).end({
-                            headless: true,
-                            prettyPrint: true
-                        }));
-                    }
-                }
+                // for (const option of product.deviceoptions) {
+                //         fileStreamProm.write(create().ele(await PromXML(option, product)).end({
+                //             headless: true,
+                //             prettyPrint: true
+                //         }));
+                //
+                //     if (!(product.company === 'hillary' || option.sell_type === "on_tab")) {
+                //         fileStreamKasta.write(create().ele(await KastaXML(option, product)).end({
+                //             headless: true,
+                //             prettyPrint: true
+                //         }));
+                //     }
+                //     if (option.sell_type !== "on_tab") {
+                //             fileStreamRozetka.write(create().ele(await RozetkaXML(option, product)).end({
+                //                 headless: true,
+                //                 prettyPrint: true
+                //             }));
+                //         fileStreamEpicenter.write(create().ele(await EpicenterXML(option, product)).end({
+                //             headless: true,
+                //             prettyPrint: true
+                //         }));
+                //     }
+                // }
             }
             if (products.length < limit) {
                 break;
@@ -128,9 +137,8 @@ async function Marketplace() {
             return await Device.findAll({
                 limit: 300,
                 offset,
-                where: {active: true},
                 order: [['id', 'ASC'],[DeviceOptions, 'index', 'ASC'],[DeviceOptions, DeviceImage, 'index', 'ASC'], [Product_Category,'category', "level", "ASC"], [Product_Category, "id", "ASC"], [FilterValues, 'id', 'ASC']],
-                attributes: ['name', 'name_ru', 'disc', 'disc_ru', 'series', 'series_ru', 'link', 'id', 'company', 'countryId', 'brandId'],
+                attributes: ['name', 'name_ru', 'disc', 'disc_ru', 'series', 'series_ru', 'link', 'id', 'company', 'brandId'],
                 include: [{
                     model: FilterValues, through:{attributes: []}, attributes: ["name","name_ru", 'id'],
                     include: [{
@@ -138,7 +146,7 @@ async function Marketplace() {
                     }]
                 }, {
                     model: Brand, required: true, attributes: ["name",'name_ru', 'id']
-                }, {model: BodyCarePart, required: false},
+                },
                     {
                         model: Product_Category,
                         order: [['category', "level", "ASC"], ["id", "ASC"]],
@@ -155,18 +163,19 @@ async function Marketplace() {
             })
         }
 
+        fileStreamEdit.write('</yml_catalog>\n');
+        // fileStreamGoogle.write('</channel>\n</rss>\n');
+        // fileStreamRozetka.write('</offers>\n</shop>\n</yml_catalog>\n');
+        // fileStreamEpicenter.write('</offers>\n</yml_catalog>\n');
+        // fileStreamProm.write('</offers>\n</shop>\n</yml_catalog>\n');
+        // fileStreamKasta.write('</offers>\n</shop>\n</yml_catalog>\n');
 
-        fileStreamGoogle.write('</channel>\n</rss>\n');
-        fileStreamRozetka.write('</offers>\n</shop>\n</yml_catalog>\n');
-        fileStreamEpicenter.write('</offers>\n</yml_catalog>\n');
-        fileStreamProm.write('</offers>\n</shop>\n</yml_catalog>\n');
-        fileStreamKasta.write('</offers>\n</shop>\n</yml_catalog>\n');
-
-        fileStreamGoogle.end();
-        fileStreamRozetka.end();
-        fileStreamEpicenter.end();
-        fileStreamProm.end();
-        fileStreamKasta.end();
+        fileStreamEdit.end();
+        // fileStreamGoogle.end();
+        // fileStreamRozetka.end();
+        // fileStreamEpicenter.end();
+        // fileStreamProm.end();
+        // fileStreamKasta.end();
 
         const deleteFile = (filePath) => {
             fs.unlink(filePath, (err) => {
@@ -192,11 +201,12 @@ async function Marketplace() {
             region: 'eu-central-1', accessKeyId, secretAccessKey
         })
 
-        await uploadXML("rozetkaXMLfile.xml", "devRozetkaXMLfile.xml", TEMP_FILE_ROZETKA_PATH)
-        await uploadXML("epicenterXMLfile.xml", "devEpicenterXMLfile.xml", TEMP_FILE_EPICENTER_PATH)
-        await uploadXML("promXMLfile.xml", "devPromXMLfile.xml", TEMP_FILE_PROM_PATH)
-        await uploadXML("kastaXMLfile.xml", "devKastaXMLfile.xml", TEMP_FILE_KASTA_PATH)
-        await uploadXML("googleXMLfile.xml", "devGoogleXMLfile.xml", TEMP_FILE_GOOGLE_PATH)
+        await uploadXML("productForEdit.xml", "devProductForEdit.xml", TEMP_FILE_EDIT_PATH)
+        // await uploadXML("rozetkaXMLfile.xml", "devRozetkaXMLfile.xml", TEMP_FILE_ROZETKA_PATH)
+        // await uploadXML("epicenterXMLfile.xml", "devEpicenterXMLfile.xml", TEMP_FILE_EPICENTER_PATH)
+        // await uploadXML("promXMLfile.xml", "devPromXMLfile.xml", TEMP_FILE_PROM_PATH)
+        // await uploadXML("kastaXMLfile.xml", "devKastaXMLfile.xml", TEMP_FILE_KASTA_PATH)
+        // await uploadXML("googleXMLfile.xml", "devGoogleXMLfile.xml", TEMP_FILE_GOOGLE_PATH)
 
 
         return "done"
