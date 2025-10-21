@@ -118,8 +118,7 @@ class DeviceController {
 
                 return res.json({
                     filters: [...groupedMap.values()],
-                    disc: deviceElement.disc,
-                    country: deviceElement.country.name
+                    disc: deviceElement.disc
                 })
             });
 
