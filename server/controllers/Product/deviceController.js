@@ -80,9 +80,7 @@ class DeviceController {
     async getLongProductInfo(req, res, next) {
         try {
             const {id} = req.params;
-            await Device.findOne({
-                where: {id}, include: [{model: Country}]
-            }).then(async (deviceElement) => {
+            await Device.findOne({where: {id}}).then(async (deviceElement) => {
 
                 const groupedMap = new Map();
 
