@@ -495,11 +495,12 @@ class RozetkaController {
             const offers = shop.items.item
 
             const array = [];
-            for (let i = 0; i < offers.length; i++) {
+            for (let i = 243; i < offers.length; i++) {
                 const offer = offers[i]
                 let fix_offer = offer['#'] ? offer['#'] : Object.entries(offer).map(([key, value]) => ({[key]: value}))
                 let finalOffer = {};
                 finalOffer['code'] = offer['@'] ? offer['@'].id : offer['@id']
+
                 for (const item of fix_offer) {
                     const [key, value] = Object.entries(item)[0];
                     if (finalOffer[key]) {
@@ -795,7 +796,7 @@ class RozetkaController {
 
             return res.json(array);
         } catch (error) {
-            console.error('Full error:', error);
+            TelegramMsg("TECH", `test1 ${error.message}`)
             next(apiError.badRequest(`error: ${error.message}`));
         }
     }
