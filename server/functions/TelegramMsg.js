@@ -1,4 +1,8 @@
 const axios = require("axios");
+const https = require("https");
+const agent = new https.Agent({
+    family: 4
+});
 
 async function TelegramMsg(id, text) {
     try {
@@ -10,6 +14,9 @@ async function TelegramMsg(id, text) {
             chat_id,
             text: text,
             parse_mode: 'HTML'
+        }, {
+            httpsAgent: agent,
+            headers: { 'Content-Type': 'application/json' }
         });
     } catch (e) {
         console.error('Telegram error:', e?.response?.data || e.message);
