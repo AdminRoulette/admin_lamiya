@@ -523,7 +523,6 @@ class RozetkaController {
 
             for (const item of array) {
                 let final_obj = {}
-                console.log(item)
                 if (item.vendor) {
                     const brand = await Brand.findOne({where: {name: item.vendor}})
                     if (brand) {
@@ -535,7 +534,7 @@ class RozetkaController {
                         final_obj.brandId = brand.id
                     }
                 }
-                if (item.description_ua) {
+                if (typeof item.description_ua === 'string' && item.description_ua.trim() !== '') {
                     const str = item.description_ua.length > 1999 ? item.description_ua.slice(0, 1999) : item.description_ua
                     if(str) {
                         final_obj.disc = `${str
@@ -547,7 +546,7 @@ class RozetkaController {
                         }`;
                     }
                 }
-                if (item.description) {
+                if (typeof item.description === 'string' && item.description.trim() !== '') {
                     const str = item.description.length > 1999 ? item.description.slice(0, 1999) : item.description
                     if(str) {
                         final_obj.disc_ru = str
@@ -810,8 +809,9 @@ class RozetkaController {
 
     async Test2(req, res, next) {
         try {
-            const str = "TestString".slice(0, 4)
-            return res.json(str);
+
+
+            return res.json("123");
         } catch (error) {
             console.error('Full error:', error.message);
             next(apiError.badRequest(`error: ${error.message}`));
