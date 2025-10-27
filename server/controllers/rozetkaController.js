@@ -523,6 +523,7 @@ class RozetkaController {
 
             for (const item of array) {
                 let final_obj = {}
+                console.log(item)
                 if (item.vendor) {
                     const brand = await Brand.findOne({where: {name: item.vendor}})
                     if (brand) {
@@ -549,12 +550,12 @@ class RozetkaController {
                 if (item.description) {
                     const str = item.description.length > 1999 ? item.description.slice(0, 1999) : item.description
                     if(str) {
-                        final_obj.disc_ru = `${str
+                        final_obj.disc_ru = str
                             .replaceAll("&amp;", "&")
                             .replaceAll(`&quot;`, '"')
                             .replaceAll("&gt;", ">")
                             .replaceAll("&lt;", "<")
-                            .replaceAll(`&apos;`, "'")}`;
+                            .replaceAll(`&apos;`, "'");
                     }
                 }
                 if (item.keywords) {
@@ -809,8 +810,8 @@ class RozetkaController {
 
     async Test2(req, res, next) {
         try {
-
-            return res.json("test1");
+            const str = "TestString".slice(0, 4)
+            return res.json(str);
         } catch (error) {
             console.error('Full error:', error.message);
             next(apiError.badRequest(`error: ${error.message}`));
