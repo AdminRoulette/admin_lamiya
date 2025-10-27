@@ -554,10 +554,10 @@ class RozetkaController {
                         .replaceAll(`&apos;`, "'")}`;
                 }
                 if (item.keywords) {
-                    final_obj.tags_ru = item.keywords;
+                    final_obj.tags_ru = item.keywords.length > 1023 ? item.keywords.slice(0, 1023) : item.keywords;
                 }
                 if (item.keywords_ua) {
-                    final_obj.tags = item.keywords_ua;
+                    final_obj.tags = item.keywords_ua.length > 1023 ? item.keywords_ua.slice(0, 1023) : item.keywords_ua;
                 }
                 if (item.name) {
                     final_obj.name_ru = item.name.replaceAll("Силikonовий", "Силиконовый").replaceAll("силikonовий", "силиконовый");
