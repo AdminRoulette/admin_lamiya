@@ -536,22 +536,26 @@ class RozetkaController {
                 }
                 if (item.description_ua) {
                     const str = item.description_ua.length > 1999 ? item.description_ua.slice(0, 1999) : item.description_ua
-                    final_obj.disc = `${str
-                        .replaceAll("&amp;", "&")
-                        .replaceAll(`&quot;`, '"')
-                        .replaceAll("&gt;", ">")
-                        .replaceAll("&lt;", "<")
-                        .replaceAll(`&apos;`, "'")
-                    }`;
+                    if(str) {
+                        final_obj.disc = `${str
+                            .replaceAll("&amp;", "&")
+                            .replaceAll(`&quot;`, '"')
+                            .replaceAll("&gt;", ">")
+                            .replaceAll("&lt;", "<")
+                            .replaceAll(`&apos;`, "'")
+                        }`;
+                    }
                 }
                 if (item.description) {
                     const str = item.description.length > 1999 ? item.description.slice(0, 1999) : item.description
-                    final_obj.disc_ru = `${str
-                        .replaceAll("&amp;", "&")
-                        .replaceAll(`&quot;`, '"')
-                        .replaceAll("&gt;", ">")
-                        .replaceAll("&lt;", "<")
-                        .replaceAll(`&apos;`, "'")}`;
+                    if(str) {
+                        final_obj.disc_ru = `${str
+                            .replaceAll("&amp;", "&")
+                            .replaceAll(`&quot;`, '"')
+                            .replaceAll("&gt;", ">")
+                            .replaceAll("&lt;", "<")
+                            .replaceAll(`&apos;`, "'")}`;
+                    }
                 }
                 if (item.keywords) {
                     final_obj.tags_ru = item.keywords.length > 1023 ? item.keywords.slice(0, 1023) : item.keywords;
@@ -584,11 +588,11 @@ class RozetkaController {
                         for (const param of item.param) {
                             if (!param['#']) continue;
                             if (!param['@name']) continue;
-                            const paramName = param['@name'].replaceAll("»", "ы")
+                            const paramName = param['@name']
                             if (paramName === 'Код товару') continue;
                             if (paramName === 'Виробник') continue;
 
-                            const paramCodes = param['#'].replaceAll("»", "ы").split(',')
+                            const paramCodes = param['#'].split(',')
                             for (const paramCode of paramCodes) {
                                 const value = await FilterValues.findOne({where: {name: paramCode}})
                                 if (value) {
