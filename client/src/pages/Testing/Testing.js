@@ -19,7 +19,7 @@ const Testing = () => {
 
     const [deleteId, setDeleteId] = useState(null)
     const [storageName, setStorageName] = useState("")
-    const storageArray = [{name:"it"},{name:"luc"},{name:"kosm"}]
+    const storageArray = [{name:"it"},{name:"luc"},{name:"kos"}]
 
     const selectFile = async (event) => {
         const file = event.target.files[0];
@@ -121,7 +121,7 @@ const Testing = () => {
                     <button className="second_btn" onClick={async () => await Test1().then((data) => {
                         toast("Виконано")
                     }).catch(error => {
-                        toast.error(error.response.data.message)
+                        toast.error(error.response?.data?.message)
                     })}>Test1</button>
                 </div>
                 <div>

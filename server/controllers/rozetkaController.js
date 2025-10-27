@@ -381,7 +381,7 @@ class RozetkaController {
                 await StockHistory.destroy({where: {option_id: id}})
                 await OrderDevice.destroy({where: {option_id: id}})
                 await WishList.destroy({where: {deviceoptionId: id}})
-                await DeviceOptions.destroy({where: {deviceId:id}})
+                await DeviceOptions.destroy({where: {deviceId: id}})
                 await BasketDevice.destroy({where: {deviceoptionId: id}})
             }
             for (const rating of device.ratings) {
@@ -483,7 +483,7 @@ class RozetkaController {
                 return new Promise(resolve => setTimeout(resolve, ms));
             }
 
-            const filePath = './storage-files/lucom.xml';
+            const filePath = './storage-files/kosmotech.xml';
             const buffer = fs.readFileSync(filePath);
 
             const xml = iconv.decode(Buffer.from(buffer), 'utf-8');
@@ -491,14 +491,8 @@ class RozetkaController {
             const doc = create(xml);
             const obj = doc.end({format: 'object'});
 
-            const shop = obj.yml_catalog.shop
-            let categories = {}
-
-            for (const category of shop.categories.category) {
-                categories[category['@id']] = category['#'];
-            }
-
-            const offers = shop.offers.offer
+            const shop = obj.shop
+            const offers = shop.items.item
 
             const array = [];
             for (let i = 0; i < offers.length; i++) {
@@ -540,114 +534,144 @@ class RozetkaController {
                     }
                 }
                 if (item.description_ua) {
-                    final_obj.disc = `<p>${item.description_ua.replaceAll("»","ы")}</p>`;
+                    final_obj.disc = `${item?.description_ua
+                        .replaceAll("&amp;", "&")
+                        .replaceAll(`&quot;`, '"')
+                        .replaceAll("&gt;", ">")
+                        .replaceAll("&lt;", "<")
+                        .replaceAll(`&apos;`, "'")
+                    }`;
                 }
                 if (item.description) {
-                    final_obj.disc_ru = `<p>${item.description.replaceAll("»","ы")}</p>`;
+                    final_obj.disc_ru = `${item.description
+                        .replaceAll("&amp;", "&")
+                        .replaceAll(`&quot;`, '"')
+                        .replaceAll("&gt;", ">")
+                        .replaceAll("&lt;", "<")
+                        .replaceAll(`&apos;`, "'")}`;
                 }
                 if (item.keywords) {
-                    final_obj.tags_ru = item.keywords.replaceAll("»","ы");
+                    final_obj.tags_ru = item.keywords;
                 }
                 if (item.keywords_ua) {
-                    final_obj.tags = item.keywords_ua.replaceAll("»","ы");
+                    final_obj.tags = item.keywords_ua;
                 }
                 if (item.name) {
-                    final_obj.name_ru = item.name.replaceAll("»","ы");
+                    final_obj.name_ru = item.name.replaceAll("Силikonовий", "Силиконовый").replaceAll("силikonовий", "силиконовый");
                 }
-                if (item.name_ua) {
-                    final_obj.name = `${item.name_ua.replaceAll("»","ы")}  (категорія: ${categories[item.categoryId]})`;
+                if (item.name_ua || item.name) {
+                    final_obj.name = `${item.name_ua ? item.name_ua : item.name}`;
                 }
+                let deviceId = null;
                 if (await Device.findOne({where: {link: await Transliterations(final_obj.name)}})) continue;
 
-                const device = await Device.create({
-                    ...final_obj,
-                    active: false,
-                    status: "hidden",
-                    link: await Transliterations(final_obj.name)
-                })
+                const isCase = item.name.toLowerCase().includes("чохол")
+                const caseProduct = await Device.findOne({where: {name: {[Op.iLike]: `${final_obj.name.split('|')[0].trim()}%`}}})
+                if (caseProduct && isCase) {
+                    deviceId = caseProduct.id;
+                } else {
+                    const device = await Device.create({
+                        ...final_obj,
+                        active: false,
+                        status: "hidden",
+                        link: await Transliterations(final_obj.name)
+                    })
+                    deviceId = device.id
+                    if (item.param) {
+                        for (const param of item.param) {
+                            if (!param['#']) continue;
+                            if (!param['@name']) continue;
+                            const paramName = param['@name'].replaceAll("»", "ы")
+                            if (paramName === 'Код товару') continue;
+                            if (paramName === 'Виробник') continue;
 
-                if (item.param) {
-                    for (const param of item.param) {
-                        if (!param['#']) continue;
-                        if (!param['@name']) continue;
-                        const paramName = param['@name'].replaceAll("»","ы")
-                        if (paramName === 'Код товару') continue;
-                        if (paramName === 'Виробник') continue;
-
-                        const paramCodes= param['#'].replaceAll("»","ы").split(',')
-                        for(const paramCode of paramCodes) {
-                            const value = await FilterValues.findOne({where: {name: paramCode}})
-                            if (value) {
-                                await FilterProductValue.findOrCreate({
-                                    where: {
-                                        product_id: device.id,
-                                        filter_value_id: value.id
-                                    },
-                                    defaults: {
-                                        product_id: device.id,
-                                        filter_value_id: value.id
-                                    }
-                                });
-                            } else {
-                                const filter = await Filters.findOne({where: {name: paramName}})
-                                if (filter) {
-                                    const value = await FilterValues.create({
-                                        name: paramCode,
-                                        code: await Transliterations(paramCode),
-                                        filter_id: filter.id
-                                    })
+                            const paramCodes = param['#'].replaceAll("»", "ы").split(',')
+                            for (const paramCode of paramCodes) {
+                                const value = await FilterValues.findOne({where: {name: paramCode}})
+                                if (value) {
                                     await FilterProductValue.findOrCreate({
                                         where: {
-                                            product_id: device.id,
+                                            product_id: deviceId,
                                             filter_value_id: value.id
                                         },
                                         defaults: {
-                                            product_id: device.id,
+                                            product_id: deviceId,
                                             filter_value_id: value.id
                                         }
                                     });
                                 } else {
-                                    const filter = await Filters.create({
-                                        name: paramName,
-                                        code: await Transliterations(paramName)
-                                    })
-                                    const value = await FilterValues.create({
-                                        name: paramCode,
-                                        code: await Transliterations(paramCode),
-                                        filter_id: filter.id
-                                    })
-                                    await FilterProductValue.findOrCreate({
-                                        where: {
-                                            product_id: device.id,
-                                            filter_value_id: value.id
-                                        },
-                                        defaults: {
-                                            product_id: device.id,
-                                            filter_value_id: value.id
-                                        }
-                                    });
+                                    const filter = await Filters.findOne({where: {name: paramName}})
+                                    if (filter) {
+                                        const value = await FilterValues.create({
+                                            name: paramCode,
+                                            code: await Transliterations(paramCode),
+                                            filter_id: filter.id
+                                        })
+                                        await FilterProductValue.findOrCreate({
+                                            where: {
+                                                product_id: deviceId,
+                                                filter_value_id: value.id
+                                            },
+                                            defaults: {
+                                                product_id: deviceId,
+                                                filter_value_id: value.id
+                                            }
+                                        });
+                                    } else {
+                                        const filter = await Filters.create({
+                                            name: paramName,
+                                            code: await Transliterations(paramName)
+                                        })
+                                        const value = await FilterValues.create({
+                                            name: paramCode,
+                                            code: await Transliterations(paramCode),
+                                            filter_id: filter.id
+                                        })
+                                        await FilterProductValue.findOrCreate({
+                                            where: {
+                                                product_id: deviceId,
+                                                filter_value_id: value.id
+                                            },
+                                            defaults: {
+                                                product_id: deviceId,
+                                                filter_value_id: value.id
+                                            }
+                                        });
+                                    }
                                 }
                             }
                         }
                     }
                 }
+
+                if (isCase || item.name.toLowerCase().includes("накладка") || item.name.toLowerCase().includes("TPU")) {
+                    await Product_Category.create({productId: deviceId, categoryId: 51}); //51
+                    await Product_Category.create({productId: deviceId, categoryId: 52}); //52
+                }
+                if (item.name.toLowerCase().includes("навушник") || item.name.toLowerCase().includes("гарнітура") || item.name.toLowerCase().includes("TWS")) {
+                    await Product_Category.create({productId: deviceId, categoryId: 1});
+                    await Product_Category.create({productId: deviceId, categoryId: 4});
+                    await Product_Category.create({productId: deviceId, categoryId: 53});
+                }
+
                 const option = await DeviceOptions.create({
-                    deviceId: device.id,
-                    price: item.price,
-                    code: `luc-${item.code}`
+                    deviceId: deviceId,
+                    startPrice: Math.ceil(item.price),
+                    price: Math.ceil(item.price),
+                    code: `kos-${item.code}`
                 })
-                if (item.picture) {
+                if (item.image) {
                     const accessKeyId = process.env.S3_ACCESS_KEY
                     const secretAccessKey = process.env.S3_SECRET_ACCESS_KEY
                     const s3 = new S3({
                         region: 'eu-central-1', accessKeyId, secretAccessKey
                     })
-                    const fixedBasket = process.env.NODE_ENV === "production" ? `lamiya/images/${device.id}` : `lamiya/test/${device.id}`
-                    if (Array.isArray(item.picture)) {
-                        for (let i = 0; i < item.picture.length; i++) {
+                    const fixedBasket = process.env.NODE_ENV === "production" ? `lamiya/images/${deviceId}` : `lamiya/test/${deviceId}`
+                    if (Array.isArray(item.image)) {
+                        for (let i = 0; i < item.image.length; i++) {
                             try {
                                 const fileName = `${option.id}-hq-` + await GenerateRandomCode(4) + ".webp"
-                                const response = await axios.get(item.picture[i], {responseType: 'arraybuffer'});
+                                const response = await axios.get(item.image[i], {responseType: 'arraybuffer'});
                                 await sleep(500);
                                 const webpResize = await sharp(response.data)
                                     .resize({
@@ -697,7 +721,7 @@ class RozetkaController {
                                 };
                                 s3.upload(uploadParamsJpg).promise();
                                 await DeviceImage.create({
-                                    image: `https://lamiya.s3.amazonaws.com/images/${device.id}/${fileName}`,
+                                    image: `https://lamiya.s3.amazonaws.com/${process.env.NODE_ENV === "production" ? `images` : `test`}/${deviceId}/${fileName}`,
                                     option_id: option.id,
                                     index: i
                                 })
@@ -759,7 +783,7 @@ class RozetkaController {
                             };
                             s3.upload(uploadParamsJpg).promise();
                             await DeviceImage.create({
-                                image: `https://lamiya.s3.amazonaws.com/images/${device.id}/${fileName}`,
+                                image: `https://lamiya.s3.amazonaws.com/images/${deviceId}/${fileName}`,
                                 option_id: option.id,
                                 index: 0
                             })

@@ -57,7 +57,7 @@ const OptionCodes = ({ optionElem,changeInfo}) => {
                         <select value={prefix} onChange={(e) => setPrefix(e.target.value)} style={{ padding: '5px' }}>
                             <option value="it">it</option>
                             <option value="luc">luc</option>
-                            <option value="kosm">kosm</option>
+                            <option value="kos">kos</option>
                         </select>
                         <input
                             type="text"
