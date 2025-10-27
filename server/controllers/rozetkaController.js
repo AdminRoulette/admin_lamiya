@@ -564,10 +564,13 @@ class RozetkaController {
                     final_obj.tags = item.keywords_ua.length > 1023 ? item.keywords_ua.slice(0, 1023) : item.keywords_ua;
                 }
                 if (item.name) {
-                    final_obj.name_ru = item.name.replaceAll("Силikonовий", "Силиконовый").replaceAll("силikonовий", "силиконовый");
+                    let name = item.name.length > 1023 ? item.name.slice(0, 254) : item.name;
+                    final_obj.name_ru = name.replaceAll("Силikonовий", "Силиконовый").replaceAll("силikonовий", "силиконовый") ;
                 }
                 if (item.name_ua || item.name) {
-                    final_obj.name = `${item.name_ua ? item.name_ua : item.name}`;
+                    let name = item.name_ua ? item.name_ua : item.name
+                    name = name.length > 1023 ? name.slice(0, 254) : name;
+                    final_obj.name = name.replaceAll("Силikonовий", "Силиконовый").replaceAll("силikonовий", "силиконовый") ;
                 }
                 let deviceId = null;
                 if (await Device.findOne({where: {link: await Transliterations(final_obj.name)}})) continue;
