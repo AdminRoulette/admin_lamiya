@@ -535,7 +535,8 @@ class RozetkaController {
                     }
                 }
                 if (item.description_ua) {
-                    final_obj.disc = `${item?.description_ua
+                    const str = item.description_ua.length > 1999 ? item.description_ua.slice(0, 1999) : item.description_ua
+                    final_obj.disc = `${str
                         .replaceAll("&amp;", "&")
                         .replaceAll(`&quot;`, '"')
                         .replaceAll("&gt;", ">")
@@ -544,7 +545,8 @@ class RozetkaController {
                     }`;
                 }
                 if (item.description) {
-                    final_obj.disc_ru = `${item.description
+                    const str = item.description.length > 1999 ? item.description.slice(0, 1999) : item.description
+                    final_obj.disc_ru = `${str
                         .replaceAll("&amp;", "&")
                         .replaceAll(`&quot;`, '"')
                         .replaceAll("&gt;", ">")
