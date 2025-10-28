@@ -55,7 +55,7 @@ const TagsForm = ({tags,setDeviceInfo,field}) => {
                     <input
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
-                        placeholder="" type="text" maxLength="500"
+                        placeholder="" type="text" maxLength="1024"
                         onKeyDown={handleKeyDown}/>
                     <span className="input_field_placeholder">{field === 'tags' ? "Введіть теги" : "Введіть РУ теги"}</span>
                 </label>
