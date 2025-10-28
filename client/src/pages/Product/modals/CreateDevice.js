@@ -217,14 +217,15 @@ const CreateDevice = ({editingState, onHide, setSearch}) => {
                 <div className={classes.product_edit_row}>
                     <SimilarProducts setSimilarArray={setSimilarArray} similarArray={similarArray}/>
                 </div>
-                {filterList.length > 0 &&
-                    <CreateDeviceCategoryFields setFilters={setFilters} filters={filters} filterList={filterList}/>}
                 <div><b>Опис:</b></div>
                 <CustomTextArea onChange={(event) => OnChangeDevice(event.target.value, "disc", 1999)}
                                 maxLength={1999} placeholder={"Опис"} value={deviceInfo.disc}/>
                 <div><b>RU Опис:</b></div>
                 <CustomTextArea onChange={(event) => OnChangeDevice(event.target.value, "disc_ru", 1999)}
                                 maxLength={1999} placeholder={"RU Опис"} value={deviceInfo.disc_ru}/>
+                {filterList.length > 0 &&
+                    <CreateDeviceCategoryFields setFilters={setFilters} filters={filters} filterList={filterList}/>}
+
                 {/*{categories.some(item => (item.id === 89 || item.id === 95)) &&*/}
                 {/*    <PartCountField setParfumePart={setParfumePart} parfumePart={parfumePart} setOptions={setOptions}/>}*/}
                 {/*{categories.some(item => (item.id === 57 || item.id === 58 || item.id === 59 || item.id === 69)) &&*/}
