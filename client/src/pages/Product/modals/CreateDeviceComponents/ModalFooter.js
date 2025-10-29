@@ -70,50 +70,18 @@ const ModalFooter = ({
     const checkProductData = async () => {
         for (const option of options) {
             if(!option.deviceimages.length === 0) throw new Error(`Опція ${option.optionName} не має фото`)
-            if(option.sell_type !== "sell_bottle"){
-                if (!option.weight) throw new Error("Вага опції пуста")
-                if (!Number(option.price)) throw new Error("Ціна не вірна")
-            }
-            if (option.sell_type === "sell_bottle" && !parfumePart.on_tab_price) throw new Error("Вкажіть ціну за мл, якщо є залишок у флаконі")
             if (isNaN(parseFloat(option.weight))) throw new Error("Вага не вірна")
             if (!option.id) throw new Error("Id опції не вірний")
         }
-
         if (categories.length < 1) throw new Error("Не вибрана категорія")
-        if (categories.some(item => item.id === 60) && !categories.some(item => item.id === 106)) {
-            const level2Categories = categories.filter(item => item.level === 2);
-            if ((level2Categories.length < 3 && !categories.some(item => item.id === 95)) || ![1, 2, 3].includes(level2Categories[0]?.id)) {
-                throw new Error("Категорія Парфуми, має містити мінімум 3 категорії другого рівня")
-            }
-        }
         if (!deviceInfo.status) throw new Error("Вкажіть статус товару")
         if (deviceInfo.status === 'active' && !deviceInfo.active) throw new Error("Для статусу Активний, товар потрібно активувати")
         if ((deviceInfo.status === 'ready' || deviceInfo.status === 'discontinued' || deviceInfo.status === 'hidden')
             && deviceInfo.active) throw new Error("Товар активний, але статус для Неактивного товару")
         if (!deviceInfo.name) throw new Error("Не вказана назва товару")
         if (!deviceInfo.name_ru) throw new Error("Не вказана російська назва товару")
-        // if (!deviceInfo.series) throw new Error("Не вказана серія")
-        // if (!deviceInfo.series_ru) throw new Error("Не вказана російська серія")
         if (!deviceInfo.brand.id) throw new Error("Не вибраний бренд")
         if (options.length < 1) throw new Error("Додайте опцію")
-
-        function checkUniqueNames(optionsList) {
-            const names = new Set();
-
-            for (const item of optionsList) {
-                if (item.sell_type === "on_tab") continue;
-                if (names.has(item.optionName)) {
-                    return false;
-                }
-                names.add(item.optionName);
-            }
-            return true;
-        }
-        if (!checkUniqueNames(options)) {
-            throw new Error('У опцій є дублікати назв');
-        }
-
-
     };
 
     const addNewDevice = async () => {
@@ -137,7 +105,7 @@ const ModalFooter = ({
 
     const updateDevice = async () => {
         setSendData(true)
-        // try {
+        try {
             await checkProductData()
             const productFormData = productFormDataAppend();
             await updateDevices(editingState.id, productFormData).then(async (id) => {
@@ -148,10 +116,10 @@ const ModalFooter = ({
                 // setTimeout(() => setLoading(false), 1000);
                 setSendData(false)
             });
-        // } catch (error) {
-        //     setSendData(false)
-        //     toast(error.message);
-        // }
+        } catch (error) {
+            setSendData(false)
+            toast(error.message);
+        }
 
     };
 
