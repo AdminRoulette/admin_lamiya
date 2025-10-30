@@ -872,7 +872,7 @@ class RozetkaController {
             const offers = shop.offers.offer
 
             const array = {};
-            for (let i = 0; i < 300; i++) {
+            for (let i = 0; i < offers.length; i++) {
                 const offer = offers[i];
                 const groud_id = offer.vendorCode
                 let fix_offer = offer['#'] ? offer['#'] : Object.entries(offer).map(([key, value]) => ({[key]: value}))
