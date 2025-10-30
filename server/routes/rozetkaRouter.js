@@ -12,7 +12,7 @@ const storage = multer.diskStorage({
         cb(null,  file.originalname.toLowerCase());
     },
 });
-const upload = multer({ storage: storage, fileSize: 150 * 1024 * 1024 });
+const upload = multer({ storage: storage, fileSize: 250 * 1024 * 1024 });
 
 router
 
