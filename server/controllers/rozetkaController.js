@@ -27,7 +27,6 @@ const Transliterations = require("../functions/SearchComponents/Transliterations
 const GenerateRandomCode = require("../functions/Product/GenerateRandomCode");
 const UploadImages = require("../functions/Product/UploadImagesToAWS");
 const sharp = require("sharp");
-const {ids} = require("googleapis/build/src/apis/ids");
 
 class RozetkaController {
     async Marketplace(req, res, next) {
@@ -338,81 +337,77 @@ class RozetkaController {
 
     async DeleteProduct(req, res, next) {
         try {
-            // const {id} = req.query
-
-            for(let i = 1871; i < 5680; i++) {
-                const id = i;
-                const device = await Device.findOne({
-                    where: {id},
-                    include: [{
-                        model: DeviceOptions,
-                        include: [{model: DeviceImage}]
-                    },
-                        {
-                            model: Rating,
-                            include: [{model: RatingImage}]
-                        }
-                    ]
-                })
-
-                for (const option of device.deviceoptions) {
-                    for (const image of option.deviceimages) {
-                        await DeviceImage.destroy({where: {id: image.id}}).then(() => {
-                            let s3Link = image.image.split("https://lamiya.s3.amazonaws.com/")[1];
-                            const s3 = new S3({
-                                region: 'eu-central-1',
-                                accessKeyId: process.env.S3_ACCESS_KEY,
-                                secretAccessKey: process.env.S3_SECRET_ACCESS_KEY
-                            })
-                            s3.deleteObject({
-                                Bucket: `lamiya`, Key: s3Link
-                            }, function (err, data) {
-                            })
-                            s3.deleteObject({
-                                Bucket: "lamiya", Key: s3Link.replace(".webp", ".jpg")
-                            }, function (err, data) {
-                            })
-                            s3.deleteObject({
-                                Bucket: "lamiya", Key: s3Link.replace("-hq-", "-lq-")
-                            }, function (err, data) {
-                            })
-                        })
+            const {id} = req.query
+            const device = await Device.findOne({
+                where: {id},
+                include: [{
+                    model: DeviceOptions,
+                    include: [{model: DeviceImage}]
+                },
+                    {
+                        model: Rating,
+                        include: [{model: RatingImage}]
                     }
+                ]
+            })
 
-
-                    await SupplyProducts.destroy({where: {option_id: id}})
-                    await PriceTags.destroy({where: {option_id: id}})
-                    await StockHistory.destroy({where: {option_id: id}})
-                    await OrderDevice.destroy({where: {option_id: id}})
-                    await WishList.destroy({where: {deviceoptionId: id}})
-                    await DeviceOptions.destroy({where: {deviceId: id}})
-                    await BasketDevice.destroy({where: {deviceoptionId: id}})
-                }
-                for (const rating of device.ratings) {
-                    for (const item of rating.ratingimages) {
-                        let s3Link = item.img.split("https://lamiya.s3.amazonaws.com/")[1];
+            for (const option of device.deviceoptions) {
+                for (const image of option.deviceimages) {
+                    await DeviceImage.destroy({where: {id: image.id}}).then(() => {
+                        let s3Link = image.image.split("https://lamiya.s3.amazonaws.com/")[1];
                         const s3 = new S3({
                             region: 'eu-central-1',
                             accessKeyId: process.env.S3_ACCESS_KEY,
                             secretAccessKey: process.env.S3_SECRET_ACCESS_KEY
                         })
                         s3.deleteObject({
-                            Bucket: "lamiya", Key: `${s3Link}`
+                            Bucket: `lamiya`, Key: s3Link
                         }, function (err, data) {
                         })
-                    }
+                        s3.deleteObject({
+                            Bucket: "lamiya", Key: s3Link.replace(".webp", ".jpg")
+                        }, function (err, data) {
+                        })
+                        s3.deleteObject({
+                            Bucket: "lamiya", Key: s3Link.replace("-hq-", "-lq-")
+                        }, function (err, data) {
+                        })
+                    })
                 }
 
-                await FilterProductValue.destroy({where: {product_id: id}})
-                await Product_Category.destroy({where: {productId: id}})
-                await Rating.destroy({where: {deviceId: id}})
+
+                await SupplyProducts.destroy({where: {option_id: id}})
+                await PriceTags.destroy({where: {option_id: id}})
+                await StockHistory.destroy({where: {option_id: id}})
+                await OrderDevice.destroy({where: {option_id: id}})
+                await WishList.destroy({where: {deviceoptionId: id}})
                 await DeviceOptions.destroy({where: {deviceId: id}})
-                await BodyCarePart.destroy({where: {deviceId: id}})
-                await ParfumePart.destroy({where: {deviceId: id}})
-                await Device.destroy({where: {id}})
-
-
+                await BasketDevice.destroy({where: {deviceoptionId: id}})
             }
+            for (const rating of device.ratings) {
+                for (const item of rating.ratingimages) {
+                    let s3Link = item.img.split("https://lamiya.s3.amazonaws.com/")[1];
+                    const s3 = new S3({
+                        region: 'eu-central-1',
+                        accessKeyId: process.env.S3_ACCESS_KEY,
+                        secretAccessKey: process.env.S3_SECRET_ACCESS_KEY
+                    })
+                    s3.deleteObject({
+                        Bucket: "lamiya", Key: `${s3Link}`
+                    }, function (err, data) {
+                    })
+                }
+            }
+
+            await FilterProductValue.destroy({where: {product_id: id}})
+            await Product_Category.destroy({where: {productId: id}})
+            await Rating.destroy({where: {deviceId: id}})
+            await DeviceOptions.destroy({where: {deviceId: id}})
+            await BodyCarePart.destroy({where: {deviceId: id}})
+            await ParfumePart.destroy({where: {deviceId: id}})
+            await Device.destroy({where: {id}})
+
+
             return res.json("deleted");
         } catch (error) {
             console.error('Full error:', error.message);
@@ -541,7 +536,7 @@ class RozetkaController {
                 }
                 if (typeof item.description_ua === 'string' && item.description_ua.trim() !== '') {
                     const str = item.description_ua.length > 1999 ? item.description_ua.slice(0, 1999) : item.description_ua
-                    if(str) {
+                    if (str) {
                         final_obj.disc = `${str
                             .replaceAll("&amp;", "&")
                             .replaceAll(`&quot;`, '"')
@@ -553,7 +548,7 @@ class RozetkaController {
                 }
                 if (typeof item.description === 'string' && item.description.trim() !== '') {
                     const str = item.description.length > 1999 ? item.description.slice(0, 1999) : item.description
-                    if(str) {
+                    if (str) {
                         final_obj.disc_ru = str
                             .replaceAll("&amp;", "&")
                             .replaceAll(`&quot;`, '"')
@@ -570,12 +565,12 @@ class RozetkaController {
                 }
                 if (item.name) {
                     let name = item.name.length > 254 ? item.name.slice(0, 254) : item.name;
-                    final_obj.name_ru = name.replaceAll("Силikonовий", "Силиконовый").replaceAll("силikonовий", "силиконовый") ;
+                    final_obj.name_ru = name.replaceAll("Силikonовий", "Силиконовый").replaceAll("силikonовий", "силиконовый");
                 }
                 if (item.name_ua || item.name) {
                     let name = item.name_ua ? item.name_ua : item.name
                     name = name.length > 254 ? name.slice(0, 254) : name;
-                    final_obj.name = name.replaceAll("Силikonовий", "Силиконовый").replaceAll("силikonовий", "силиконовый") ;
+                    final_obj.name = name.replaceAll("Силikonовий", "Силиконовый").replaceAll("силikonовий", "силиконовый");
                 }
                 let deviceId = null;
                 if (await Device.findOne({where: {link: await Transliterations(final_obj.name)}})) continue;
@@ -829,28 +824,28 @@ class RozetkaController {
             const doc = create(xml);
             const obj = doc.end({format: 'object'});
 
-            const shop = obj. yml_catalog
+            const shop = obj.yml_catalog
             const offers = shop.item
 
-            for(const offer of offers) {
+            for (const offer of offers) {
                 const tags = offer.keywords_ua.length > 2048 ? offer.keywords_ua.slice(0, 2047) : offer.keywords_ua
                 const tags_ru = offer.keywords.length > 2048 ? offer.keywords.slice(0, 2047) : offer.keywords
                 await Device.update({
-                    name:offer.name_ua,
-                    name_ru:offer.name,
-                    description:offer.description_ua.replaceAll("&amp;", "&")
-                                            .replaceAll(`&quot;`, '"')
-                                            .replaceAll("&gt;", ">")
-                                            .replaceAll("&lt;", "<")
-                                            .replaceAll(`&apos;`, "'"),
-                    description_ru:offer.description.replaceAll("&amp;", "&")
-                                            .replaceAll(`&quot;`, '"')
-                                            .replaceAll("&gt;", ">")
-                                            .replaceAll("&lt;", "<")
-                                            .replaceAll(`&apos;`, "'"),
-                    tags:tags,
-                    tags_ru:tags_ru,
-                },{where:{id:offer.id}})
+                    name: offer.name_ua,
+                    name_ru: offer.name,
+                    description: offer.description_ua.replaceAll("&amp;", "&")
+                        .replaceAll(`&quot;`, '"')
+                        .replaceAll("&gt;", ">")
+                        .replaceAll("&lt;", "<")
+                        .replaceAll(`&apos;`, "'"),
+                    description_ru: offer.description.replaceAll("&amp;", "&")
+                        .replaceAll(`&quot;`, '"')
+                        .replaceAll("&gt;", ">")
+                        .replaceAll("&lt;", "<")
+                        .replaceAll(`&apos;`, "'"),
+                    tags: tags,
+                    tags_ru: tags_ru,
+                }, {where: {id: offer.id}})
             }
 
 
@@ -862,8 +857,335 @@ class RozetkaController {
 
     async Test3(req, res, next) {
         try {
+            function sleep(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
 
-            return res.json("test1");
+            const filePath = './storage-files/it.xml';
+            const buffer = fs.readFileSync(filePath);
+
+            const xml = iconv.decode(Buffer.from(buffer), 'utf-8');
+
+            const doc = create(xml);
+            const obj = doc.end({format: 'object'});
+            const shop = obj.yml_catalog.shop
+            const offers = shop.offers.offer
+
+            const array = {};
+            for (let i = 0; i < 300; i++) {
+                const offer = offers[i];
+                const groud_id = offer.vendorCode
+                let fix_offer = offer['#'] ? offer['#'] : Object.entries(offer).map(([key, value]) => ({[key]: value}))
+                let finalOffer = {};
+                finalOffer['code'] = offer['@'] ? offer['@'].id : offer['@id']
+
+                for (const item of fix_offer) {
+                    const [key, value] = Object.entries(item)[0];
+                    if (finalOffer[key]) {
+                        if (Array.isArray(finalOffer[key])) {
+                            if (Array.isArray(value)) {
+                                finalOffer[key].push(...value);
+                            } else {
+                                finalOffer[key].push(value);
+                            }
+                        } else {
+                            finalOffer[key] = Array.isArray(value) ? [finalOffer[key], ...value] : [finalOffer[key], value];
+                        }
+                    } else {
+                        finalOffer[key] = value;
+                    }
+                }
+                if (array[groud_id]) {
+                    array[groud_id].push(finalOffer);
+                } else {
+                    array[groud_id] = [finalOffer];
+                }
+            }
+
+
+            //Почистити \ з нейм
+
+            for (const key in array) {
+                let final_obj = {}
+                const item = array[key]?.[0];
+                if (item.vendor) {
+                    const brand = await Brand.findOne({where: {name: item.vendor}})
+                    if (brand) {
+                        final_obj.brandId = brand.id
+                    } else {
+                        const brand = await Brand.create(
+                            {name: item.vendor, name_ru: item.vendor, code: await Transliterations(item.vendor)}
+                        )
+                        final_obj.brandId = brand.id
+                    }
+                }
+                if (typeof item.description_ua === 'string' && item.description_ua.trim() !== '') {
+                    const str = item.description_ua.length > 1999 ? item.description_ua.slice(0, 1999) : item.description_ua
+                    if (str) {
+                        final_obj.disc = `${str
+                            .replaceAll("&amp;", "&")
+                            .replaceAll(`&quot;`, '"')
+                            .replaceAll("&gt;", ">")
+                            .replaceAll("&lt;", "<")
+                            .replaceAll(`&apos;`, "'")
+                            .replaceAll(`<![CDATA[`, "")
+                            .replaceAll(`]]>`, "")
+                        }`;
+                    }
+                }
+                if (typeof item.description === 'string' && item.description.trim() !== '') {
+                    const str = item.description.length > 1999 ? item.description.slice(0, 1999) : item.description
+                    if (str) {
+                        final_obj.disc_ru = str
+                            .replaceAll("&amp;", "&")
+                            .replaceAll(`&quot;`, '"')
+                            .replaceAll("&gt;", ">")
+                            .replaceAll("&lt;", "<")
+                            .replaceAll(`&apos;`, "'")
+                            .replaceAll(`<![CDATA[`, "")
+                            .replaceAll(`]]>`, "")
+                    }
+                }
+                if (item.keywords) {
+                    final_obj.tags_ru = item.keywords.length > 2047 ? item.keywords.slice(0, 2047) : item.keywords;
+                }
+                if (item.keywords_ua) {
+                    final_obj.tags = item.keywords_ua.length > 2047 ? item.keywords_ua.slice(0, 2047) : item.keywords_ua;
+                }
+                if (item.name) {
+                    final_obj.name_ru = item.name.length > 254 ? item.name.slice(0, 254) : item.name;
+                }
+                if (item.name_ua || item.name) {
+                    let name = item.name_ua ? item.name_ua : item.name
+                    name = name.length > 254 ? name.slice(0, 254) : name;
+                    final_obj.name = name;
+                }
+
+                if (await Device.findOne({where: {link: await Transliterations(final_obj.name)}})) continue;
+
+                const device = await Device.create({
+                    ...final_obj,
+                    active: false,
+                    status: "hidden",
+                    link: await Transliterations(final_obj.name)
+                })
+                const deviceId = device.id
+
+                if (item.param) {
+                    for (const param of item.param) {
+                        if (!param['#']) continue;
+                        if (!param['@name']) continue;
+                        const paramName = param['@name']
+                        if (paramName === 'Виробник') continue;
+                        if (paramName === 'Колір') continue;
+                        if (paramName === 'Категорія') continue;
+
+                        const paramCodes = param['#'].split(',')
+                        for (const paramCode of paramCodes) {
+                            const value = await FilterValues.findOne({where: {name: paramCode}})
+                            if (value) {
+                                await FilterProductValue.findOrCreate({
+                                    where: {
+                                        product_id: deviceId,
+                                        filter_value_id: value.id
+                                    },
+                                    defaults: {
+                                        product_id: deviceId,
+                                        filter_value_id: value.id
+                                    }
+                                });
+                            } else {
+                                const filter = await Filters.findOne({where: {name: paramName}})
+                                if (filter) {
+                                    const value = await FilterValues.create({
+                                        name: paramCode,
+                                        code: await Transliterations(paramCode),
+                                        filter_id: filter.id
+                                    })
+                                    await FilterProductValue.findOrCreate({
+                                        where: {
+                                            product_id: deviceId,
+                                            filter_value_id: value.id
+                                        },
+                                        defaults: {
+                                            product_id: deviceId,
+                                            filter_value_id: value.id
+                                        }
+                                    });
+                                } else {
+                                    const filter = await Filters.create({
+                                        name: paramName,
+                                        code: await Transliterations(paramName)
+                                    })
+                                    const value = await FilterValues.create({
+                                        name: paramCode,
+                                        code: await Transliterations(paramCode),
+                                        filter_id: filter.id
+                                    })
+                                    await FilterProductValue.findOrCreate({
+                                        where: {
+                                            product_id: deviceId,
+                                            filter_value_id: value.id
+                                        },
+                                        defaults: {
+                                            product_id: deviceId,
+                                            filter_value_id: value.id
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    }
+                }
+
+                await Product_Category.create({productId: deviceId, categoryId: 51});
+                await Product_Category.create({productId: deviceId, categoryId: 52});
+
+                for (let j = 0; j < array[key].length; j++) {
+
+                    const option = await DeviceOptions.create({
+                        deviceId: deviceId,
+                        optionName: array[key][j].name_ua,
+                        optionName_ru: array[key][j].name,
+                        startPrice: Math.ceil(array[key][j].price),
+                        price: Math.ceil(array[key][j].price),
+                        code: `it-${array[key][j].code}`
+                    })
+                    if (array[key][j].picture) {
+                        const accessKeyId = process.env.S3_ACCESS_KEY
+                        const secretAccessKey = process.env.S3_SECRET_ACCESS_KEY
+                        const s3 = new S3({
+                            region: 'eu-central-1', accessKeyId, secretAccessKey
+                        })
+                        const fixedBasket = process.env.NODE_ENV === "production" ? `lamiya/images/${deviceId}` : `lamiya/test/${deviceId}`
+                        if (Array.isArray(array[key][j].picture)) {
+                            for (let i = 0; i < array[key][j].picture.length; i++) {
+                                try {
+                                    const fileName = `${option.id}-hq-` + await GenerateRandomCode(4) + ".webp"
+                                    const response = await axios.get(array[key][j].picture[i], {responseType: 'arraybuffer'});
+                                    await sleep(500);
+                                    const webpResize = await sharp(response.data)
+                                        .resize({
+                                            width: 600,
+                                            height: 600,
+                                            fit: 'contain',
+                                            background: '#ffffff'
+                                        })
+                                        .flatten({background: '#ffffff'})
+                                        .toFormat('webp')
+                                        .toBuffer();
+                                    const uploadParamsWebpResize = {
+                                        Bucket: fixedBasket,
+                                        Body: webpResize,
+                                        Key: fileName.replace("-hq-", "-lq-"),
+                                        ACL: 'public-read',
+                                        ContentType: 'image/webp',
+                                        CacheControl: 'max-age=31536000'
+                                    };
+                                    s3.upload(uploadParamsWebpResize).promise();
+                                    const webp = await sharp(response.data)
+                                        .flatten({background: '#ffffff'})
+                                        .toFormat('webp')
+                                        .toBuffer();
+                                    const uploadParamsWebp = {
+                                        Bucket: fixedBasket,
+                                        Body: webp,
+                                        Key: fileName,
+                                        ACL: 'public-read',
+                                        ContentType: 'image/webp',
+                                        CacheControl: 'max-age=31536000'
+                                    };
+                                    s3.upload(uploadParamsWebp).promise();
+
+
+                                    const jpg = await sharp(response.data)
+                                        .flatten({background: '#ffffff'})
+                                        .jpeg()
+                                        .toBuffer();
+                                    const uploadParamsJpg = {
+                                        Bucket: fixedBasket,
+                                        Body: jpg,
+                                        Key: fileName.replace(".webp", ".jpg"),
+                                        ACL: 'public-read',
+                                        ContentType: 'image/jpeg',
+                                        CacheControl: 'max-age=31536000'
+                                    };
+                                    s3.upload(uploadParamsJpg).promise();
+                                    await DeviceImage.create({
+                                        image: `https://lamiya.s3.amazonaws.com/${process.env.NODE_ENV === "production" ? `images` : `test`}/${deviceId}/${fileName}`,
+                                        option_id: option.id,
+                                        index: i
+                                    })
+                                } catch (err) {
+                                    continue;
+                                }
+                            }
+
+                        } else {
+                            try {
+                                const fileName = `${option.id}-hq-` + await GenerateRandomCode(4) + ".webp"
+                                const response = await axios.get(array[key][j].picture, {responseType: 'arraybuffer'});
+                                await sleep(500);
+                                const webpResize = await sharp(response.data)
+                                    .resize({
+                                        width: 600,
+                                        height: 600,
+                                        fit: 'contain',
+                                        background: '#ffffff'
+                                    })
+                                    .flatten({background: '#ffffff'})
+                                    .toFormat('webp')
+                                    .toBuffer();
+                                const uploadParamsWebpResize = {
+                                    Bucket: fixedBasket,
+                                    Body: webpResize,
+                                    Key: fileName.replace("-hq-", "-lq-"),
+                                    ACL: 'public-read',
+                                    ContentType: 'image/webp',
+                                    CacheControl: 'max-age=31536000'
+                                };
+                                s3.upload(uploadParamsWebpResize).promise();
+                                const webp = await sharp(response.data)
+                                    .flatten({background: '#ffffff'})
+                                    .toFormat('webp')
+                                    .toBuffer();
+                                const uploadParamsWebp = {
+                                    Bucket: fixedBasket,
+                                    Body: webp,
+                                    Key: fileName,
+                                    ACL: 'public-read',
+                                    ContentType: 'image/webp',
+                                    CacheControl: 'max-age=31536000'
+                                };
+                                s3.upload(uploadParamsWebp).promise();
+
+
+                                const jpg = await sharp(response.data)
+                                    .flatten({background: '#ffffff'})
+                                    .jpeg()
+                                    .toBuffer();
+                                const uploadParamsJpg = {
+                                    Bucket: fixedBasket,
+                                    Body: jpg,
+                                    Key: fileName.replace(".webp", ".jpg"),
+                                    ACL: 'public-read',
+                                    ContentType: 'image/jpeg',
+                                    CacheControl: 'max-age=31536000'
+                                };
+                                s3.upload(uploadParamsJpg).promise();
+                                await DeviceImage.create({
+                                    image: `https://lamiya.s3.amazonaws.com/${process.env.NODE_ENV === "production" ? `images` : `test`}/${deviceId}/${fileName}`,
+                                    option_id: option.id,
+                                    index: 0
+                                })
+                            } catch (err) {
+                            }
+                        }
+                    }
+                }
+            }
+            return res.json("test3");
+
         } catch (error) {
             console.error('Full error:', error.message);
             next(apiError.badRequest(`error: ${error.message}`));
