@@ -953,12 +953,12 @@ class RozetkaController {
                     final_obj.tags = item.keywords_ua.length > 2047 ? item.keywords_ua.slice(0, 2047) : item.keywords_ua;
                 }
                 if (item.name) {
-                    final_obj.name_ru = item.name.length > 254 ? item.name.slice(0, 254) : item.name;
+                    final_obj.name_ru = item.name.length > 254 ? item.name.slice(0, 254).replaceAll('\\', '') : item.name.replaceAll('\\', '');
                 }
                 if (item.name_ua || item.name) {
                     let name = item.name_ua ? item.name_ua : item.name
                     name = name.length > 254 ? name.slice(0, 254) : name;
-                    final_obj.name = name;
+                    final_obj.name = name.replaceAll('\\', '');
                 }
 
                 if (await Device.findOne({where: {link: await Transliterations(final_obj.name)}})) continue;
