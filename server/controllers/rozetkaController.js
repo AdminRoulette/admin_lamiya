@@ -27,6 +27,7 @@ const Transliterations = require("../functions/SearchComponents/Transliterations
 const GenerateRandomCode = require("../functions/Product/GenerateRandomCode");
 const UploadImages = require("../functions/Product/UploadImagesToAWS");
 const sharp = require("sharp");
+const {ids} = require("googleapis/build/src/apis/ids");
 
 class RozetkaController {
     async Marketplace(req, res, next) {
@@ -337,77 +338,81 @@ class RozetkaController {
 
     async DeleteProduct(req, res, next) {
         try {
-            const {id} = req.query
-            const device = await Device.findOne({
-                where: {id},
-                include: [{
-                    model: DeviceOptions,
-                    include: [{model: DeviceImage}]
-                },
-                    {
-                        model: Rating,
-                        include: [{model: RatingImage}]
-                    }
-                ]
-            })
+            // const {id} = req.query
 
-            for (const option of device.deviceoptions) {
-                for (const image of option.deviceimages) {
-                    await DeviceImage.destroy({where: {id: image.id}}).then(() => {
-                        let s3Link = image.image.split("https://lamiya.s3.amazonaws.com/")[1];
+            for(let i = 1871; i < 5680; i++) {
+                const id = i;
+                const device = await Device.findOne({
+                    where: {id},
+                    include: [{
+                        model: DeviceOptions,
+                        include: [{model: DeviceImage}]
+                    },
+                        {
+                            model: Rating,
+                            include: [{model: RatingImage}]
+                        }
+                    ]
+                })
+
+                for (const option of device.deviceoptions) {
+                    for (const image of option.deviceimages) {
+                        await DeviceImage.destroy({where: {id: image.id}}).then(() => {
+                            let s3Link = image.image.split("https://lamiya.s3.amazonaws.com/")[1];
+                            const s3 = new S3({
+                                region: 'eu-central-1',
+                                accessKeyId: process.env.S3_ACCESS_KEY,
+                                secretAccessKey: process.env.S3_SECRET_ACCESS_KEY
+                            })
+                            s3.deleteObject({
+                                Bucket: `lamiya`, Key: s3Link
+                            }, function (err, data) {
+                            })
+                            s3.deleteObject({
+                                Bucket: "lamiya", Key: s3Link.replace(".webp", ".jpg")
+                            }, function (err, data) {
+                            })
+                            s3.deleteObject({
+                                Bucket: "lamiya", Key: s3Link.replace("-hq-", "-lq-")
+                            }, function (err, data) {
+                            })
+                        })
+                    }
+
+
+                    await SupplyProducts.destroy({where: {option_id: id}})
+                    await PriceTags.destroy({where: {option_id: id}})
+                    await StockHistory.destroy({where: {option_id: id}})
+                    await OrderDevice.destroy({where: {option_id: id}})
+                    await WishList.destroy({where: {deviceoptionId: id}})
+                    await DeviceOptions.destroy({where: {deviceId: id}})
+                    await BasketDevice.destroy({where: {deviceoptionId: id}})
+                }
+                for (const rating of device.ratings) {
+                    for (const item of rating.ratingimages) {
+                        let s3Link = item.img.split("https://lamiya.s3.amazonaws.com/")[1];
                         const s3 = new S3({
                             region: 'eu-central-1',
                             accessKeyId: process.env.S3_ACCESS_KEY,
                             secretAccessKey: process.env.S3_SECRET_ACCESS_KEY
                         })
                         s3.deleteObject({
-                            Bucket: `lamiya`, Key: s3Link
+                            Bucket: "lamiya", Key: `${s3Link}`
                         }, function (err, data) {
                         })
-                        s3.deleteObject({
-                            Bucket: "lamiya", Key: s3Link.replace(".webp", ".jpg")
-                        }, function (err, data) {
-                        })
-                        s3.deleteObject({
-                            Bucket: "lamiya", Key: s3Link.replace("-hq-", "-lq-")
-                        }, function (err, data) {
-                        })
-                    })
+                    }
                 }
 
-
-                await SupplyProducts.destroy({where: {option_id: id}})
-                await PriceTags.destroy({where: {option_id: id}})
-                await StockHistory.destroy({where: {option_id: id}})
-                await OrderDevice.destroy({where: {option_id: id}})
-                await WishList.destroy({where: {deviceoptionId: id}})
+                await FilterProductValue.destroy({where: {product_id: id}})
+                await Product_Category.destroy({where: {productId: id}})
+                await Rating.destroy({where: {deviceId: id}})
                 await DeviceOptions.destroy({where: {deviceId: id}})
-                await BasketDevice.destroy({where: {deviceoptionId: id}})
+                await BodyCarePart.destroy({where: {deviceId: id}})
+                await ParfumePart.destroy({where: {deviceId: id}})
+                await Device.destroy({where: {id}})
+
+
             }
-            for (const rating of device.ratings) {
-                for (const item of rating.ratingimages) {
-                    let s3Link = item.img.split("https://lamiya.s3.amazonaws.com/")[1];
-                    const s3 = new S3({
-                        region: 'eu-central-1',
-                        accessKeyId: process.env.S3_ACCESS_KEY,
-                        secretAccessKey: process.env.S3_SECRET_ACCESS_KEY
-                    })
-                    s3.deleteObject({
-                        Bucket: "lamiya", Key: `${s3Link}`
-                    }, function (err, data) {
-                    })
-                }
-            }
-
-            await FilterProductValue.destroy({where: {product_id: id}})
-            await Product_Category.destroy({where: {productId: id}})
-            await Rating.destroy({where: {deviceId: id}})
-            await DeviceOptions.destroy({where: {deviceId: id}})
-            await BodyCarePart.destroy({where: {deviceId: id}})
-            await ParfumePart.destroy({where: {deviceId: id}})
-            await Device.destroy({where: {id}})
-
-
             return res.json("deleted");
         } catch (error) {
             console.error('Full error:', error.message);
