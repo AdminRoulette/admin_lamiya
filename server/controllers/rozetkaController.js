@@ -812,9 +812,43 @@ class RozetkaController {
 
     async Test2(req, res, next) {
         try {
+            function sleep(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+
+            const filePath = './storage-files/lucom.xml';
+            const buffer = fs.readFileSync(filePath);
+
+            const xml = iconv.decode(Buffer.from(buffer), 'utf-8');
+
+            const doc = create(xml);
+            const obj = doc.end({format: 'object'});
+
+            const shop = obj. yml_catalog
+            const offers = shop.item
+
+            for(const offer of offers) {
+                const tags = offer.keywords_ua.length > 2048 ? offer.keywords_ua.slice(0, 2047) : offer.keywords_ua
+                const tags_ru = offer.keywords.length > 2048 ? offer.keywords.slice(0, 2047) : offer.keywords
+                await Device.update({
+                    name:offer.name_ua,
+                    name_ru:offer.name,
+                    description:offer.description_ua.replaceAll("&amp;", "&")
+                                            .replaceAll(`&quot;`, '"')
+                                            .replaceAll("&gt;", ">")
+                                            .replaceAll("&lt;", "<")
+                                            .replaceAll(`&apos;`, "'"),
+                    description_ru:offer.description.replaceAll("&amp;", "&")
+                                            .replaceAll(`&quot;`, '"')
+                                            .replaceAll("&gt;", ">")
+                                            .replaceAll("&lt;", "<")
+                                            .replaceAll(`&apos;`, "'"),
+                    tags:tags,
+                    tags_ru:tags_ru,
+                },{where:{id:offer.id}})
+            }
 
 
-            return res.json("123");
         } catch (error) {
             console.error('Full error:', error.message);
             next(apiError.badRequest(`error: ${error.message}`));
