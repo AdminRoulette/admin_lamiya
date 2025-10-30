@@ -816,7 +816,7 @@ class RozetkaController {
                 return new Promise(resolve => setTimeout(resolve, ms));
             }
 
-            const filePath = './storage-files/lucom.xml';
+            const filePath = './storage-files/luc.xml';
             const buffer = fs.readFileSync(filePath);
 
             const xml = iconv.decode(Buffer.from(buffer), 'utf-8');
