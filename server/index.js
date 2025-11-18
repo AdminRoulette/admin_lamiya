@@ -104,18 +104,18 @@ app.use(compression());
 // }, {
 //     timezone: 'Europe/Kyiv'
 // });
-//
-// cron.schedule('01 17 * * *', async () => {
-//     try {
-//         if (process.env.NODE_ENV === "production") {
-//             await UpdateParfumeStorage()
-//         }
-//     } catch (e) {
-//         TelegramMsg("TECH", `ReNew UpdateParfumeStorage ${e.message}`)
-//     }
-// }, {
-//     timezone: 'Europe/Kyiv'
-// });
+
+cron.schedule('01 17 * * *', async () => {
+    try {
+        if (process.env.NODE_ENV === "production") {
+            await UpdateParfumeStorage()
+        }
+    } catch (e) {
+        TelegramMsg("TECH", `ReNew UpdateParfumeStorage ${e.message}`)
+    }
+}, {
+    timezone: 'Europe/Kyiv'
+});
 
 //update empty brand
 cron.schedule('50 23 * * 3', async () => {

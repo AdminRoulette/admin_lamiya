@@ -1,9 +1,8 @@
-async function calculateName(product, option, language) {
+async function calculateName(product, option, language, isColor) {
 
     let languageName = language && product.name_ru ? product.name_ru : product.name;
     let optionName = language && option.optionName_ru ? option.optionName_ru : option.optionName;
-    let series = language && product.series_ru ? product.series_ru : product.series;
-    let name = `${languageName} ${optionName} ${series}`;
+    let name = `${languageName}${isColor ? "" : ` ${optionName}` }`;
 
     return name
         .replaceAll("&", "&amp;")

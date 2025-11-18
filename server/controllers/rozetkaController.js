@@ -27,6 +27,7 @@ const Transliterations = require("../functions/SearchComponents/Transliterations
 const GenerateRandomCode = require("../functions/Product/GenerateRandomCode");
 const UploadImages = require("../functions/Product/UploadImagesToAWS");
 const sharp = require("sharp");
+const IntertakStorage = require("../functions/ParfumeStorages/IntertakStorage");
 
 class RozetkaController {
     async Marketplace(req, res, next) {
@@ -1194,8 +1195,8 @@ class RozetkaController {
 
     async Test4(req, res, next) {
         try {
-
-            return res.json("test1");
+            const data = await UpdateParfumeStorage()
+            return res.json(data);
         } catch (error) {
             console.error('Full error:', error.message);
             next(apiError.badRequest(`error: ${error.message}`));

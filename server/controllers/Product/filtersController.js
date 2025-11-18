@@ -236,7 +236,7 @@ class filtersController {
             }
 
 
-            const filterValue = await FilterValues.findOne({where:{code}})
+            const filterValue = await FilterValues.findOne({where:{code,filter_id}})
             if(filterValue){
                 return next(apiError.badRequest("Таке значення вже існує"));
             }
@@ -262,7 +262,7 @@ class filtersController {
                 return next(apiError.badRequest("Код може мати лише дефіс, малі букви та літери"));
             }
 
-            const filterValue = await FilterValues.findOne({where:{code}})
+            const filterValue = await FilterValues.findOne({where:{code,filter_id}})
             if(filterValue && filterValue.id !== id){
                 return next(apiError.badRequest("Такий фільтр вже існує"));
             }

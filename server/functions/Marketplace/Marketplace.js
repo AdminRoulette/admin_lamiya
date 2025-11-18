@@ -73,7 +73,6 @@ async function Marketplace() {
         const limit = 300;
         while (true) {
             const products = await getProductsList(offset);
-            console.log(products.length);
             for (let productItem of products) {
                 const groupedObject = {};
                 for (const value of productItem.filter_values) {
@@ -99,22 +98,22 @@ async function Marketplace() {
                 //     headless: true,
                 //     prettyPrint: true
                 // }));
-                fileStreamEdit.write(create().ele({item: await XMLForEdit(product)}).end({
-                    headless: true,
-                    prettyPrint: true
-                }));
-                // for (const option of product.deviceoptions) {
+                // fileStreamEdit.write(create().ele({item: await XMLForEdit(product)}).end({
+                //     headless: true,
+                //     prettyPrint: true
+                // }));
+                for (const option of product.deviceoptions) {
                 //         fileStreamProm.write(create().ele(await PromXML(option, product)).end({
                 //             headless: true,
                 //             prettyPrint: true
                 //         }));
                 //
-                //     if (!(product.company === 'hillary' || option.sell_type === "on_tab")) {
-                //         fileStreamKasta.write(create().ele(await KastaXML(option, product)).end({
-                //             headless: true,
-                //             prettyPrint: true
-                //         }));
-                //     }
+
+                        fileStreamKasta.write(create().ele(await KastaXML(option, product)).end({
+                            headless: true,
+                            prettyPrint: true
+                        }));
+
                 //     if (option.sell_type !== "on_tab") {
                 //             fileStreamRozetka.write(create().ele(await RozetkaXML(option, product)).end({
                 //                 headless: true,
@@ -125,7 +124,7 @@ async function Marketplace() {
                 //             prettyPrint: true
                 //         }));
                 //     }
-                // }
+                }
             }
             if (products.length < limit) {
                 break;
