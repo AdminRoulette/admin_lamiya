@@ -58,16 +58,16 @@ async function Marketplace() {
         // fileStreamGoogle.write('<rss xmlns:g="http://base.google.com/ns/1.0" version="2.0">\n<channel>\n<title>Lamiya.com.ua</title>\n<link>https://lamiya.com.ua</link>\n');
         // fileStreamRozetka.write('<yml_catalog date="' + formattedDate + '"><shop>\n');
         // fileStreamProm.write('<yml_catalog date="' + formattedDate + '"><shop>\n');
-        // fileStreamKasta.write('<yml_catalog date="' + formattedDate + '"><shop>\n');
+         fileStreamKasta.write('<yml_catalog date="' + formattedDate + '"><shop>\n');
         // fileStreamEpicenter.write('<yml_catalog date="' + formattedDate + '"><offers>\n');
         //
         // fileStreamRozetka.write(create().ele(await RozetkaHeaderXML()).end({headless: true, prettyPrint: true}));
         // fileStreamProm.write(create().ele(await PromCategories()).end({headless: true, prettyPrint: true}));
-        // fileStreamKasta.write(create().ele(await kastaHeaderXML()).end({headless: true, prettyPrint: true}));
+         fileStreamKasta.write(create().ele(await kastaHeaderXML()).end({headless: true, prettyPrint: true}));
         //
         // fileStreamRozetka.write('\n<currencies>\n<currency id="UAH" rate="1"/>\n</currencies>\n<name>Iveris</name>\n<url>https://lamiya.com.ua</url>\n<offers>\n');
         // fileStreamProm.write('\n<offers>\n');
-        // fileStreamKasta.write('\n<currencies>\n<companyName>Lamiya</companyName>\n<currency id="UAH" rate="1"/>\n</currencies>\n<name>lamiya.com.ua</name>\n<url>https://lamiya.com.ua</url><offers>\n');
+         fileStreamKasta.write('\n<currencies>\n<companyName>Lamiya</companyName>\n<currency id="UAH" rate="1"/>\n</currencies>\n<name>lamiya.com.ua</name>\n<url>https://lamiya.com.ua</url><offers>\n');
 
         let offset = 0
         const limit = 300;
@@ -136,7 +136,8 @@ async function Marketplace() {
             return await Device.findAll({
                 limit: 300,
                 offset,
-                order: [['id', 'ASC'],[DeviceOptions, 'index', 'ASC'],[DeviceOptions, DeviceImage, 'index', 'ASC'], [Product_Category,'category', "level", "ASC"], [Product_Category, "id", "ASC"], [FilterValues, 'id', 'ASC']],
+                where:{active:true},
+                order: [['id', 'ASC'],[DeviceOptions, 'index', 'ASC'],[DeviceOptions, DeviceImage, 'index', 'ASC'], [Product_Category,'category', "level", "DESC"], [Product_Category, "id", "ASC"], [FilterValues, 'id', 'ASC']],
                 attributes: ['name','tags', 'tags_ru','name_ru', 'disc', 'disc_ru', 'series', 'series_ru', 'link', 'id', 'company', 'brandId'],
                 include: [{
                     model: FilterValues, through:{attributes: []}, attributes: ["name","name_ru", 'id'],
@@ -148,7 +149,6 @@ async function Marketplace() {
                 },
                     {
                         model: Product_Category,
-                        order: [['category', "level", "ASC"], ["id", "ASC"]],
                         include: [{
                             model: Category, attributes: ['name', 'id', 'level'], as: 'category'
                         }]
@@ -167,14 +167,14 @@ async function Marketplace() {
         // fileStreamRozetka.write('</offers>\n</shop>\n</yml_catalog>\n');
         // fileStreamEpicenter.write('</offers>\n</yml_catalog>\n');
         // fileStreamProm.write('</offers>\n</shop>\n</yml_catalog>\n');
-        // fileStreamKasta.write('</offers>\n</shop>\n</yml_catalog>\n');
+         fileStreamKasta.write('</offers>\n</shop>\n</yml_catalog>\n');
 
         fileStreamEdit.end();
         // fileStreamGoogle.end();
         // fileStreamRozetka.end();
         // fileStreamEpicenter.end();
         // fileStreamProm.end();
-        // fileStreamKasta.end();
+         fileStreamKasta.end();
 
         const deleteFile = (filePath) => {
             fs.unlink(filePath, (err) => {
@@ -183,7 +183,6 @@ async function Marketplace() {
                 }
             });
         };
-
         async function uploadXML(url, devUrl, path) {
             const uploadParams = {
                 Bucket: 'lamiya/Marketplaces',
@@ -199,14 +198,12 @@ async function Marketplace() {
         const s3 = new S3({
             region: 'eu-central-1', accessKeyId, secretAccessKey
         })
-
         await uploadXML("productForEdit.xml", "devProductForEdit.xml", TEMP_FILE_EDIT_PATH)
         // await uploadXML("rozetkaXMLfile.xml", "devRozetkaXMLfile.xml", TEMP_FILE_ROZETKA_PATH)
         // await uploadXML("epicenterXMLfile.xml", "devEpicenterXMLfile.xml", TEMP_FILE_EPICENTER_PATH)
         // await uploadXML("promXMLfile.xml", "devPromXMLfile.xml", TEMP_FILE_PROM_PATH)
-        // await uploadXML("kastaXMLfile.xml", "devKastaXMLfile.xml", TEMP_FILE_KASTA_PATH)
+        await uploadXML("kastaXMLfile.xml", "devKastaXMLfile.xml", TEMP_FILE_KASTA_PATH)
         // await uploadXML("googleXMLfile.xml", "devGoogleXMLfile.xml", TEMP_FILE_GOOGLE_PATH)
-
 
         return "done"
     } catch (error) {

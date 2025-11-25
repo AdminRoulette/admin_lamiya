@@ -10,10 +10,12 @@ async function KastaXML(option, product) {
     const categoryId = await kastaCategoryId(product.product_categories);
     let price = option.price;
 
-
-
-    const countryName = await kastaCountry(product?.filters?.country?.[0])
-    !countryName && TelegramMsg("TECH", `Не вказане значення Країни Kasta. №${product.id}_${option.id}`)
+    if(!categoryId){
+        // TelegramMsg("TECH", `KastaXML не внесена категорія ${product.id}`)
+        return {}
+    }
+    const countryName = await kastaCountry(product?.filters?.["kraina-vyrobnyk"]?.[0])
+    // !countryName && TelegramMsg("TECH", `Не вказане значення Країни Kasta. №${product.id}_${option.id}`)
     let paramArray = [{
         '#': countryName,
         '@name': 'Країна виробництва',
@@ -45,8 +47,8 @@ async function KastaXML(option, product) {
             currencyId: 'UAH',
             categoryId: categoryId,
             picture: await calculateImg(product, option),
-            name: (await calculateName(product, option, true, !!product?.filters?.color.length > 0)).replaceAll("-", " "),
-            name_ua:(await calculateName(product, option, false, !!product?.filters?.color.length > 0)).replaceAll("-", " "),
+            name: (await calculateName(product, option, true, !!product?.filters?.kolir?.length > 0)).replaceAll("-", " "),
+            name_ua:(await calculateName(product, option, false, !!product?.filters?.kolir?.length > 0)).replaceAll("-", " "),
             vendor: product.brand.name
                 .replaceAll("&", "&amp;")
                 .replaceAll(`"`, "&quot;")

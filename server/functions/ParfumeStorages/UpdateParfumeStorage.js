@@ -1,6 +1,6 @@
 const TelegramMsg = require("../TelegramMsg");
 const SelectumStorage = require("./SelectumStorage");
-const {DeviceOptions, Device, Brand, ParfumePart} = require("../../models/models");
+const {DeviceOptions, Device, Brand, ParfumePart, DeviceImage} = require("../../models/models");
 const {Op} = require("sequelize");
 const UpdateStock = require("../Product/UpdateStock");
 const axios = require("axios");
@@ -23,98 +23,20 @@ async function UpdateParfumeStorage() {
         const skipSelectumIds = []
 
         for (const productFromList of allProductsFromList) {
-            let query = productFromList.name.toLowerCase();
-            const queries = [
-                {
-                    "match_phrase": {
-                        "product_name.exact": {
-                            "query": query, "slop": 2, "boost": 50
-                        }
-                    }
-                }, {
-                    "match_phrase": {
-                        "product_name": {
-                            "query": query, "slop": 2, "boost": 45
-                        }
-                    }
-                }, {
-                    "match": {
-                        "product_name": {
-                            "query": query, "operator": "or", "boost": 30
-                        }
-                    }
-                }, {
-                    "match": {
-                        "product_name": {
-                            "query": query, "operator": "or", "prefix_length": 2, "fuzziness": "AUTO", "boost": 25
-                        }
-                    }
-                }, {
-                    "match_phrase": {
-                        "product_tags.exact": {
-                            "query": query, "boost": 20.0
-                        }
-                    }
-                }, {
-                    "match_phrase": {
-                        "product_tags": {
-                            "query": query, "slop": 2, "boost": 15.0
-                        }
-                    }
-                }, {
-                    "match": {
-                        "product_tags": {
-                            "query": query, "fuzziness": "AUTO", "operator": "and", "boost": 10.0
-                        }
-                    }
-                }, {
-                    "match": {
-                        "product_tags": {
-                            "query": query, "fuzziness": "AUTO", "operator": "or", "boost": 5.0
-                        }
-                    }
-                }]
-            const searchRes = await axios.post('http://localhost:9200/options/_search', {
-                size: 1,
-                // min_score: 200,
-                "query": {
-                    "bool": {
-                        "must": [{
-                            "dis_max": {
-                                "queries": queries, "tie_breaker": 0.3
-                            }
-                        }, {
-                            "term": {
-                                "codes": productFromList.code
-                            }
-                        }]
-                    }
-                }
-            }, {
-                auth: {
-                    username: 'elastic', password: process.env.ELASTIC_PASS,
-                }
-            });
-            if (searchRes.data.hits.hits.length > 0) {
-                const id = +searchRes.data.hits.hits[0]._source.option_id;
-                if (+searchRes.data.hits.hits[0]._score > 400) {
-                    if (!optionsIds[id]) {
-                        optionsIds[id] = {
-                            name: productFromList.name,
-                            values: []
-                        };
-                    }
-                    optionsIds[id].values.push({
-                        price: productFromList.price, list: productFromList.list, code: productFromList.code
-                    })
-                } else {
-                    notValidList.push({
+            const option = await DeviceOptions.findOne({
+                where: {code:{[Op.like]:`%$${productFromList.code}%`}}
+            })
+            if(option) {
+                if (!optionsIds[option.id]) {
+                    optionsIds[option.id] = {
                         name: productFromList.name,
-                        code: productFromList.code,
-                        error: `Мало скору. Знайшли: ${searchRes.data.hits.hits[0]._source.product_name}`
-                    })
+                        values: []
+                    };
                 }
-            } else {
+                optionsIds[option.id].values.push({
+                    price: productFromList.price, list: productFromList.list, code: productFromList.code
+                })
+            }else{
                 newList.push(productFromList)
             }
         }
