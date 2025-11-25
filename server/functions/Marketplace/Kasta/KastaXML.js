@@ -47,8 +47,8 @@ async function KastaXML(option, product) {
             currencyId: 'UAH',
             categoryId: categoryId,
             picture: await calculateImg(product, option),
-            name: (await calculateName(product, option, true, !!product?.filters?.kolir?.length > 0)).replaceAll("-", " "),
-            name_ua:(await calculateName(product, option, false, !!product?.filters?.kolir?.length > 0)).replaceAll("-", " "),
+            name: (await calculateName(product, option, true, categoryId === "52" || categoryId === "64")).replaceAll("-", " "),
+            name_ua:(await calculateName(product, option, false, categoryId === "52" || categoryId === "64")).replaceAll("-", " "),
             vendor: product.brand.name
                 .replaceAll("&", "&amp;")
                 .replaceAll(`"`, "&quot;")
