@@ -14,7 +14,6 @@ async function UpdateParfumeStorage() {
             ...intertakProducts,
             // ...selectumProducts
         ];
-
         const course = 42.3;
         let notValidList = [];
         let newList = [];
@@ -24,7 +23,7 @@ async function UpdateParfumeStorage() {
 
         for (const productFromList of allProductsFromList) {
             const option = await DeviceOptions.findOne({
-                where: {code:{[Op.like]:`%$${productFromList.code}%`}}
+                where: {code:{[Op.like]:`%${productFromList.code}%`}}
             })
             if(option) {
                 if (!optionsIds[option.id]) {

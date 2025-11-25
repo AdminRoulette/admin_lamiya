@@ -8,7 +8,7 @@ const {create} = require("xmlbuilder2");
 async function IntertakStorage() {
     try {
         let List = [];
-        const SkipKeywords = ['брак', 'примятые', 'декод', 'целофан','недолив',"без упаковки", "пломба", "підтікає", "примятий"];
+        const SkipKeywords = [];
 
         const {data} = await axios.get('https://www.intertak.com.ua/promua.xml', {
             responseType: 'arraybuffer'
