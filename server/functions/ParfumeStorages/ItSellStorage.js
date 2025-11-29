@@ -11,12 +11,11 @@ async function ItSellStorage() {
         const SkipKeywords = [];
         const page = await axios.get('https://itsellopt.ua/price_list', {
             responseType: 'text',
-            validateStatus: () => true
+            maxRedirects: 0,
+            validateStatus: (status) => status >= 200 && status < 400
         })
-        console.log(page.request._header)
-        console.log(page.request.path)
-        console.log(page.request.res.responseUrl)
-        console.log(page.request._redirectable._currentUrl)
+        const redirectUrl = page.headers.location;
+        console.log('Redirect URL:', redirectUrl);
 
         return
         const filePath = page.request.res.responseUrl
