@@ -4,7 +4,6 @@ const xlsx = require('xlsx');
 const fs = require("fs");
 const iconv = require("iconv-lite");
 const {create} = require("xmlbuilder2");
-const cheerio = require("cheerio");
 
 async function ItSellStorage() {
     try {
