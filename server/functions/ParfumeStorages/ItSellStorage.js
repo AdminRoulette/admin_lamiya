@@ -9,18 +9,19 @@ async function ItSellStorage() {
     try {
         let List = [];
         const SkipKeywords = [];
-
+        console.log("test")
         const page = await axios.get('https://itsellopt.ua/uk/price_list', {
             responseType: 'text',
             validateStatus: () => true
         })
-
+        console.log("test1")
         const filePath = page.request.path
-
+        console.log(filePath)
         const fixed = decodeURIComponent(escape(filePath));
         const response = await axios.get(`https://itsellopt.ua${encodeURI(fixed)}`, {
             responseType: 'arraybuffer'
         });
+        console.log("test2")
         if (!response.data) {
             throw new Error("Файл складу ItSell відсутній")
         }
