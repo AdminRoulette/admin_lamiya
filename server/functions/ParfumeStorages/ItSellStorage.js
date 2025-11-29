@@ -4,25 +4,19 @@ const xlsx = require('xlsx');
 const fs = require("fs");
 const iconv = require("iconv-lite");
 const {create} = require("xmlbuilder2");
-const { wrapper } = require('axios-cookiejar-support');
-const { CookieJar } = require('tough-cookie');
+
 
 async function ItSellStorage() {
     try {
         let List = [];
         const SkipKeywords = [];
-        const jar = new CookieJar();
-        const client = wrapper(axios.create({ jar }));
 
-        const page = await client.get('https://itsellopt.ua/price_list', {
+        const page = await axios.get('https://itsellopt.ua/price_list', {
             responseType: 'text',
             maxRedirects: 0,
             validateStatus: () => true
         })
-        const redirectUrl = page.headers.location;
-        console.log('Redirect URL:', redirectUrl);
 
-        return
         const filePath = page.request.res.responseUrl
         const fixed = decodeURIComponent(escape(filePath));
 
