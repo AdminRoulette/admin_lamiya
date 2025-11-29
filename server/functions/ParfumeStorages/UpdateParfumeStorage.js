@@ -5,14 +5,16 @@ const {Op} = require("sequelize");
 const UpdateStock = require("../Product/UpdateStock");
 const axios = require("axios");
 const IntertakStorage = require("./IntertakStorage");
+const ItSellStorage = require("./ItSellStorage");
 
 async function UpdateParfumeStorage() {
     try {
+        const itSellProducts = await ItSellStorage()
         const intertakProducts = await IntertakStorage()
-        // const selectumProducts = await SelectumStorage()
+
         const allProductsFromList = [
             ...intertakProducts,
-            // ...selectumProducts
+            ...itSellProducts
         ];
         const course = 42.3;
         let notValidList = [];
@@ -33,7 +35,7 @@ async function UpdateParfumeStorage() {
                     };
                 }
                 optionsIds[option.id].values.push({
-                    price: productFromList.price, list: productFromList.list, code: productFromList.code
+                    price: productFromList.price,sell_price: productFromList?.sell_price, list: productFromList.list, code: productFromList.code
                 })
             }else{
                 newList.push(productFromList)
@@ -56,6 +58,7 @@ async function UpdateParfumeStorage() {
             let active_code = '';
             let calcPrice = 0;
             const optionData = optionsIds[option.id];
+            console.log(optionData)
             if (optionData) {
 
                 for (const value of optionData.values) {
@@ -66,9 +69,13 @@ async function UpdateParfumeStorage() {
                     if (calcStartPrice === 0 || (calcStartPrice > value.price && optionStorageType) || (!storageType && optionStorageType)) {
                         calcStartPrice = value.price
                         active_code = value.code;
-                        const cheepItemPrice = calcStartPrice < 249 ? calcStartPrice + 40 : calcStartPrice;
-                        const minorPrice = cheepItemPrice < 2000 ? cheepItemPrice * 1.13 : cheepItemPrice * 1.1
-                        calcPrice = minorPrice * 1.225
+                        if(value.list === 'luc') {
+                            const cheepItemPrice = calcStartPrice < 249 ? calcStartPrice + 40 : calcStartPrice;
+                            const minorPrice = cheepItemPrice < 2000 ? cheepItemPrice * 1.13 : cheepItemPrice * 1.1
+                            calcPrice = minorPrice * 1.225
+                        }else if(value.list === 'it') {
+                            calcPrice = +value.sell_price * 0.85
+                        }
                         storageType = optionStorageType;
                     }
                 }

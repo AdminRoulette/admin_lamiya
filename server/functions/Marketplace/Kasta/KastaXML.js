@@ -8,7 +8,7 @@ const kastaCountry = require("./components/kastaCountry");
 
 async function KastaXML(option, product) {
     const categoryId = await kastaCategoryId(product.product_categories);
-    let price = option.price;
+    let price = option.marketPrice;
 
     if(!categoryId){
         // TelegramMsg("TECH", `KastaXML не внесена категорія ${product.id}`)
