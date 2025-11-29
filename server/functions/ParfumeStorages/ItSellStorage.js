@@ -14,6 +14,7 @@ async function ItSellStorage() {
             responseType: 'text',
             validateStatus: () => true
         })
+        return page
         const filePath = page.request.res.responseUrl
         const fixed = decodeURIComponent(escape(filePath));
         console.log(fixed)
