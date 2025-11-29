@@ -51,12 +51,6 @@ async function KastaXML(option, product) {
             name_ua:(await calculateName(product, option, false, categoryId === "52" || categoryId === "64")).replaceAll("-", " "),
             vendor: product.brand.name
                 .replaceAll("&", "&amp;")
-                .replaceAll("&", "&amp;")
-                .replaceAll("&", "&amp;")
-                .replaceAll("&", "&amp;")
-                .replaceAll("&", "&amp;")
-
-                .replaceAll("&", "&amp;")
                 .replaceAll(`"`, "&quot;")
                 .replaceAll(">", "&gt;")
                 .replaceAll("<", "&lt;")
