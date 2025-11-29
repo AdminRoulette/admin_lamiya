@@ -13,6 +13,7 @@
   "dependencies": {
     "aws-sdk": "^2.1379.0",
     "axios": "^1.3.5",
+    "axios-cookiejar-support": "^6.0.5",
     "bcrypt": "^5.0.1",
     "cheerio": "^1.1.2",
     "compression": "^1.7.4",
@@ -36,6 +37,7 @@
     "sharp": "^0.32.6",
     "sheetjs-style": "^0.15.8",
     "tinify": "^1.7.1",
+    "tough-cookie": "^6.0.0",
     "ukrstemmer": "^0.1.0",
     "uuid": "^8.3.2",
     "ws": "^8.18.2",
