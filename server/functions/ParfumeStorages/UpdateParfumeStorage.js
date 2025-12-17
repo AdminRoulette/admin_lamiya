@@ -9,13 +9,12 @@ const ItSellStorage = require("./ItSellStorage");
 
 async function UpdateParfumeStorage() {
     try {
-        // const itSellProducts = await ItSellStorage()
-        // return itSellProducts
+         const itSellProducts = await ItSellStorage()
         const intertakProducts = await IntertakStorage()
 
         const allProductsFromList = [
             ...intertakProducts,
-            // ...itSellProducts
+            ...itSellProducts
         ];
         const course = 42.3;
         let notValidList = [];
@@ -59,7 +58,6 @@ async function UpdateParfumeStorage() {
             let active_code = '';
             let calcPrice = 0;
             const optionData = optionsIds[option.id];
-            console.log(optionData)
             if (optionData) {
 
                 for (const value of optionData.values) {

@@ -8,27 +8,23 @@ const {create} = require("xmlbuilder2");
 
 async function ItSellStorage() {
     try {
+
+        const filePath = './storage-files/it.xls';
+        const buffer = fs.readFileSync(filePath);
+
         let List = [];
-        const SkipKeywords = [];
+        const SkipKeywords = ['б/уп','примята коробка','распив'];
 
-        const page = await axios.get('https://itsellopt.ua/price_list', {
-            responseType: 'text',
-            maxRedirects: 0,
-            validateStatus: () => true
-        })
-
-        const filePath = page.request.res.responseUrl
-        const fixed = decodeURIComponent(escape(filePath));
-
-        const response = await axios.get(`${encodeURI(fixed)}`, {
-            responseType: 'arraybuffer'
-        });
-        if (!response.data) {
-            throw new Error("Файл складу ItSell відсутній")
+        if (!buffer) {
+            throw new Error("Файл складу парфумів відсутній")
         }
-
-        const buf = Buffer.from(response.data);
-        const wb = xlsx.read(buf);
+        const buf = Buffer.from(buffer);
+        const wb = xlsx.read(buf, {
+            type: 'buffer',
+            cellDates: true,
+            cellNF: false,
+            cellText: false
+        });
         const ws = wb.Sheets[wb.SheetNames[0]];
         const ExcelPage = xlsx.utils.sheet_to_json(ws, {header: 1});
         for (let i = 8; i < ExcelPage.length; i++) {
