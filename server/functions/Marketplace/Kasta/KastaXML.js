@@ -47,15 +47,15 @@ async function KastaXML(option, product) {
             currencyId: 'UAH',
             categoryId: categoryId,
             picture: await calculateImg(product, option),
-            name_ru: (await calculateName(product, option, true, categoryId === "52" || categoryId === "64")).replaceAll("-", " "),
             name_ua:(await calculateName(product, option, false, categoryId === "52" || categoryId === "64")).replaceAll("-", " "),
+            name_ru: (await calculateName(product, option, true, categoryId === "52" || categoryId === "64")).replaceAll("-", " "),
             vendor: product.brand.name
                 .replaceAll("&", "&amp;")
                 .replaceAll(`"`, "&quot;")
                 .replaceAll(">", "&gt;")
                 .replaceAll("<", "&lt;")
                 .replaceAll(`'`, "&apos;"),
-            description: {'$': `${product.disc_ru.replaceAll(/<a\b[^>]*>(.*?)<\/a>/gi, "$1")}`},
+            description_ru: {'$': `${product.disc_ru.replaceAll(/<a\b[^>]*>(.*?)<\/a>/gi, "$1")}`},
             description_ua: {'$': `${product.disc.replaceAll(/<a\b[^>]*>(.*?)<\/a>/gi, "$1")}`},
             param: paramArray
         }

@@ -103,11 +103,11 @@ async function Marketplace() {
                 //     prettyPrint: true
                 // }));
                 for (const option of product.deviceoptions) {
-                //         fileStreamProm.write(create().ele(await PromXML(option, product)).end({
-                //             headless: true,
-                //             prettyPrint: true
-                //         }));
-                //
+                    fileStreamProm.write(create().ele(await PromXML(option, product)).end({
+                        headless: true,
+                        prettyPrint: true
+                    }));
+
 
                         fileStreamKasta.write(create().ele(await KastaXML(option, product)).end({
                             headless: true,
