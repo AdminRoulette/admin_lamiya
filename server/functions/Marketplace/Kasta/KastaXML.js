@@ -11,7 +11,7 @@ async function KastaXML(option, product) {
     let price = option.marketPrice;
 
     if(!categoryId){
-        // TelegramMsg("TECH", `KastaXML не внесена категорія ${product.id}`)
+        TelegramMsg("TECH", `KastaXML не внесена категорія товару №${product.id}`)
         return {}
     }
     const countryName = await kastaCountry(product?.filters?.["kraina-vyrobnyk"]?.[0])

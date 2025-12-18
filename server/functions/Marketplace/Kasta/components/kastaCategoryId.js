@@ -9,7 +9,7 @@ async function kastaCategoryId(categories) {
         return `3`;
     } else if (categoryId === 28) {
         return `4`;
-    } else if (categoryId === 16 || categoryId === 73 || categoryId === 22 || categoryId === 68) {
+    } else if (categoryId === 16 || categoryId === 73 || categoryId === 22 || categoryId === 68 || categoryId === 74) {
         return `5`;
     } else if (categoryId === 72) {
         return `6`;
