@@ -9,12 +9,12 @@ const ItSellStorage = require("./ItSellStorage");
 
 async function UpdateParfumeStorage() {
     try {
-         // const itSellProducts = await ItSellStorage()
+         const itSellProducts = await ItSellStorage()
         const intertakProducts = await IntertakStorage()
 
         const allProductsFromList = [
             ...intertakProducts,
-            // ...itSellProducts
+            ...itSellProducts
         ];
         const course = 42.3;
         let notValidList = [];
