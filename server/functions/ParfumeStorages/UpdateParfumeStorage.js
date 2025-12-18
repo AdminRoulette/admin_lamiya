@@ -9,12 +9,12 @@ const ItSellStorage = require("./ItSellStorage");
 
 async function UpdateParfumeStorage() {
     try {
-         const itSellProducts = await ItSellStorage()
+         // const itSellProducts = await ItSellStorage()
         const intertakProducts = await IntertakStorage()
 
         const allProductsFromList = [
             ...intertakProducts,
-            ...itSellProducts
+            // ...itSellProducts
         ];
         const course = 42.3;
         let notValidList = [];
@@ -48,7 +48,7 @@ async function UpdateParfumeStorage() {
                     [Op.ne]: '', [Op.not]: null
                 }
             },
-            attributes: ['id', 'deviceId', 'sell_type', 'code', 'price', 'startPrice', 'marketPrice'],
+            attributes: ['id', 'deviceId', 'sell_type', 'code', 'price', 'startPrice', 'marketPrice', 'active_code'],
             include: [{model: Device, attributes: ['series', 'stock']}]
         });
 
@@ -57,6 +57,10 @@ async function UpdateParfumeStorage() {
             let storageType = "storage";
             let active_code = '';
             let calcPrice = 0;
+            if(option.id === 769){
+                console.log(optionsIds[option.id])
+                console.log(option)
+            }
             const optionData = optionsIds[option.id];
             if (optionData) {
 
@@ -94,10 +98,10 @@ async function UpdateParfumeStorage() {
                 }
 
             } else {
-                if (option.actual_code) {
+                if (option.active_code) {
                     await DeviceOptions.update({
                         sell_type: "",
-                        actual_code: ""
+                        active_code: ""
                     }, {where: {id: option.id}})
                     updateStockIds.push(option.deviceId)
                 }
