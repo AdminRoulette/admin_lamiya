@@ -47,13 +47,13 @@ async function PromXML(option, product) {
             description_ua: {'$': `${product.disc.replaceAll(/<a\b[^>]*>(.*?)<\/a>/gi, "$1")}`},
             country: country,
             gtin: option.gtin.toString(),
-            keywords: (`${product.name_ru},${product.series_ru}`)
+            keywords: product.tags
                 .replaceAll("&", "&amp;")
                 .replaceAll(`"`, "")
                 .replaceAll(">", "&gt;")
                 .replaceAll("<", "&lt;")
                 .replaceAll(`'`, "&apos;"),
-            keywords_ua: (`${product.name},${product.series}`)
+            keywords_ua: product.tags_ru
                 .replaceAll("&", "&amp;")
                 .replaceAll(`"`, "")
                 .replaceAll(">", "&gt;")
