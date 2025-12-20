@@ -93,17 +93,17 @@ wss.on('connection', (ws) => {
 
 app.use(compression());
 
-// cron.schedule('55 */2 * * *', async () => {
-//     try {
-//         if (process.env.NODE_ENV === "production") {
-//             await Marketplace()
-//         }
-//     } catch (e) {
-//         TelegramMsg("TECH", `ReNew Marketplace ${e.message}`)
-//     }
-// }, {
-//     timezone: 'Europe/Kyiv'
-// });
+cron.schedule('55 */2 * * *', async () => {
+    try {
+        if (process.env.NODE_ENV === "production") {
+            await Marketplace()
+        }
+    } catch (e) {
+        TelegramMsg("TECH", `ReNew Marketplace ${e.message}`)
+    }
+}, {
+    timezone: 'Europe/Kyiv'
+});
 
 cron.schedule('01 17 * * *', async () => {
     try {
