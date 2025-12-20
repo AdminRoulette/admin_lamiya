@@ -19,7 +19,7 @@ async function PromXML(option, product) {
     if (product.product_categories.some(item => item.categoryId === 61 || item.categoryId === 62 || item.categoryId === 52 || item.categoryId === 64)) {
 
         paramArray.push({
-            '#': option.name,
+            '#': option.optionName,
             '@name': product.product_categories.some(item => item.categoryId === 61) ? 'Колір браслета/ремінця' : 'Колір '
         })
 

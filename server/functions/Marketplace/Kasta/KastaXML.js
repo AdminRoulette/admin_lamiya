@@ -27,7 +27,7 @@ async function KastaXML(option, product) {
     if (categoryId === "61" || categoryId === "62" || categoryId === "52" || categoryId === "64") {
 
         paramArray.push({
-            '#': option.name,
+            '#': option.optionName,
             '@name': 'Колір '
         })
 
