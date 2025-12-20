@@ -16,10 +16,20 @@ async function PromXML(option, product) {
     }
     let country = await calculatePromCountry(product.countryId)
     let paramArray = [];
-    if (product.product_categories.some(item => item.categoryId === 60)) {
-        await PromParfumeParam(option, product, paramArray)
-    } else {
-        await PromCosmeticsParam(option, product, paramArray)
+    if (product.product_categories.some(item => item.categoryId === 61 || item.categoryId === 62 || item.categoryId === 52 || item.categoryId === 64)) {
+
+        paramArray.push({
+            '#': option.name,
+            '@name': product.product_categories.some(item => item.categoryId === 61) ? 'Колір браслета/ремінця' : 'Колір '
+        })
+
+       // await PromParfumeParam(option, product, paramArray)
+    }else if (product.product_categories.some(item => item.categoryId === 63)) {
+
+        paramArray.push({
+            '#': "Прозорий",
+            '@name': 'Колір'
+        })
     }
 
     return {

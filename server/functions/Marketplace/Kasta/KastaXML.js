@@ -24,11 +24,20 @@ async function KastaXML(option, product) {
         '@name': 'Штрих-код',
     }];
 
-    // if (product.product_categories.some(item => item.categoryId === 60)) {
-    //     await KastaParfumeParam(option, product, paramArray)
-    // } else {
-    //     await kastaCosmeticParam(option, product, paramArray)
-    // }
+    if (categoryId === "61" || categoryId === "62" || categoryId === "52" || categoryId === "64") {
+
+        paramArray.push({
+            '#': option.name,
+            '@name': 'Колір '
+        })
+
+        // await PromParfumeParam(option, product, paramArray)
+    }else if (categoryId === "63") {
+        paramArray.push({
+            '#': "Прозорий",
+            '@name': 'Колір'
+        })
+    }
 
     function getMultiplierFromId(id) {
         const step = id % 11;
