@@ -57,10 +57,7 @@ async function UpdateParfumeStorage() {
             let storageType = "storage";
             let active_code = '';
             let calcPrice = 0;
-            if(option.id === 769){
-                console.log(optionsIds[option.id])
-                console.log(option)
-            }
+
             const optionData = optionsIds[option.id];
             if (optionData) {
 
@@ -84,7 +81,7 @@ async function UpdateParfumeStorage() {
 
                 const startPrice = Math.ceil(calcStartPrice);
                 const price = Math.ceil(calcPrice / 5) * 5;
-                const marketPrice = price * 1.225;
+                const marketPrice = Math.ceil(price * 1.225 / 5) * 5;
 
 
 
