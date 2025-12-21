@@ -74,8 +74,7 @@ async function UpdateParfumeStorage() {
                         active_code = value.code;
                         if(value.list === 'luc') {
                             const cheepItemPrice = calcStartPrice < 249 ? calcStartPrice + 40 : calcStartPrice;
-                            const minorPrice = cheepItemPrice < 2000 ? cheepItemPrice * 1.13 : cheepItemPrice * 1.1
-                            calcPrice = minorPrice * 1.225
+                            calcPrice = cheepItemPrice < 2000 ? cheepItemPrice * 1.13 : cheepItemPrice * 1.1
                         }else if(value.list === 'it') {
                             calcPrice = +value.sell_price * 0.85
                         }
@@ -85,7 +84,7 @@ async function UpdateParfumeStorage() {
 
                 const startPrice = Math.ceil(calcStartPrice);
                 const price = Math.ceil(calcPrice / 5) * 5;
-                const marketPrice = price;
+                const marketPrice = price * 1.225;
 
 
 
