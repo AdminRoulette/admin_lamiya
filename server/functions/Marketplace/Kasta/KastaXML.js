@@ -24,15 +24,15 @@ async function KastaXML(option, product) {
         '@name': 'Штрих-код',
     }];
 
-    if (categoryId === "61" || categoryId === "62" || categoryId === "52" || categoryId === "64") {
+    if (product.product_categories.some(item => item.categoryId === 61 || categoryId === 62 || categoryId === 52 || categoryId === 64)) {
 
         paramArray.push({
             '#': option.optionName,
-            '@name': 'Колір '
+            '@name': 'Колір'
         })
 
         // await PromParfumeParam(option, product, paramArray)
-    }else if (categoryId === "63") {
+    }else if (product.product_categories.some(item => item.categoryId === 63)) {
         paramArray.push({
             '#': "Прозорий",
             '@name': 'Колір'
