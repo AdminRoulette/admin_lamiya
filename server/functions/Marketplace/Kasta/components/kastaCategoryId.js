@@ -31,7 +31,7 @@ async function kastaCategoryId(categories) {
         return `14`;
     } else if (categoryId === 43 || categoryId === 44) {
         return `16`;
-    } else if (categoryId === 69) {
+    } else if (categoryId === 69 || categoryId === 59) {
         return `17`;
     } else if (categoryId === 70) {
         return `18`;
@@ -81,6 +81,8 @@ async function kastaCategoryId(categories) {
         return `40`;
     } else if (categoryId === 62) {
         return `41`;
+    } else if (categoryId === 59) {
+        return `42`;
     } else {
         return ""
     }
