@@ -4,6 +4,7 @@ const xlsx = require('xlsx');
 const fs = require("fs");
 const iconv = require("iconv-lite");
 const {create} = require("xmlbuilder2");
+const {_logFunc} = require("nodemailer/lib/shared");
 
 async function IntertakStorage() {
     try {
@@ -24,26 +25,34 @@ async function IntertakStorage() {
         const offers = obj.yml_catalog.shop.offers.offer
 
         for (let i = 0; i < offers.length; i++) {
-                if(offers[i]?.['@'] ? offers[i]["@"].available === "false" : offers[i]["@available"] === "false") {
-                    continue;
-                }
-                const stock = offers[i]?.['@'] ? offers[i]['@'].quantity_in_stock : offers[i]['@quantity_in_stock']
-                if(!stock || stock === 0) {
-                    continue;
-                }
-                const price = offers[i]?.['#'] ? Number(offers[i]['#'][5].price * 0.75).toFixed(2) : Number(offers[i].price* 0.75).toFixed(2)
-                const code = offers[i]?.['@'] ? offers[i]['@'].id : offers[i]['@id']
-                let name = offers[i]?.['#'] ? offers[i]['#'][0].name : offers[i].name
+            let quantity = 0
+            if (offers[i]?.['@'] ? offers[i]["@"].available === "false" : offers[i]["@available"] === "false") {
+                continue;
+            }
 
-                const hasMatch = SkipKeywords.some(word => name.includes(word));
-                if (hasMatch) continue;
+            if (offers[i]?.['#']) {
+                const quantityObj = offers[i]['#'].find(item => 'quantity_in_stock' in item);
+                quantity = +quantityObj?.quantity_in_stock;
+            } else {
+                quantity = +offers[i]?.quantity_in_stock
+            }
 
-                List.push({
-                    price:+price,
-                    code:`luc-${code}`,
-                    list: `luc`,
-                    name: name,
-                })
+            if (!quantity || quantity === 0) {
+                continue;
+            }
+            const price = offers[i]?.['#'] ? Number(offers[i]['#'][5].price * 0.75).toFixed(2) : Number(offers[i].price * 0.75).toFixed(2)
+            const code = offers[i]?.['@'] ? offers[i]['@'].id : offers[i]['@id']
+            let name = offers[i]?.['#'] ? offers[i]['#'][0].name : offers[i].name
+
+            const hasMatch = SkipKeywords.some(word => name.includes(word));
+            if (hasMatch) continue;
+
+            List.push({
+                price: +price,
+                code: `luc-${code}`,
+                list: `luc`,
+                name: name,
+            })
         }
 
         return List;
