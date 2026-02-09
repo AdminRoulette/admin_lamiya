@@ -13,7 +13,7 @@ async function ItSellStorage() {
         const buffer = fs.readFileSync(filePath);
 
         let List = [];
-        const SkipKeywords = ['б/уп','примята коробка','распив'];
+        const SkipKeywords = [];
 
         if (!buffer) {
             throw new Error("Файл складу парфумів відсутній")
@@ -37,8 +37,8 @@ async function ItSellStorage() {
                 const code = ExcelPage[i][0]
                 let name = ExcelPage[i][3]
 
-                const hasMatch = SkipKeywords.some(word => name.includes(word));
-                if (hasMatch) continue;
+                // const hasMatch = SkipKeywords.some(word => name.includes(word));
+                // if (hasMatch) continue;
 
                 List.push({
                     price,
