@@ -72,7 +72,15 @@ async function UpdateParfumeStorage() {
                             const cheepItemPrice = calcStartPrice < 249 ? calcStartPrice + 40 : calcStartPrice;
                             calcPrice = cheepItemPrice < 2000 ? cheepItemPrice * 1.13 : cheepItemPrice * 1.1
                         }else if(value.list === 'it') {
-                            calcPrice = +value.sell_price * 0.85
+                            const diff =  +value.sell_price * 0.85 - calcStartPrice
+                            if(calcStartPrice < 249) {
+                                calcPrice = diff < 60 ? calcStartPrice + 60 : +value.sell_price * 0.85
+                            }else if(calcStartPrice > 2000){
+                                calcPrice = +value.sell_price * 0.88
+                            }else{
+                                calcPrice = diff < 80 ? calcStartPrice + 80 : +value.sell_price * 0.85
+                            }
+
                         }
                         storageType = optionStorageType;
                     }
