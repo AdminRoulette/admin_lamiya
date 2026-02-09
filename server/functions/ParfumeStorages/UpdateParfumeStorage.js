@@ -66,15 +66,15 @@ async function UpdateParfumeStorage() {
                         //  якщо під замовлення. лише з s2 листа
                         "storage";
                     if (calcStartPrice === 0 || (calcStartPrice > value.price && optionStorageType) || (!storageType && optionStorageType)) {
-                        calcStartPrice = value.price
+                        calcStartPrice = +value.price
                         active_code = value.code;
                         if(value.list === 'luc') {
                             const cheepItemPrice = calcStartPrice < 249 ? calcStartPrice + 40 : calcStartPrice;
                             calcPrice = cheepItemPrice < 2000 ? cheepItemPrice * 1.13 : cheepItemPrice * 1.1
                         }else if(value.list === 'it') {
 
-                            const sellPrice = value.sell_price * 0.85
-                            const diff =  sellPrice - calcStartPrice
+                            const sellPrice = +value.sell_price * 0.85
+                            const diff =  +sellPrice - calcStartPrice
                             if(calcStartPrice < 249) {
                                 calcPrice = diff < 60 ? calcStartPrice + 60 : +value.sell_price * 0.85
                             }else if(calcStartPrice > 2000){
