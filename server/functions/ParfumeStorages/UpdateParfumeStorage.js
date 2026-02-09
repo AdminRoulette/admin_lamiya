@@ -83,9 +83,8 @@ async function UpdateParfumeStorage() {
                                 calcPrice = diff < 80 ? calcStartPrice + 80 : +value.sell_price * 0.85
                             }
                             if(value.code === 'it-00000076774_3'){
-                                console.log({
-                                    calcPrice,calcStartPrice,price:value.price,sell_price:value.sell_price
-                                })
+                                TelegramMsg("TECH", `Error UpdateParfumeStorage ${calcPrice},${calcStartPrice},${value.price},${value.sell_price}`)
+
                             }
                         }
                         storageType = optionStorageType;
