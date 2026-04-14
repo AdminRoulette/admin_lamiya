@@ -89,7 +89,7 @@ async function UpdateParfumeStorage() {
 
                 const startPrice = Math.ceil(calcStartPrice);
                 const price = Math.ceil(calcPrice / 5) * 5;
-                const marketPrice = Math.ceil(price * 1.225 / 5) * 5;
+                const marketPrice = Math.ceil(price * 1.225 / 5) * 5 + 20;
 
 
 
